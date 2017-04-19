@@ -1,8 +1,8 @@
 ### Angular 2
 
 # TypeScript
-**/*.js
-**/*.js.map
+src/**/*.js
+src/**/*.js.map
 
 # Project Exceptions
 !/webpack.config.js
