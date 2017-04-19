@@ -1,0 +1,85 @@
+@import '../../../../variables';
+
+@mixin grid-bg($color1, $color2) {
+  background:
+    linear-gradient(0, #FFFFFF 2px, rgba(0,0,0,0) 2px),
+    //linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px),
+    //linear-gradient(0, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), $color1;
+  background-size: 10px 50px;
+}
+
+:host{
+
+  .circle-container{
+    display: flex;
+    align-items: center;
+
+    &.grid-bg{
+      @include grid-bg($gray-light, white);
+    }
+
+    &.circle-in-circle{
+      .circle-holder{
+        flex-basis: 100%;
+      }
+    }
+
+    .circle-holder{
+      flex-basis: 50%;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      min-height: 300px;
+    }
+
+    .circle{
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+
+      span{
+        background: inherit;
+        padding: 3px;
+      }
+
+      &.blue{
+        background: #004358;
+      }
+
+      &.green{
+        background: #BEDB39;
+      }
+
+      &.yellow{
+        background: #FFE11A;
+      }
+
+      &.orange{
+        background: #FD7400;
+      }
+
+      &.green{
+        background: $brand-primary;
+      }
+
+      .fa{
+        font-size: 40px;
+      }
+    }
+
+    .left-circle{
+      width: 100px;
+      height: 100px;
+    }
+
+    .right-circle{
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+

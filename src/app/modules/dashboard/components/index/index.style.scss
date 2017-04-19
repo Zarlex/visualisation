@@ -1,0 +1,27 @@
+@import '../../../../variables';
+:host{
+  .experiments{
+    list-style: none;
+    padding: 0;
+
+    .experiment{
+      display: flex;
+      padding: 15px;
+      transition: background 0.5s ease;
+
+      .meta{
+        flex-grow: 1;
+
+        h3{
+          margin: 0;
+        }
+      }
+
+      &:hover{
+        background: $light-white;
+      }
+    }
+  }
+}
+
+

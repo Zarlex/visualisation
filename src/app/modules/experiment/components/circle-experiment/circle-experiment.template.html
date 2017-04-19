@@ -1,0 +1,112 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Circle Experiment</h1>
+  </header>
+
+  <section>
+    <form #devForm="ngForm">
+      <wizard #wizard>
+        <wizard-entry>
+          <div class="circle-container">
+            <div class="circle-holder">
+              <div class="circle left-circle blue" #orgCircle>
+                <span>100%</span>
+              </div>
+            </div>
+            <div class="circle-holder">
+              <div class="circle right-circle orange"
+                   #circle1
+                   randomSize
+                   [orgSize]="100">
+                <span>{{circleExperimentModel.get('circle1')+100}}%</span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3>Guess how much bigger the orange circle is (right circle)</h3>
+          <range-slider
+            [min]="0"
+            [max]="100"
+            [value]="circleExperimentModel.get('circle1')"
+            [step]="10"
+            [transformDisplayValue]="transformRangeVal"
+            (valueChanged)="changedValCircle1($event)"></range-slider>
+        </wizard-entry>
+
+        <wizard-entry>
+          <div class="circle-container grid-bg">
+            <div class="circle-holder">
+              <div class="circle left-circle blue" #orgCircle>
+                <span>100%</span>
+              </div>
+            </div>
+            <div class="circle-holder">
+              <div class="circle right-circle orange"
+                   #circle2
+                   randomSize
+                   [orgSize]="100">
+                <span>{{circleExperimentModel.get('circle2')+100}}%</span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3>Guess how much bigger the orange circle is (right circle)</h3>
+          <range-slider
+            [min]="0"
+            [max]="100"
+            [value]="circleExperimentModel.get('circle2')"
+            [step]="10"
+            [transformDisplayValue]="transformRangeVal"
+            (valueChanged)="changedValCircle2($event)"></range-slider>
+        </wizard-entry>
+
+        <wizard-entry>
+          <div class="circle-container circle-in-circle">
+            <div class="circle-holder">
+              <div class="circle right-circle orange"
+                   #circle3
+                   randomSize
+                   [orgSize]="100">
+                <div class="circle left-circle blue"
+                     #orgCircle>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3>Guess how much bigger the orange circle is (outer circle)</h3>
+          <range-slider
+            [min]="0"
+            [max]="100"
+            [value]="circleExperimentModel.get('circle3')"
+            [step]="10"
+            [transformDisplayValue]="transformRangeVal"
+            (valueChanged)="changedValCircle3($event)"></range-slider>
+        </wizard-entry>
+      </wizard>
+      <hr>
+      <span *ngIf="circleExperimentModel.validate()"
+            class="error pull-left">
+        {{circleExperimentModel.validate()}}
+      </span>
+      <button *ngIf="wizard.hasNext()"
+              class="btn btn-primary pull-right"
+              (click)="wizard.next()">
+        Continue
+      </button>
+      <button *ngIf="!wizard.hasNext()"
+              class="btn btn-primary pull-right"
+              (click)="save()"
+              [disabled]="circleExperimentModel.validate() || isSaving">
+        Save
+      </button>
+      <button *ngIf="wizard.hasPrevious()"
+              class="btn btn-default pull-right"
+              (click)="wizard.previous()">
+        Back
+      </button>
+    </form>
+  </section>
+
+</section>

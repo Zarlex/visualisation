@@ -1,0 +1,32 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Circle Experiment–All results</h1>
+  </header>
+
+  <section>
+
+    <h2>Circle</h2>
+    <deviation-chart
+      [values]="circleExperimentsCollection.pluck('circle1Dev')"
+      [highlight]="circleExperimentModel.get('circle1Dev')"
+      xLabel="Deviation"
+      yLabel="Participants"></deviation-chart>
+    <hr>
+    <h2>Circle with grid</h2>
+    <deviation-chart
+      [values]="circleExperimentsCollection.pluck('circle2Dev')"
+      [highlight]="circleExperimentModel.get('circle2Dev')"
+      xLabel="Deviation"
+      yLabel="Participants"></deviation-chart>
+    <hr>
+    <h2>Circle in circle</h2>
+    <deviation-chart
+      [values]="circleExperimentsCollection.pluck('circle3Dev')"
+      [highlight]="circleExperimentModel.get('circle3Dev')"
+      xLabel="Deviation"
+      yLabel="Participants"></deviation-chart>
+
+  </section>
+
+</section>

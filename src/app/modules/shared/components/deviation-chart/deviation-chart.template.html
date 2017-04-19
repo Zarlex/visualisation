@@ -1,0 +1,50 @@
+<div class="deviation-chart">
+  <div class="x-axis">
+    <div *ngFor="let num of bars"
+         class="x res-{{num}}">
+      <div class="x-label">{{num}}%</div>
+    </div>
+
+    <div *ngFor="let result of results"
+         class="result"
+         [style.width]="result.key+'%'"
+         [style.height]="getPercentageVal(result.key)*10+'%'">
+    </div>
+
+    <div class="result average-marker" [style.width]="this.average+'%'">
+      <span class="indicator-label">
+        <span class="fa fa-users"></span>
+      </span>
+    </div>
+
+    <div *ngIf="hasHighlight()" class="result highlight" [style.width]="this.highlight+'%'">
+      <span class="indicator-label">
+        <span class="fa fa-user"></span>
+      </span>
+    </div>
+
+    <div class="background"></div>
+    <b class="axis-label y">{{yLabel}}</b>
+  </div>
+
+  <div class="y-axis">
+    <div *ngFor="let num of bars"
+         class="y res-{{num}}">
+      <div *ngIf="(num/10)%2 === 0" class="y-label">{{100-num}}%</div>
+    </div>
+
+    <b class="axis-label x">{{xLabel}}</b>
+  </div>
+</div>
+
+<div class="legend">
+    <span class="label label-info label-light">
+      <span class="fa fa-users"></span>
+    </span> = Average Deviation ({{this.average}}%/{{values.length}} participants)
+
+    <span *ngIf="hasHighlight()">
+      <span class="label label-success label-light">
+        <span class="fa fa-user"></span>
+      </span> = Your guess
+    </span>
+</div>

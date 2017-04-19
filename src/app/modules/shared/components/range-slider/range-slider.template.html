@@ -1,0 +1,25 @@
+<div class="range-slider-component" [class.is-loading]="showLoadingSpinner" [class.is-dragging]="dragInProgress">
+  <div *ngIf="!hideSliderValue && min !== null"
+       class="min-value">
+    <span *ngIf="showCurrentValue">
+      {{getDisplayValue(value)}}
+    </span>
+    <span *ngIf="!showCurrentValue">
+      {{getDisplayValue(min)}}
+    </span>
+  </div>
+
+  <div #progressBar class="progress-bar">
+    <div #progressLine class="progress-line"></div>
+    <div #handle class="visible-dragger" [class.display-value]="!hideSliderValue">
+      <span>{{dragDisplayValue}}</span>
+      <div class="loading-spinner"></div>
+    </div>
+    <input type="range" [min]="min" [max]="max" [(ngModel)]="tmpValue" [step]="step">
+  </div>
+
+  <div *ngIf="!hideSliderValue && max !== null"
+       class="max-value">
+    {{getDisplayValue(max)}}
+  </div>
+</div>

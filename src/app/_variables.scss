@@ -1,0 +1,12 @@
+// Bootstrap variables
+$font-family-base: 'Noto Sans', Helvetica, sans-serif;
+$brand-primary: #1F8A70; //Vitamin-C
+$input-border-focus: lighten($brand-primary,20%);
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+
+// Cloud Player variables
+$btn-width: 40px;
+$btn-color: $brand-primary;
+$light-white: #fcfcfc;
+$light-boxshadow: 0 0 8px 0 rgb(200, 200, 200);
+
