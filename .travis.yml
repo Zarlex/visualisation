@@ -7,7 +7,7 @@ env:
   - secure: FkqlXcRV2VeDe6BfivP3wk/f8PaVwBZut/+qOUQ2XDDVELUYUZ/zkSqdHqg4Yo4MBn3PtBJRLcj7oBZjrKqQ6Vj5TWfRcoB0n39XGTzhVBKuUQT+i0ZXdo0rUuxr+3U0pu/fiDYunz+UYAfFX6BsKMZpgKBsT94wohn0Nf6yM3d6WXunFgnx8daZSUnHYdCfyROVVqXXToLqV0GBmNz4GL41n3K/8aC5XRK0GhPaubT/0w0GhNfOi1Z8yKPPhC6fKVH9gpGmTs/NQ6V05dk2ZjqBZjQ72wlHPkXxOIHm2tJ3Ule8zg45Z1KuQkzEXj3pXuxCmN1fM/UUYeJN21j8olJYjZel3gM+QasOC/afk04WVTfWAX9HbSknIdxiuULbYGSjHLgMwd4uipXrveqZYE601qQXNs0zzF2UubUaDldAsPH+w5n76+37KQ+Mpzx4sz1BH03jZo4uGyosNFw+RLX2XIfWn98ivMNJjIXI7lwvnvskkOZ4wZFgJBoZTCH1NroztOOO9wlpvcAi62k5wmx7xkjLQfwd3mPDA+yK5hnEtuLzpj+vkDHPmLvf4ioOuTC+dhuYwcURvC46uYaG/p2ng8KUOvvJb4+EWUkyjbyDxSOdlHGgs37So2dDW3ydJoZ3Mnn1Q72JyDQEPhbT5usR3InO2gfu8rB9bEb4qu4=
 before_deploy:
 - ./bin/bundle-server.sh
-- ./bin/build-portal.sh
+- npm run build
 deploy:
 - provider: s3
   access_key_id: AKIAJTMP6OVMWJ2AE7UQ
