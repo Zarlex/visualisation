@@ -4,4 +4,4 @@ if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
 fi
 
 cd ~/visualisation/app
-pm2 start json-server.js -n www -i 0
+/usr/local/bin/pm2 start json-server.js -n www -i 0
