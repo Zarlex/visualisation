@@ -11,7 +11,7 @@ export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
 
 # save nvm env in bash rc
-hasNvmEnv=`grep "export NVM_DIR" ~/.bash_profile | cat`
+hasNvmEnv=`grep "export NVM_DIR" ~/.bashrc | cat`
 if [ -z "$hasNvmEnv" ]; then
   echo "export NVM_DIR='$HOME/.nvm'" >> ~/.bash_profile
   echo "[ -s '$NVM_DIR/nvm.sh' ] && \. '$NVM_DIR/nvm.sh'" >> ~/.bash_profile
