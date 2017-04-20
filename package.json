@@ -50,7 +50,6 @@
     "@types/jquery": "^2.0.33",
     "@types/localforage": "0.0.33",
     "@types/node": "^6.0.45",
-    "@types/service_worker_api": "0.0.9",
     "@types/underscore": "^1.7.33",
     "angular2-template-loader": "^0.4.0",
     "awesome-typescript-loader": "^2.2.4",
