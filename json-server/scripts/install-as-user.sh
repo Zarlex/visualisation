@@ -31,16 +31,16 @@ cd ~/visualisation
 npm install
 
 # setup NODE_ENV
-if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
-    export NODE_ENV=$DEPLOYMENT_GROUP_NAME
-
-    hasEnv=`grep "export NODE_ENV" ~/.bash_profile | cat`
-    if [ -z "$hasEnv" ]; then
-        echo "export NODE_ENV=$DEPLOYMENT_GROUP_NAME" >> ~/.bash_profile
-    else
-        sed -i "/export NODE_ENV=\b/c\export NODE_ENV=$DEPLOYMENT_GROUP_NAME" ~/.bash_profile
-    fi
-fi
+#if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
+#    export NODE_ENV=$DEPLOYMENT_GROUP_NAME
+#
+#    hasEnv=`grep "export NODE_ENV" ~/.bash_profile | cat`
+#    if [ -z "$hasEnv" ]; then
+#        echo "export NODE_ENV=$DEPLOYMENT_GROUP_NAME" >> ~/.bash_profile
+#    else
+#        sed -i "/export NODE_ENV=\b/c\export NODE_ENV=$DEPLOYMENT_GROUP_NAME" ~/.bash_profile
+#    fi
+#fi
 
 # add node to startup
 hasRc=`grep "su -l $USER" /etc/rc.local | cat`
