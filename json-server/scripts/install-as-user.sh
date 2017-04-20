@@ -13,9 +13,9 @@ source "$NVM_DIR/nvm.sh"
 # save nvm env in bash rc
 hasNvmEnv=`grep "export NVM_DIR" ~/.bashrc | cat`
 if [ -z "$hasNvmEnv" ]; then
-  echo "export NVM_DIR='$HOME/.nvm'" >> ~/.bash_profile
-  echo "[ -s '$NVM_DIR/nvm.sh' ] && \. '$NVM_DIR/nvm.sh'" >> ~/.bash_profile
-  echo "source '$NVM_DIR/nvm.sh'" >> ~/.bash_profile
+  echo "export NVM_DIR='$HOME/.nvm'" >> ~/.bashrc
+  echo "[ -s '$NVM_DIR/nvm.sh' ] && \. '$NVM_DIR/nvm.sh'" >> ~/.bashrc
+  echo "source '$NVM_DIR/nvm.sh'" >> ~/.bashrc
 fi
 
 # install node
