@@ -1,0 +1,39 @@
+language: node_js
+node_js:
+- 6.9.2
+env:
+  global:
+  - GH_REF=github.com/Zarlex/visualisation
+  - secure: FkqlXcRV2VeDe6BfivP3wk/f8PaVwBZut/+qOUQ2XDDVELUYUZ/zkSqdHqg4Yo4MBn3PtBJRLcj7oBZjrKqQ6Vj5TWfRcoB0n39XGTzhVBKuUQT+i0ZXdo0rUuxr+3U0pu/fiDYunz+UYAfFX6BsKMZpgKBsT94wohn0Nf6yM3d6WXunFgnx8daZSUnHYdCfyROVVqXXToLqV0GBmNz4GL41n3K/8aC5XRK0GhPaubT/0w0GhNfOi1Z8yKPPhC6fKVH9gpGmTs/NQ6V05dk2ZjqBZjQ72wlHPkXxOIHm2tJ3Ule8zg45Z1KuQkzEXj3pXuxCmN1fM/UUYeJN21j8olJYjZel3gM+QasOC/afk04WVTfWAX9HbSknIdxiuULbYGSjHLgMwd4uipXrveqZYE601qQXNs0zzF2UubUaDldAsPH+w5n76+37KQ+Mpzx4sz1BH03jZo4uGyosNFw+RLX2XIfWn98ivMNJjIXI7lwvnvskkOZ4wZFgJBoZTCH1NroztOOO9wlpvcAi62k5wmx7xkjLQfwd3mPDA+yK5hnEtuLzpj+vkDHPmLvf4ioOuTC+dhuYwcURvC46uYaG/p2ng8KUOvvJb4+EWUkyjbyDxSOdlHGgs37So2dDW3ydJoZ3Mnn1Q72JyDQEPhbT5usR3InO2gfu8rB9bEb4qu4=
+before_deploy:
+- ./bin/bundle-server.sh
+- npm run build
+deploy:
+- provider: s3
+  access_key_id: AKIAJTMP6OVMWJ2AE7UQ
+  secret_access_key:
+    secure: lAZXbduxzN1hVIEkxyp4YsoHYFnGDaTbp4hurxtkQLAvP7V4/1rkWGBr886qyEPJmNuWeIvdKsfxODrphDc6JtTGwltDFPj5cOvNLLiEHFLucyU6SK+qHMjaVk8GD8Uc4e7yR164kaS2btvuw287I4SUwl+VfGBUkQfzR4qRjMhtnB12FdG9xZXdpCjrq+3C1DetxFrWnJfn0AVqMAcl8v9R7whxBz1KEoFnRYC+HzdFp7RL7b8kkPll/u0VtW8Md9tTf8n9Hx4XCAOUzwuMMfAOcwsVGI2RjjTMsWeZegPF0ZAAcugw9oGsH7zvBOqe6B4IExu0S2UClTnuAwNky7tv3AMAoDmE4bO9XWfJEUFvnoci6FWI8VAx9zXj0/t6S60/ELTf0GVDcSwOus54YWW0TYYzwIilUyM/GyNfOKYAetGSNvlKNGGTjsG/3wEO+067SsM67uTh5xIagE7YHs2d8su4iwHIO7AGvN2jHJGwfeVxURTpOyE+xbgAQa4neWB9H61GFoLb1JxaLqoNp09OFHXC45h6EwMkwuVU37soYSWksiKjQSmz3PBf0fgscvHfuJQqwzjVBSB52nnv8kqm7PLfMn8iKrtkbdLYKWaubTT76YKmWINHOM9JrQLtkno6YKHasPBgAbqs2fGmO5qSnuvMvPJlUdoKb8GHl6w=
+  bucket: htw-visualisation
+  region: eu-central-1
+  local_dir: aws_upload
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: codedeploy
+  access_key_id: AKIAJTMP6OVMWJ2AE7UQ
+  secret_access_key:
+    secure: lAZXbduxzN1hVIEkxyp4YsoHYFnGDaTbp4hurxtkQLAvP7V4/1rkWGBr886qyEPJmNuWeIvdKsfxODrphDc6JtTGwltDFPj5cOvNLLiEHFLucyU6SK+qHMjaVk8GD8Uc4e7yR164kaS2btvuw287I4SUwl+VfGBUkQfzR4qRjMhtnB12FdG9xZXdpCjrq+3C1DetxFrWnJfn0AVqMAcl8v9R7whxBz1KEoFnRYC+HzdFp7RL7b8kkPll/u0VtW8Md9tTf8n9Hx4XCAOUzwuMMfAOcwsVGI2RjjTMsWeZegPF0ZAAcugw9oGsH7zvBOqe6B4IExu0S2UClTnuAwNky7tv3AMAoDmE4bO9XWfJEUFvnoci6FWI8VAx9zXj0/t6S60/ELTf0GVDcSwOus54YWW0TYYzwIilUyM/GyNfOKYAetGSNvlKNGGTjsG/3wEO+067SsM67uTh5xIagE7YHs2d8su4iwHIO7AGvN2jHJGwfeVxURTpOyE+xbgAQa4neWB9H61GFoLb1JxaLqoNp09OFHXC45h6EwMkwuVU37soYSWksiKjQSmz3PBf0fgscvHfuJQqwzjVBSB52nnv8kqm7PLfMn8iKrtkbdLYKWaubTT76YKmWINHOM9JrQLtkno6YKHasPBgAbqs2fGmO5qSnuvMvPJlUdoKb8GHl6w=
+  deployment_group: NodeAppDeployGroup
+  region: eu-central-1
+  bucket: htw-visualisation
+  key: latest.zip
+  bundle_type: zip
+  application: HtwVisualisationPortal
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: ./bin/release-on-gh-pages.sh
+  skip_cleanup: true
+  on:
+    branch: master
