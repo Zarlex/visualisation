@@ -21,6 +21,7 @@ fi
 # install node
 echo "installing node"
 nvm install node
+nvm alias default node
 
 # install pm2 module globally
 echo "installing pm2"
