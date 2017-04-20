@@ -47,3 +47,5 @@ jspm_packages
 .sass-cache/
 *.css.map
 *.css
+
+aws_upload
