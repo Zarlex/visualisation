@@ -46,7 +46,8 @@ fi
 # add node to startup
 hasRc=`grep "su -l $USER" /etc/rc.local | cat`
 if [ -z "$hasRc" ]; then
-    sudo sh -c "echo 'su -l $USER -c \"cd ~/visualisation;sh ./run.sh\"' >> //etc/rc.local"
+    sudo sh -c "echo 'su -l $USER -c \"cd ~/scripts/visualisation; sh ./run.sh\"' >> /etc/rc.local"
 fi
 
 source ~/.bashrc
+export NODE_PATH=`which node`
