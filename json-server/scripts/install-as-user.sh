@@ -5,6 +5,11 @@ set -e
 echo "installing NVM"
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
+# setup nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+source "$NVM_DIR/nvm.sh"
+
 # save nvm env in bash rc
 hasNvmEnv=`grep "export NVM_DIR" ~/.bashrc | cat`
 if [ -z "$hasNvmEnv" ]; then
