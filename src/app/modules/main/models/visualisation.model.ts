@@ -4,7 +4,11 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class VisualisationModel extends BaseModel {
   hostName(): string {
-    return 'http://localhost:3000';
+    if (process.env.ENV === 'prod') {
+      return 'http://api.viz.zarg.es:3000';
+    } else {
+      return 'http://localhost:3000';
+    }
   };
 
   basePath(): string {
