@@ -7430,7 +7430,12 @@ webpackJsonp([0],[
 	        _super.apply(this, arguments);
 	    }
 	    VisualisationModel.prototype.hostName = function () {
-	        return 'http://localhost:3000';
+	        if (true) {
+	            return 'http://api.viz.zarg.es:3000';
+	        }
+	        else {
+	            return 'http://localhost:3000';
+	        }
 	    };
 	    ;
 	    VisualisationModel.prototype.basePath = function () {
@@ -7722,7 +7727,12 @@ webpackJsonp([0],[
 	        _super.apply(this, arguments);
 	    }
 	    VisualisationCollection.prototype.hostName = function () {
-	        return 'http://localhost:3000';
+	        if (true) {
+	            return 'http://api.viz.zarg.es:3000';
+	        }
+	        else {
+	            return 'http://localhost:3000';
+	        }
 	    };
 	    ;
 	    VisualisationCollection.prototype.basePath = function () {

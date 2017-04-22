@@ -5,10 +5,10 @@ var serviceWorkerOption = {
     "/fee66e712a8a08eef5805a46892932ad.woff",
     "/b06871f281fee6b241d60582ae9369b9.ttf",
     "/912ec66d7572ff821749319396470bde.svg",
-    "/app.435ed02e7350120f29ce.js",
-    "/polyfills.435ed02e7350120f29ce.js",
-    "/vendor.435ed02e7350120f29ce.js",
-    "/vendor.435ed02e7350120f29ce.css"
+    "/app.9c8290a5b10c7a37875d.js",
+    "/polyfills.9c8290a5b10c7a37875d.js",
+    "/vendor.9c8290a5b10c7a37875d.js",
+    "/vendor.9c8290a5b10c7a37875d.css"
   ]
 };
         
@@ -56,58 +56,77 @@ var serviceWorkerOption = {
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
-	var g = global;
-	var cacheVersion = ("1.0.5");
-	var externalDomainWhiteList = [
-	    'https://fonts.gstatic.com',
-	    'https://fonts.googleapis.com'
-	];
-	self.addEventListener('install', function (event) {
-	    self.skipWaiting();
-	    event.waitUntil(self.caches.open(cacheVersion).then(function (cache) {
-	        return cache.addAll(g.serviceWorkerOption.assets);
-	    }));
-	});
-	self.addEventListener('fetch', function (event) {
-	    var url = new URL(event.request.url);
-	    if (url.origin === location.origin || externalDomainWhiteList.indexOf(url.origin) !== -1) {
-	        event.respondWith(self.caches.match(event.request)
-	            .then(function (response) {
-	            if (response) {
-	                return response;
-	            }
-	            var fetchRequest = event.request.clone();
-	            return fetch(fetchRequest).then(function (response) {
-	                if (!response || response.status !== 200 || response.type !== 'basic') {
-	                    return response;
-	                }
-	                var responseToCache = response.clone();
-	                self.caches.open(cacheVersion)
-	                    .then(function (cache) {
-	                    cache.put(event.request, responseToCache);
-	                });
-	                return response;
-	            });
-	        }, function () {
-	            // Offline Fallback
-	        }));
-	    }
-	});
-	self.addEventListener('activate', function (event) {
-	    event.waitUntil(self.caches.keys().then(function (keyList) {
-	        return Promise.all(keyList.map(function (key) {
-	            if (key !== cacheVersion) {
-	                return self.caches.delete(key);
-	            }
-	        }));
-	    }));
-	    event.waitUntil(self.clients.claim());
-	});
+	"use strict";// declare const VERSION: string;
+	//
+	// var g: any = global;
+	// var cacheVersion: string = VERSION;
+	// var externalDomainWhiteList = [
+	//   'https://fonts.gstatic.com',
+	//   'https://fonts.googleapis.com'
+	// ];
+	//
+	// self.addEventListener('install', function (event: any) {
+	//   self.skipWaiting();
+	//   event.waitUntil(
+	//     self.caches.open(cacheVersion).then(function (cache) {
+	//       return cache.addAll(g.serviceWorkerOption.assets);
+	//     })
+	//   );
+	// });
+	//
+	// self.addEventListener('fetch', function (event: any) {
+	//   var url = new URL(event.request.url);
+	//   if (url.origin === location.origin || externalDomainWhiteList.indexOf(url.origin) !== -1) {
+	//     event.respondWith(
+	//       self.caches.match(event.request)
+	//         .then(
+	//           function (response) {
+	//             if (response) {
+	//               return response;
+	//             }
+	//             var fetchRequest = event.request.clone();
+	//
+	//             return fetch(fetchRequest).then(
+	//               function (response) {
+	//                 if (!response || response.status !== 200 || response.type !== 'basic') {
+	//                   return response;
+	//                 }
+	//
+	//                 var responseToCache = response.clone();
+	//
+	//                 self.caches.open(cacheVersion)
+	//                   .then(function (cache) {
+	//                     cache.put(event.request, responseToCache);
+	//                   });
+	//
+	//                 return response;
+	//               }
+	//             );
+	//           },
+	//           function () {
+	//             // Offline Fallback
+	//           }
+	//         )
+	//     );
+	//   }
+	// });
+	//
+	// self.addEventListener('activate', function (event: any) {
+	//   event.waitUntil(
+	//     self.caches.keys().then(function (keyList) {
+	//       return Promise.all(keyList.map(function (key) {
+	//         if (key !== cacheVersion) {
+	//           return self.caches.delete(key);
+	//         }
+	//       }));
+	//     })
+	//   );
+	//   event.waitUntil(self.clients.claim());
+	// });
+	//
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ })
 /******/ ]);
