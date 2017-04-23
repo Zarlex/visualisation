@@ -3,6 +3,7 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var platform_browser_dynamic_1 = __webpack_require__(1);
 	var core_1 = __webpack_require__(3);
 	var runtime = __webpack_require__(23);
@@ -199,9 +200,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__webpack_require__(26);
 	var core_1 = __webpack_require__(3);
 	var platform_browser_1 = __webpack_require__(21);
@@ -218,29 +217,28 @@ webpackJsonp([0],[
 	var MainModule = (function () {
 	    function MainModule() {
 	    }
-	    MainModule = __decorate([
-	        core_1.NgModule({
-	            imports: [
-	                platform_browser_1.BrowserModule,
-	                forms_1.FormsModule,
-	                http_1.HttpModule,
-	                backbone_module_1.BackboneModule,
-	                shared_module_1.SharedModule,
-	                dashboard_module_1.DashboardModule,
-	                experiment_module_1.ExperimentModule,
-	                main_routes_1.MainRoutingModule,
-	            ],
-	            declarations: [
-	                main_component_1.MainComponent,
-	                nav_component_1.NavComponent
-	            ],
-	            providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-	            bootstrap: [main_component_1.MainComponent]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], MainModule);
 	    return MainModule;
 	}());
+	MainModule = __decorate([
+	    core_1.NgModule({
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule,
+	            http_1.HttpModule,
+	            backbone_module_1.BackboneModule,
+	            shared_module_1.SharedModule,
+	            dashboard_module_1.DashboardModule,
+	            experiment_module_1.ExperimentModule,
+	            main_routes_1.MainRoutingModule,
+	        ],
+	        declarations: [
+	            main_component_1.MainComponent,
+	            nav_component_1.NavComponent
+	        ],
+	        providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
+	        bootstrap: [main_component_1.MainComponent]
+	    })
+	], MainModule);
 	exports.MainModule = MainModule;
 
 
@@ -249,6 +247,7 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// Observable class extensions
 	__webpack_require__(27);
 	__webpack_require__(33);
@@ -6207,6 +6206,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var http_1 = __webpack_require__(65);
 	var platform_browser_1 = __webpack_require__(21);
@@ -6260,21 +6260,20 @@ webpackJsonp([0],[
 	            });
 	        };
 	    }
-	    BackboneModule = __decorate([
-	        core_1.NgModule({
-	            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
-	            exports: [],
-	            providers: [
-	                base_collection_1.BaseCollection,
-	                base_model_1.BaseModel
-	            ],
-	            declarations: [],
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], BackboneModule);
 	    return BackboneModule;
-	    var _a;
 	}());
+	BackboneModule = __decorate([
+	    core_1.NgModule({
+	        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+	        exports: [],
+	        providers: [
+	            base_collection_1.BaseCollection,
+	            base_model_1.BaseModel
+	        ],
+	        declarations: [],
+	    }),
+	    __metadata("design:paramtypes", [http_1.Http])
+	], BackboneModule);
 	exports.BackboneModule = BackboneModule;
 
 
@@ -6286,20 +6285,23 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var nested_model_1 = __webpack_require__(71);
 	var core_1 = __webpack_require__(3);
 	var get_url_util_1 = __webpack_require__(72);
@@ -6309,13 +6311,13 @@ webpackJsonp([0],[
 	var BaseModel = (function (_super) {
 	    __extends(BaseModel, _super);
 	    function BaseModel() {
-	        var _this = this;
-	        _super.apply(this, arguments);
-	        this.queryParams = {};
-	        this.endpoint = null;
-	        this.urlRoot = function () {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.queryParams = {};
+	        _this.endpoint = null;
+	        _this.urlRoot = function () {
 	            return get_url_util_1.getUrl(_this);
 	        };
+	        return _this;
 	    }
 	    BaseModel.prototype.hostName = function () {
 	        return '';
@@ -6337,12 +6339,11 @@ webpackJsonp([0],[
 	        options.search = prepare_search_params_1.prepareSearchParams(options.search, queryParams);
 	        return _super.prototype.sync.call(this, method, model, options);
 	    };
-	    BaseModel = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], BaseModel);
 	    return BaseModel;
 	}(nested_model_1.NestedModel));
+	BaseModel = __decorate([
+	    core_1.Injectable()
+	], BaseModel);
 	exports.BaseModel = BaseModel;
 
 
@@ -6351,19 +6352,27 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var backbone_1 = __webpack_require__(68);
 	var underscore_1 = __webpack_require__(67);
 	var NestedModel = (function (_super) {
 	    __extends(NestedModel, _super);
 	    function NestedModel(attributes, options) {
 	        if (options === void 0) { options = {}; }
+	        var _this = this;
 	        options._prepareNesting = true;
-	        _super.call(this, attributes, options);
+	        _this = _super.call(this, attributes, options) || this;
+	        return _this;
 	    }
 	    NestedModel.prototype.nested = function () {
 	        return {};
@@ -6441,7 +6450,7 @@ webpackJsonp([0],[
 	    ;
 	    NestedModel.prototype._prepareDataForServer = function () {
 	        var attrs = underscore_1.extend({}, this.attributes), nestedAttrs = this.nested();
-	        var _loop_1 = function(key) {
+	        var _loop_1 = function (key) {
 	            if (nestedAttrs.hasOwnProperty(key)) {
 	                var nestedAttr = this_1.get(key);
 	                if (nestedAttr instanceof backbone_1.Model) {
@@ -6524,6 +6533,7 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var backbone_1 = __webpack_require__(68);
 	var underscore_1 = __webpack_require__(67);
 	var concat_url_parts_util_1 = __webpack_require__(73);
@@ -6551,11 +6561,12 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var underscore_1 = __webpack_require__(67);
 	function concatUrlParts() {
 	    var args = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i - 0] = arguments[_i];
+	        args[_i] = arguments[_i];
 	    }
 	    var urlParts = underscore_1.toArray(arguments), cleanedUrlParts = [];
 	    // remove empty strings
@@ -6581,6 +6592,7 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var backbone_1 = __webpack_require__(68);
 	var underscore_1 = __webpack_require__(67);
 	var concat_url_parts_util_1 = __webpack_require__(73);
@@ -6609,6 +6621,7 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var http_1 = __webpack_require__(65);
 	var underscore_1 = __webpack_require__(67);
 	function setSearchParams(searchParams, queryParams) {
@@ -6642,11 +6655,16 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6656,6 +6674,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var backbone_1 = __webpack_require__(68);
 	var base_model_1 = __webpack_require__(70);
 	var core_1 = __webpack_require__(3);
@@ -6665,18 +6684,18 @@ webpackJsonp([0],[
 	var BaseCollection = (function (_super) {
 	    __extends(BaseCollection, _super);
 	    function BaseCollection() {
-	        var _this = this;
-	        _super.call(this);
-	        this.model = base_model_1.BaseModel;
-	        this.queryParams = {};
-	        this.endpoint = null;
-	        this.sortOrder = null;
-	        this.url = function () {
+	        var _this = _super.call(this) || this;
+	        _this.model = base_model_1.BaseModel;
+	        _this.queryParams = {};
+	        _this.endpoint = null;
+	        _this.sortOrder = null;
+	        _this.url = function () {
 	            return get_url_util_1.getUrl(_this);
 	        };
-	        this.on('sync', function () {
+	        _this.on('sync', function () {
 	            _this.sortOrder = null;
 	        });
+	        return _this;
 	    }
 	    BaseCollection.prototype.hostName = function () {
 	        return '';
@@ -6707,12 +6726,12 @@ webpackJsonp([0],[
 	        this.trigger('sort', this);
 	        this.sortOrder = 'DESC';
 	    };
-	    BaseCollection = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], BaseCollection);
 	    return BaseCollection;
 	}(backbone_1.Collection));
+	BaseCollection = __decorate([
+	    core_1.Injectable(),
+	    __metadata("design:paramtypes", [])
+	], BaseCollection);
 	exports.BaseCollection = BaseCollection;
 
 
@@ -6727,9 +6746,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var index_component_1 = __webpack_require__(78);
 	var dashboard_routes_1 = __webpack_require__(83);
@@ -6739,22 +6756,21 @@ webpackJsonp([0],[
 	var DashboardModule = (function () {
 	    function DashboardModule() {
 	    }
-	    DashboardModule = __decorate([
-	        core_1.NgModule({
-	            imports: [
-	                platform_browser_1.BrowserModule,
-	                forms_1.FormsModule,
-	                dashboard_routes_1.DashboardRoutingModule,
-	                backbone_module_1.BackboneModule
-	            ],
-	            declarations: [
-	                index_component_1.DashboardIndexComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], DashboardModule);
 	    return DashboardModule;
 	}());
+	DashboardModule = __decorate([
+	    core_1.NgModule({
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule,
+	            dashboard_routes_1.DashboardRoutingModule,
+	            backbone_module_1.BackboneModule
+	        ],
+	        declarations: [
+	            index_component_1.DashboardIndexComponent
+	        ]
+	    })
+	], DashboardModule);
 	exports.DashboardModule = DashboardModule;
 
 
@@ -6772,20 +6788,21 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var DashboardIndexComponent = (function () {
 	    function DashboardIndexComponent() {
 	    }
-	    DashboardIndexComponent = __decorate([
-	        core_1.Component({
-	            selector: 'my-dashboard',
-	            styles: [__webpack_require__(79)],
-	            template: __webpack_require__(82)
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], DashboardIndexComponent);
 	    return DashboardIndexComponent;
 	}());
+	DashboardIndexComponent = __decorate([
+	    core_1.Component({
+	        selector: 'my-dashboard',
+	        styles: [__webpack_require__(79)],
+	        template: __webpack_require__(82)
+	    }),
+	    __metadata("design:paramtypes", [])
+	], DashboardIndexComponent);
 	exports.DashboardIndexComponent = DashboardIndexComponent;
 
 
@@ -6825,7 +6842,7 @@ webpackJsonp([0],[
 /* 82 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/circle\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
 
 /***/ }),
 /* 83 */
@@ -6838,9 +6855,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var router_1 = __webpack_require__(84);
 	var index_component_1 = __webpack_require__(78);
@@ -6850,15 +6865,14 @@ webpackJsonp([0],[
 	var DashboardRoutingModule = (function () {
 	    function DashboardRoutingModule() {
 	    }
-	    DashboardRoutingModule = __decorate([
-	        core_1.NgModule({
-	            imports: [router_1.RouterModule.forRoot(routes)],
-	            exports: [router_1.RouterModule]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], DashboardRoutingModule);
 	    return DashboardRoutingModule;
 	}());
+	DashboardRoutingModule = __decorate([
+	    core_1.NgModule({
+	        imports: [router_1.RouterModule.forRoot(routes)],
+	        exports: [router_1.RouterModule]
+	    })
+	], DashboardRoutingModule);
 	exports.DashboardRoutingModule = DashboardRoutingModule;
 
 
@@ -6893,23 +6907,24 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var MainComponent = (function () {
 	    function MainComponent() {
 	    }
 	    MainComponent.prototype.ngOnInit = function () {
 	    };
-	    MainComponent = __decorate([
-	        core_1.Component({
-	            selector: 'visualisation-prj',
-	            styles: [__webpack_require__(102)],
-	            template: __webpack_require__(104),
-	            encapsulation: core_1.ViewEncapsulation.None
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], MainComponent);
 	    return MainComponent;
 	}());
+	MainComponent = __decorate([
+	    core_1.Component({
+	        selector: 'visualisation-prj',
+	        styles: [__webpack_require__(102)],
+	        template: __webpack_require__(104),
+	        encapsulation: core_1.ViewEncapsulation.None
+	    }),
+	    __metadata("design:paramtypes", [])
+	], MainComponent);
 	exports.MainComponent = MainComponent;
 
 
@@ -6961,9 +6976,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var router_1 = __webpack_require__(84);
 	var routes = [
@@ -6972,15 +6985,14 @@ webpackJsonp([0],[
 	var MainRoutingModule = (function () {
 	    function MainRoutingModule() {
 	    }
-	    MainRoutingModule = __decorate([
-	        core_1.NgModule({
-	            imports: [router_1.RouterModule.forRoot(routes)],
-	            exports: [router_1.RouterModule]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], MainRoutingModule);
 	    return MainRoutingModule;
 	}());
+	MainRoutingModule = __decorate([
+	    core_1.NgModule({
+	        imports: [router_1.RouterModule.forRoot(routes)],
+	        exports: [router_1.RouterModule]
+	    })
+	], MainRoutingModule);
 	exports.MainRoutingModule = MainRoutingModule;
 
 
@@ -6998,6 +7010,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var NavComponent = (function () {
 	    function NavComponent() {
@@ -7005,16 +7018,16 @@ webpackJsonp([0],[
 	    NavComponent.prototype.ngOnInit = function () {
 	    };
 	    ;
-	    NavComponent = __decorate([
-	        core_1.Component({
-	            selector: 'nav-sidebar',
-	            styles: [__webpack_require__(107)],
-	            template: __webpack_require__(109)
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], NavComponent);
 	    return NavComponent;
 	}());
+	NavComponent = __decorate([
+	    core_1.Component({
+	        selector: 'nav-sidebar',
+	        styles: [__webpack_require__(107)],
+	        template: __webpack_require__(109)
+	    }),
+	    __metadata("design:paramtypes", [])
+	], NavComponent);
 	exports.NavComponent = NavComponent;
 
 
@@ -7066,9 +7079,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
@@ -7082,26 +7093,25 @@ webpackJsonp([0],[
 	var ExperimentModule = (function () {
 	    function ExperimentModule() {
 	    }
-	    ExperimentModule = __decorate([
-	        core_1.NgModule({
-	            imports: [
-	                platform_browser_1.BrowserModule,
-	                forms_1.FormsModule,
-	                shared_module_1.SharedModule,
-	                experiment_routes_1.CircleExperimentRoutingModule,
-	                backbone_module_1.BackboneModule
-	            ],
-	            declarations: [
-	                circle_experiment_component_1.CircleExperimentComponent,
-	                circle_experiment_result_component_1.CircleExperimentResultComponent,
-	                circle_experiment_results_component_1.CircleExperimentResultsComponent,
-	                random_size_directive_1.RandomSizeDirective
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], ExperimentModule);
 	    return ExperimentModule;
 	}());
+	ExperimentModule = __decorate([
+	    core_1.NgModule({
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule,
+	            shared_module_1.SharedModule,
+	            experiment_routes_1.CircleExperimentRoutingModule,
+	            backbone_module_1.BackboneModule
+	        ],
+	        declarations: [
+	            circle_experiment_component_1.CircleExperimentComponent,
+	            circle_experiment_result_component_1.CircleExperimentResultComponent,
+	            circle_experiment_results_component_1.CircleExperimentResultsComponent,
+	            random_size_directive_1.RandomSizeDirective
+	        ]
+	    })
+	], ExperimentModule);
 	exports.ExperimentModule = ExperimentModule;
 
 
@@ -7116,9 +7126,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var router_1 = __webpack_require__(84);
 	var circle_experiment_component_1 = __webpack_require__(112);
@@ -7133,15 +7141,14 @@ webpackJsonp([0],[
 	var CircleExperimentRoutingModule = (function () {
 	    function CircleExperimentRoutingModule() {
 	    }
-	    CircleExperimentRoutingModule = __decorate([
-	        core_1.NgModule({
-	            imports: [router_1.RouterModule.forRoot(routes)],
-	            exports: [router_1.RouterModule]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], CircleExperimentRoutingModule);
 	    return CircleExperimentRoutingModule;
 	}());
+	CircleExperimentRoutingModule = __decorate([
+	    core_1.NgModule({
+	        imports: [router_1.RouterModule.forRoot(routes)],
+	        exports: [router_1.RouterModule]
+	    })
+	], CircleExperimentRoutingModule);
 	exports.CircleExperimentRoutingModule = CircleExperimentRoutingModule;
 
 
@@ -7159,6 +7166,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var wizard_component_1 = __webpack_require__(113);
 	var circle_experiment_model_1 = __webpack_require__(117);
@@ -7192,6 +7200,10 @@ webpackJsonp([0],[
 	        this.circleExperimentModel.set('circle3', val);
 	        this.updateExperimentVal('circle3Dev', this.circle3, val);
 	    };
+	    CircleExperimentComponent.prototype.changedValSquare = function (val) {
+	        this.circleExperimentModel.set('square', val);
+	        this.updateExperimentVal('squareDev', this.square, val);
+	    };
 	    CircleExperimentComponent.prototype.save = function () {
 	        var _this = this;
 	        this.isSaving = true;
@@ -7202,38 +7214,41 @@ webpackJsonp([0],[
 	            _this.isSaving = true;
 	        });
 	    };
-	    __decorate([
-	        core_1.ViewChild('orgCircle'), 
-	        __metadata('design:type', (typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object)
-	    ], CircleExperimentComponent.prototype, "orgCircle", void 0);
-	    __decorate([
-	        core_1.ViewChild('wizard'), 
-	        __metadata('design:type', (typeof (_b = typeof wizard_component_1.WizardComponent !== 'undefined' && wizard_component_1.WizardComponent) === 'function' && _b) || Object)
-	    ], CircleExperimentComponent.prototype, "wizard", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle1'), 
-	        __metadata('design:type', (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object)
-	    ], CircleExperimentComponent.prototype, "circle1", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle2'), 
-	        __metadata('design:type', (typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object)
-	    ], CircleExperimentComponent.prototype, "circle2", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle3'), 
-	        __metadata('design:type', (typeof (_e = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _e) || Object)
-	    ], CircleExperimentComponent.prototype, "circle3", void 0);
-	    CircleExperimentComponent = __decorate([
-	        core_1.Component({
-	            selector: 'circle-experiment',
-	            styles: [__webpack_require__(119)],
-	            template: __webpack_require__(121),
-	            providers: [circle_experiment_model_1.CircleExperimentModel]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_f = typeof circle_experiment_model_1.CircleExperimentModel !== 'undefined' && circle_experiment_model_1.CircleExperimentModel) === 'function' && _f) || Object, (typeof (_g = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _g) || Object, (typeof (_h = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _h) || Object])
-	    ], CircleExperimentComponent);
 	    return CircleExperimentComponent;
-	    var _a, _b, _c, _d, _e, _f, _g, _h;
 	}());
+	__decorate([
+	    core_1.ViewChild('orgCircle'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentComponent.prototype, "orgCircle", void 0);
+	__decorate([
+	    core_1.ViewChild('wizard'),
+	    __metadata("design:type", wizard_component_1.WizardComponent)
+	], CircleExperimentComponent.prototype, "wizard", void 0);
+	__decorate([
+	    core_1.ViewChild('circle1'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentComponent.prototype, "circle1", void 0);
+	__decorate([
+	    core_1.ViewChild('circle2'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentComponent.prototype, "circle2", void 0);
+	__decorate([
+	    core_1.ViewChild('circle3'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentComponent.prototype, "circle3", void 0);
+	__decorate([
+	    core_1.ViewChild('square'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentComponent.prototype, "square", void 0);
+	CircleExperimentComponent = __decorate([
+	    core_1.Component({
+	        selector: 'circle-experiment',
+	        styles: [__webpack_require__(119)],
+	        template: __webpack_require__(121),
+	        providers: [circle_experiment_model_1.CircleExperimentModel]
+	    }),
+	    __metadata("design:paramtypes", [circle_experiment_model_1.CircleExperimentModel, router_1.Router, router_1.ActivatedRoute])
+	], CircleExperimentComponent);
 	exports.CircleExperimentComponent = CircleExperimentComponent;
 
 
@@ -7251,6 +7266,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var WizardComponent = (function () {
 	    function WizardComponent() {
@@ -7290,21 +7306,21 @@ webpackJsonp([0],[
 	            nextSlide.open();
 	        }
 	    };
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Object)
-	    ], WizardComponent.prototype, "opened", void 0);
-	    WizardComponent = __decorate([
-	        core_1.Component({
-	            moduleId: module.id.toString(),
-	            selector: 'wizard',
-	            styles: [__webpack_require__(114)],
-	            template: __webpack_require__(116)
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], WizardComponent);
 	    return WizardComponent;
 	}());
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Object)
+	], WizardComponent.prototype, "opened", void 0);
+	WizardComponent = __decorate([
+	    core_1.Component({
+	        moduleId: module.id.toString(),
+	        selector: 'wizard',
+	        styles: [__webpack_require__(114)],
+	        template: __webpack_require__(116)
+	    }),
+	    __metadata("design:paramtypes", [])
+	], WizardComponent);
 	exports.WizardComponent = WizardComponent;
 
 
@@ -7350,38 +7366,43 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var visualisation_model_1 = __webpack_require__(118);
 	var underscore_1 = __webpack_require__(67);
 	var CircleExperimentModel = (function (_super) {
 	    __extends(CircleExperimentModel, _super);
 	    function CircleExperimentModel() {
-	        _super.apply(this, arguments);
-	        this.endpoint = '/circle-results';
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.endpoint = '/circle-results';
+	        return _this;
 	    }
 	    CircleExperimentModel.prototype.defaults = function () {
 	        return {
 	            circle1: 0,
 	            circle2: 0,
-	            circle3: 0
+	            circle3: 0,
+	            square: 0
 	        };
 	    };
 	    CircleExperimentModel.prototype.validate = function () {
-	        if (!underscore_1.isNumber(this.get('circle1Dev')) || !underscore_1.isNumber(this.get('circle2Dev')) || !underscore_1.isNumber(this.get('circle3Dev'))) {
+	        if (!underscore_1.isNumber(this.get('circle1Dev')) || !underscore_1.isNumber(this.get('circle2Dev')) || !underscore_1.isNumber(this.get('circle3Dev')) || !underscore_1.isNumber(this.get('squareDev'))) {
 	            return 'Please guess a circle size for all circles';
 	        }
 	    };
@@ -7394,12 +7415,11 @@ webpackJsonp([0],[
 	    CircleExperimentModel.prototype.userWasRight = function (circleName) {
 	        return this.getOrgSize(circleName) === this.getUserSetSize(circleName);
 	    };
-	    CircleExperimentModel = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], CircleExperimentModel);
 	    return CircleExperimentModel;
 	}(visualisation_model_1.VisualisationModel));
+	CircleExperimentModel = __decorate([
+	    core_1.Injectable()
+	], CircleExperimentModel);
 	exports.CircleExperimentModel = CircleExperimentModel;
 
 
@@ -7408,26 +7428,29 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var base_model_1 = __webpack_require__(70);
 	var core_1 = __webpack_require__(3);
 	var VisualisationModel = (function (_super) {
 	    __extends(VisualisationModel, _super);
 	    function VisualisationModel() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    VisualisationModel.prototype.hostName = function () {
 	        if (true) {
@@ -7442,12 +7465,11 @@ webpackJsonp([0],[
 	        return 'api';
 	    };
 	    ;
-	    VisualisationModel = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], VisualisationModel);
 	    return VisualisationModel;
 	}(base_model_1.BaseModel));
+	VisualisationModel = __decorate([
+	    core_1.Injectable()
+	], VisualisationModel);
 	exports.VisualisationModel = VisualisationModel;
 
 
@@ -7477,7 +7499,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ":host .circle-container {\n  display: flex;\n  align-items: center; }\n  :host .circle-container.grid-bg {\n    background: linear-gradient(0, #FFFFFF 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.298039) 1px, transparent 1px), #777777;\n    background-size: 10px 50px; }\n  :host .circle-container.circle-in-circle .circle-holder {\n    flex-basis: 100%; }\n  :host .circle-container .circle-holder {\n    flex-basis: 50%;\n    align-items: center;\n    display: flex;\n    justify-content: center;\n    min-height: 300px; }\n  :host .circle-container .circle {\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    color: white; }\n    :host .circle-container .circle span {\n      background: inherit;\n      padding: 3px; }\n    :host .circle-container .circle.blue {\n      background: #004358; }\n    :host .circle-container .circle.green {\n      background: #BEDB39; }\n    :host .circle-container .circle.yellow {\n      background: #FFE11A; }\n    :host .circle-container .circle.orange {\n      background: #FD7400; }\n    :host .circle-container .circle.green {\n      background: #1F8A70; }\n    :host .circle-container .circle .fa {\n      font-size: 40px; }\n  :host .circle-container .left-circle {\n    width: 100px;\n    height: 100px; }\n  :host .circle-container .right-circle {\n    width: 120px;\n    height: 120px; }\n", ""]);
+	exports.push([module.id, ":host .circle {\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white; }\n  :host .circle span {\n    background: inherit;\n    padding: 3px; }\n  :host .circle.blue {\n    background: #004358; }\n  :host .circle.green {\n    background: #BEDB39; }\n  :host .circle.yellow {\n    background: #FFE11A; }\n  :host .circle.orange {\n    background: #FD7400; }\n  :host .circle.green {\n    background: #1F8A70; }\n  :host .circle .fa {\n    font-size: 40px; }\n\n:host .circle-container {\n  display: flex;\n  align-items: center; }\n  :host .circle-container.grid-bg {\n    background: linear-gradient(0, #FFFFFF 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.298039) 1px, transparent 1px), #777777;\n    background-size: 10px 50px; }\n  :host .circle-container.circle-in-circle .circle-holder {\n    flex-basis: 100%; }\n  :host .circle-container.square .circle {\n    border-radius: 0; }\n  :host .circle-container .circle-holder {\n    flex-basis: 50%;\n    align-items: center;\n    display: flex;\n    justify-content: center;\n    min-height: 300px; }\n  :host .circle-container .left-circle {\n    width: 100px;\n    height: 100px; }\n  :host .circle-container .right-circle {\n    width: 120px;\n    height: 120px; }\n", ""]);
 
 	// exports
 
@@ -7486,7 +7508,7 @@ webpackJsonp([0],[
 /* 121 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle1\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle1')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle1')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle1($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle2\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle2')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle2')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle2($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle3\n                   randomSize\n                   [orgSize]=\"100\">\n                <div class=\"circle left-circle blue\"\n                     #orgCircle>\n                </div>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (outer circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle3')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle3($event)\"></range-slider>\n        </wizard-entry>\n      </wizard>\n      <hr>\n      <span *ngIf=\"circleExperimentModel.validate()\"\n            class=\"error pull-left\">\n        {{circleExperimentModel.validate()}}\n      </span>\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"wizard.next()\">\n        Continue\n      </button>\n      <button *ngIf=\"!wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"save()\"\n              [disabled]=\"circleExperimentModel.validate() || isSaving\">\n        Save\n      </button>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle1\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle1')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle1')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle1($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle2\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle2')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle2')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle2($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle3\n                   randomSize\n                   [orgSize]=\"100\">\n                <div class=\"circle left-circle blue\"\n                     #orgCircle>\n                </div>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (outer circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle3')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle3($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container square\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\">\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #square\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('square')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('square')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValSquare($event)\"></range-slider>\n        </wizard-entry>\n\n      </wizard>\n      <hr>\n      <span *ngIf=\"circleExperimentModel.validate()\"\n            class=\"error pull-left\">\n        {{circleExperimentModel.validate()}}\n      </span>\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"wizard.next()\">\n        Continue\n      </button>\n      <button *ngIf=\"!wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"save()\"\n              [disabled]=\"circleExperimentModel.validate() || isSaving\">\n        Save\n      </button>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
 
 /***/ }),
 /* 122 */
@@ -7502,6 +7524,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var wizard_component_1 = __webpack_require__(113);
 	var circle_experiment_model_1 = __webpack_require__(117);
@@ -7519,38 +7542,37 @@ webpackJsonp([0],[
 	            _this.circleExperimentModel.fetch();
 	        });
 	    };
-	    __decorate([
-	        core_1.ViewChild('orgCircle'), 
-	        __metadata('design:type', (typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object)
-	    ], CircleExperimentResultComponent.prototype, "orgCircle", void 0);
-	    __decorate([
-	        core_1.ViewChild('wizard'), 
-	        __metadata('design:type', (typeof (_b = typeof wizard_component_1.WizardComponent !== 'undefined' && wizard_component_1.WizardComponent) === 'function' && _b) || Object)
-	    ], CircleExperimentResultComponent.prototype, "wizard", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle1'), 
-	        __metadata('design:type', (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object)
-	    ], CircleExperimentResultComponent.prototype, "circle1", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle2'), 
-	        __metadata('design:type', (typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object)
-	    ], CircleExperimentResultComponent.prototype, "circle2", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle3'), 
-	        __metadata('design:type', (typeof (_e = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _e) || Object)
-	    ], CircleExperimentResultComponent.prototype, "circle3", void 0);
-	    CircleExperimentResultComponent = __decorate([
-	        core_1.Component({
-	            selector: 'circle-experiment-result',
-	            styles: [__webpack_require__(123)],
-	            template: __webpack_require__(125),
-	            providers: [circle_experiment_model_1.CircleExperimentModel]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object, (typeof (_g = typeof circle_experiment_model_1.CircleExperimentModel !== 'undefined' && circle_experiment_model_1.CircleExperimentModel) === 'function' && _g) || Object])
-	    ], CircleExperimentResultComponent);
 	    return CircleExperimentResultComponent;
-	    var _a, _b, _c, _d, _e, _f, _g;
 	}());
+	__decorate([
+	    core_1.ViewChild('orgCircle'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultComponent.prototype, "orgCircle", void 0);
+	__decorate([
+	    core_1.ViewChild('wizard'),
+	    __metadata("design:type", wizard_component_1.WizardComponent)
+	], CircleExperimentResultComponent.prototype, "wizard", void 0);
+	__decorate([
+	    core_1.ViewChild('circle1'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultComponent.prototype, "circle1", void 0);
+	__decorate([
+	    core_1.ViewChild('circle2'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultComponent.prototype, "circle2", void 0);
+	__decorate([
+	    core_1.ViewChild('circle3'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultComponent.prototype, "circle3", void 0);
+	CircleExperimentResultComponent = __decorate([
+	    core_1.Component({
+	        selector: 'circle-experiment-result',
+	        styles: [__webpack_require__(123)],
+	        template: __webpack_require__(125),
+	        providers: [circle_experiment_model_1.CircleExperimentModel]
+	    }),
+	    __metadata("design:paramtypes", [router_1.ActivatedRoute, circle_experiment_model_1.CircleExperimentModel])
+	], CircleExperimentResultComponent);
 	exports.CircleExperimentResultComponent = CircleExperimentResultComponent;
 
 
@@ -7580,7 +7602,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ":host .circle-container {\n  display: flex;\n  align-items: center; }\n  :host .circle-container.grid-bg {\n    background: linear-gradient(0, #FFFFFF 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.298039) 1px, transparent 1px), #777777;\n    background-size: 10px 50px; }\n  :host .circle-container.circle-in-circle .circle-holder {\n    flex-basis: 100%; }\n  :host .circle-container .circle-holder {\n    flex-basis: 50%;\n    align-items: center;\n    display: flex;\n    justify-content: center;\n    min-height: 300px; }\n  :host .circle-container .circle {\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    color: white; }\n    :host .circle-container .circle span {\n      background: inherit;\n      padding: 3px; }\n    :host .circle-container .circle.blue {\n      background: #004358; }\n    :host .circle-container .circle.green {\n      background: #BEDB39; }\n    :host .circle-container .circle.yellow {\n      background: #FFE11A; }\n    :host .circle-container .circle.orange {\n      background: #FD7400; }\n    :host .circle-container .circle.green {\n      background: #1F8A70; }\n    :host .circle-container .circle .fa {\n      font-size: 40px; }\n  :host .circle-container .left-circle {\n    width: 100px;\n    height: 100px; }\n  :host .circle-container .right-circle {\n    width: 120px;\n    height: 120px; }\n", ""]);
+	exports.push([module.id, ":host .circle {\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white; }\n  :host .circle span {\n    background: inherit;\n    padding: 3px; }\n  :host .circle.blue {\n    background: #004358; }\n  :host .circle.green {\n    background: #BEDB39; }\n  :host .circle.yellow {\n    background: #FFE11A; }\n  :host .circle.orange {\n    background: #FD7400; }\n  :host .circle.green {\n    background: #1F8A70; }\n  :host .circle .fa {\n    font-size: 40px; }\n\n:host .circle-container {\n  display: flex;\n  align-items: center; }\n  :host .circle-container.grid-bg {\n    background: linear-gradient(0, #FFFFFF 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.298039) 1px, transparent 1px), #777777;\n    background-size: 10px 50px; }\n  :host .circle-container.circle-in-circle .circle-holder {\n    flex-basis: 100%; }\n  :host .circle-container.square .circle {\n    border-radius: 0; }\n  :host .circle-container .circle-holder {\n    flex-basis: 50%;\n    align-items: center;\n    display: flex;\n    justify-content: center;\n    min-height: 300px; }\n  :host .circle-container .left-circle {\n    width: 100px;\n    height: 100px; }\n  :host .circle-container .right-circle {\n    width: 120px;\n    height: 120px; }\n\n:host .legend {\n  display: flex;\n  margin-top: 20px; }\n  :host .legend .item {\n    display: flex;\n    align-items: center;\n    margin-left: 10px; }\n    :host .legend .item .circle {\n      height: 10px;\n      width: 10px;\n      margin-right: 3px; }\n", ""]);
 
 	// exports
 
@@ -7589,7 +7611,7 @@ webpackJsonp([0],[
 /* 125 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–Your result</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle1')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle1')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle1')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle1')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle1')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle2')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle2')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle2')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle2')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle2')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\">\n                <div class=\"circle yellow\"\n                     [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle3')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle3')+'px'\">\n                  <div class=\"circle blue\"\n                       style=\"width: 100px; height: 100px\">\n                    <span *ngIf=\"circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-check\"></span>\n                    <span *ngIf=\"!circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-times\"></span>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n      </wizard>\n      <hr>\n      <a [routerLink]=\"['/experiments/results/circle',circleExperimentModel.get('id'),'all']\" class=\"btn btn-primary pull-right\">\n        All results\n      </a>\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.next()\">\n        Next\n      </button>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–Your result</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle1')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle1')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle1')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle1')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle1')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle2')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle2')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle2')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle2')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle2')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\">\n                <div class=\"circle yellow\"\n                     [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle3')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle3')+'px'\">\n                  <div class=\"circle blue\"\n                       style=\"width: 100px; height: 100px\">\n                    <span *ngIf=\"circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-check\"></span>\n                    <span *ngIf=\"!circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-times\"></span>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container square\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('square')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('square')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('square')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('square')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('square')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('square')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('square')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n      </wizard>\n      <div class=\"legend\">\n        <div class=\"item orange-circle\">\n          <div class=\"circle yellow\"></div>\n          Your guess\n        </div>\n\n        <div class=\"item orange-circle\">\n          <div class=\"circle orange\"></div>\n          Deviation\n        </div>\n\n        <div class=\"item orange-circle\">\n          <div class=\"circle green\"></div>\n          You guess was right\n        </div>\n\n      </div>\n      <hr>\n\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"wizard.next()\">\n        Continue\n      </button>\n      <a *ngIf=\"!wizard.hasNext()\"\n         [routerLink]=\"['/experiments/results/circle',circleExperimentModel.get('id'),'all']\" class=\"btn btn-primary pull-right\">\n        All results\n      </a>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
 
 /***/ }),
 /* 126 */
@@ -7605,6 +7627,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var wizard_component_1 = __webpack_require__(113);
 	var circle_experiment_model_1 = __webpack_require__(117);
@@ -7627,38 +7650,37 @@ webpackJsonp([0],[
 	        });
 	        this.circleExperimentsCollection.fetch();
 	    };
-	    __decorate([
-	        core_1.ViewChild('orgCircle'), 
-	        __metadata('design:type', (typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object)
-	    ], CircleExperimentResultsComponent.prototype, "orgCircle", void 0);
-	    __decorate([
-	        core_1.ViewChild('wizard'), 
-	        __metadata('design:type', (typeof (_b = typeof wizard_component_1.WizardComponent !== 'undefined' && wizard_component_1.WizardComponent) === 'function' && _b) || Object)
-	    ], CircleExperimentResultsComponent.prototype, "wizard", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle1'), 
-	        __metadata('design:type', (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object)
-	    ], CircleExperimentResultsComponent.prototype, "circle1", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle2'), 
-	        __metadata('design:type', (typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object)
-	    ], CircleExperimentResultsComponent.prototype, "circle2", void 0);
-	    __decorate([
-	        core_1.ViewChild('circle3'), 
-	        __metadata('design:type', (typeof (_e = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _e) || Object)
-	    ], CircleExperimentResultsComponent.prototype, "circle3", void 0);
-	    CircleExperimentResultsComponent = __decorate([
-	        core_1.Component({
-	            selector: 'circle-experiment-results',
-	            styles: [__webpack_require__(129)],
-	            template: __webpack_require__(131),
-	            providers: [circle_experiment_model_1.CircleExperimentModel, circle_experiments_collection_1.CircleExperimentsCollection]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object, (typeof (_g = typeof circle_experiment_model_1.CircleExperimentModel !== 'undefined' && circle_experiment_model_1.CircleExperimentModel) === 'function' && _g) || Object, (typeof (_h = typeof circle_experiments_collection_1.CircleExperimentsCollection !== 'undefined' && circle_experiments_collection_1.CircleExperimentsCollection) === 'function' && _h) || Object])
-	    ], CircleExperimentResultsComponent);
 	    return CircleExperimentResultsComponent;
-	    var _a, _b, _c, _d, _e, _f, _g, _h;
 	}());
+	__decorate([
+	    core_1.ViewChild('orgCircle'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultsComponent.prototype, "orgCircle", void 0);
+	__decorate([
+	    core_1.ViewChild('wizard'),
+	    __metadata("design:type", wizard_component_1.WizardComponent)
+	], CircleExperimentResultsComponent.prototype, "wizard", void 0);
+	__decorate([
+	    core_1.ViewChild('circle1'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultsComponent.prototype, "circle1", void 0);
+	__decorate([
+	    core_1.ViewChild('circle2'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultsComponent.prototype, "circle2", void 0);
+	__decorate([
+	    core_1.ViewChild('circle3'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CircleExperimentResultsComponent.prototype, "circle3", void 0);
+	CircleExperimentResultsComponent = __decorate([
+	    core_1.Component({
+	        selector: 'circle-experiment-results',
+	        styles: [__webpack_require__(129)],
+	        template: __webpack_require__(131),
+	        providers: [circle_experiment_model_1.CircleExperimentModel, circle_experiments_collection_1.CircleExperimentsCollection]
+	    }),
+	    __metadata("design:paramtypes", [router_1.ActivatedRoute, circle_experiment_model_1.CircleExperimentModel, circle_experiments_collection_1.CircleExperimentsCollection])
+	], CircleExperimentResultsComponent);
 	exports.CircleExperimentResultsComponent = CircleExperimentResultsComponent;
 
 
@@ -7667,36 +7689,39 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var visualisation_collection_1 = __webpack_require__(128);
 	var circle_experiment_model_1 = __webpack_require__(117);
 	var CircleExperimentsCollection = (function (_super) {
 	    __extends(CircleExperimentsCollection, _super);
 	    function CircleExperimentsCollection() {
-	        _super.apply(this, arguments);
-	        this.endpoint = '/circle-results';
-	        this.model = circle_experiment_model_1.CircleExperimentModel;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.endpoint = '/circle-results';
+	        _this.model = circle_experiment_model_1.CircleExperimentModel;
+	        return _this;
 	    }
-	    CircleExperimentsCollection = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], CircleExperimentsCollection);
 	    return CircleExperimentsCollection;
 	}(visualisation_collection_1.VisualisationCollection));
+	CircleExperimentsCollection = __decorate([
+	    core_1.Injectable()
+	], CircleExperimentsCollection);
 	exports.CircleExperimentsCollection = CircleExperimentsCollection;
 
 
@@ -7705,26 +7730,29 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var base_collection_1 = __webpack_require__(76);
 	var VisualisationCollection = (function (_super) {
 	    __extends(VisualisationCollection, _super);
 	    function VisualisationCollection() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    VisualisationCollection.prototype.hostName = function () {
 	        if (true) {
@@ -7739,12 +7767,11 @@ webpackJsonp([0],[
 	        return 'api';
 	    };
 	    ;
-	    VisualisationCollection = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], VisualisationCollection);
 	    return VisualisationCollection;
 	}(base_collection_1.BaseCollection));
+	VisualisationCollection = __decorate([
+	    core_1.Injectable()
+	], VisualisationCollection);
 	exports.VisualisationCollection = VisualisationCollection;
 
 
@@ -7767,11 +7794,23 @@ webpackJsonp([0],[
 
 /***/ }),
 /* 130 */
-124,
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .circle {\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white; }\n  :host .circle span {\n    background: inherit;\n    padding: 3px; }\n  :host .circle.blue {\n    background: #004358; }\n  :host .circle.green {\n    background: #BEDB39; }\n  :host .circle.yellow {\n    background: #FFE11A; }\n  :host .circle.orange {\n    background: #FD7400; }\n  :host .circle.green {\n    background: #1F8A70; }\n  :host .circle .fa {\n    font-size: 40px; }\n\n:host .circle-container {\n  display: flex;\n  align-items: center; }\n  :host .circle-container.grid-bg {\n    background: linear-gradient(0, #FFFFFF 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.298039) 1px, transparent 1px), #777777;\n    background-size: 10px 50px; }\n  :host .circle-container.circle-in-circle .circle-holder {\n    flex-basis: 100%; }\n  :host .circle-container.square .circle {\n    border-radius: 0; }\n  :host .circle-container .circle-holder {\n    flex-basis: 50%;\n    align-items: center;\n    display: flex;\n    justify-content: center;\n    min-height: 300px; }\n  :host .circle-container .left-circle {\n    width: 100px;\n    height: 100px; }\n  :host .circle-container .right-circle {\n    width: 120px;\n    height: 120px; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
 /* 131 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–All results</h1>\n  </header>\n\n  <section>\n\n    <h2>Circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle1Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle1Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle with grid</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle2Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle2Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle in circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle3Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle3Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n\n  </section>\n\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–All results</h1>\n  </header>\n\n  <section>\n\n    <h2>Circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle1Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle1Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle with grid</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle2Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle2Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle in circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle3Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle3Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Square</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('squareDev')\"\n      [highlight]=\"circleExperimentModel.get('squareDev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n\n  </section>\n\n</section>\n";
 
 /***/ }),
 /* 132 */
@@ -7787,6 +7826,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var RandomSizeDirective = (function () {
 	    function RandomSizeDirective(el) {
@@ -7810,23 +7850,22 @@ webpackJsonp([0],[
 	    RandomSizeDirective.prototype.ngOnInit = function () {
 	        this.setSize();
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], RandomSizeDirective.prototype, "orgSize", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Number)
-	    ], RandomSizeDirective.prototype, "size", void 0);
-	    RandomSizeDirective = __decorate([
-	        core_1.Directive({
-	            selector: '[randomSize]'
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
-	    ], RandomSizeDirective);
 	    return RandomSizeDirective;
-	    var _a;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RandomSizeDirective.prototype, "orgSize", void 0);
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Number)
+	], RandomSizeDirective.prototype, "size", void 0);
+	RandomSizeDirective = __decorate([
+	    core_1.Directive({
+	        selector: '[randomSize]'
+	    }),
+	    __metadata("design:paramtypes", [core_1.ElementRef])
+	], RandomSizeDirective);
 	exports.RandomSizeDirective = RandomSizeDirective;
 
 
@@ -7841,9 +7880,7 @@ webpackJsonp([0],[
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
@@ -7854,29 +7891,28 @@ webpackJsonp([0],[
 	var SharedModule = (function () {
 	    function SharedModule() {
 	    }
-	    SharedModule = __decorate([
-	        core_1.NgModule({
-	            imports: [
-	                platform_browser_1.BrowserModule,
-	                forms_1.FormsModule
-	            ],
-	            declarations: [
-	                deviation_chart_component_1.DeviationChartComponent,
-	                range_slider_component_1.RangeSliderComponent,
-	                wizard_component_1.WizardComponent,
-	                wizard_entry_component_1.WizardEntryComponent
-	            ],
-	            exports: [
-	                deviation_chart_component_1.DeviationChartComponent,
-	                range_slider_component_1.RangeSliderComponent,
-	                wizard_component_1.WizardComponent,
-	                wizard_entry_component_1.WizardEntryComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], SharedModule);
 	    return SharedModule;
 	}());
+	SharedModule = __decorate([
+	    core_1.NgModule({
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule
+	        ],
+	        declarations: [
+	            deviation_chart_component_1.DeviationChartComponent,
+	            range_slider_component_1.RangeSliderComponent,
+	            wizard_component_1.WizardComponent,
+	            wizard_entry_component_1.WizardEntryComponent
+	        ],
+	        exports: [
+	            deviation_chart_component_1.DeviationChartComponent,
+	            range_slider_component_1.RangeSliderComponent,
+	            wizard_component_1.WizardComponent,
+	            wizard_entry_component_1.WizardEntryComponent
+	        ]
+	    })
+	], SharedModule);
 	exports.SharedModule = SharedModule;
 
 
@@ -7894,6 +7930,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var RangeSliderComponent = (function () {
 	    function RangeSliderComponent(el) {
@@ -8012,69 +8049,73 @@ webpackJsonp([0],[
 	        this.setDragPosFromVal();
 	    };
 	    ;
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Object)
-	    ], RangeSliderComponent.prototype, "valueChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Object)
-	    ], RangeSliderComponent.prototype, "valueChanged", void 0);
-	    __decorate([
-	        core_1.ViewChild('progressLine'), 
-	        __metadata('design:type', (typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object)
-	    ], RangeSliderComponent.prototype, "progressBarLine", void 0);
-	    __decorate([
-	        core_1.ViewChild('progressBar'), 
-	        __metadata('design:type', (typeof (_b = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _b) || Object)
-	    ], RangeSliderComponent.prototype, "progressBarBg", void 0);
-	    __decorate([
-	        core_1.ViewChild('handle'), 
-	        __metadata('design:type', (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object)
-	    ], RangeSliderComponent.prototype, "handle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], RangeSliderComponent.prototype, "transformDisplayValue", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], RangeSliderComponent.prototype, "hideSliderValue", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], RangeSliderComponent.prototype, "showCurrentValue", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], RangeSliderComponent.prototype, "value", null);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], RangeSliderComponent.prototype, "max", null);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], RangeSliderComponent.prototype, "min", null);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], RangeSliderComponent.prototype, "step", null);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], RangeSliderComponent.prototype, "isLoading", null);
-	    RangeSliderComponent = __decorate([
-	        core_1.Component({
-	            selector: 'range-slider',
-	            styles: [__webpack_require__(135)],
-	            template: __webpack_require__(137)
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object])
-	    ], RangeSliderComponent);
 	    return RangeSliderComponent;
-	    var _a, _b, _c, _d;
 	}());
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Object)
+	], RangeSliderComponent.prototype, "valueChange", void 0);
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Object)
+	], RangeSliderComponent.prototype, "valueChanged", void 0);
+	__decorate([
+	    core_1.ViewChild('progressLine'),
+	    __metadata("design:type", core_1.ElementRef)
+	], RangeSliderComponent.prototype, "progressBarLine", void 0);
+	__decorate([
+	    core_1.ViewChild('progressBar'),
+	    __metadata("design:type", core_1.ElementRef)
+	], RangeSliderComponent.prototype, "progressBarBg", void 0);
+	__decorate([
+	    core_1.ViewChild('handle'),
+	    __metadata("design:type", core_1.ElementRef)
+	], RangeSliderComponent.prototype, "handle", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Function)
+	], RangeSliderComponent.prototype, "transformDisplayValue", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Boolean)
+	], RangeSliderComponent.prototype, "hideSliderValue", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Boolean)
+	], RangeSliderComponent.prototype, "showCurrentValue", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number),
+	    __metadata("design:paramtypes", [Number])
+	], RangeSliderComponent.prototype, "value", null);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number),
+	    __metadata("design:paramtypes", [Number])
+	], RangeSliderComponent.prototype, "max", null);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number),
+	    __metadata("design:paramtypes", [Number])
+	], RangeSliderComponent.prototype, "min", null);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number),
+	    __metadata("design:paramtypes", [Number])
+	], RangeSliderComponent.prototype, "step", null);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Boolean),
+	    __metadata("design:paramtypes", [Boolean])
+	], RangeSliderComponent.prototype, "isLoading", null);
+	RangeSliderComponent = __decorate([
+	    core_1.Component({
+	        selector: 'range-slider',
+	        styles: [__webpack_require__(135)],
+	        template: __webpack_require__(137)
+	    }),
+	    __metadata("design:paramtypes", [core_1.ElementRef])
+	], RangeSliderComponent);
 	exports.RangeSliderComponent = RangeSliderComponent;
 
 
@@ -8129,6 +8170,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var wizard_component_1 = __webpack_require__(113);
 	var WizardEntryComponent = (function () {
@@ -8148,17 +8190,16 @@ webpackJsonp([0],[
 	    WizardEntryComponent.prototype.close = function () {
 	        this.opened = false;
 	    };
-	    WizardEntryComponent = __decorate([
-	        core_1.Component({
-	            selector: 'wizard-entry',
-	            styles: [__webpack_require__(139)],
-	            template: __webpack_require__(141)
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof wizard_component_1.WizardComponent !== 'undefined' && wizard_component_1.WizardComponent) === 'function' && _a) || Object, (typeof (_b = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _b) || Object])
-	    ], WizardEntryComponent);
 	    return WizardEntryComponent;
-	    var _a, _b;
 	}());
+	WizardEntryComponent = __decorate([
+	    core_1.Component({
+	        selector: 'wizard-entry',
+	        styles: [__webpack_require__(139)],
+	        template: __webpack_require__(141)
+	    }),
+	    __metadata("design:paramtypes", [wizard_component_1.WizardComponent, core_1.ElementRef])
+	], WizardEntryComponent);
 	exports.WizardEntryComponent = WizardEntryComponent;
 
 
@@ -8213,6 +8254,7 @@ webpackJsonp([0],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var underscore_1 = __webpack_require__(67);
 	var DeviationChartComponent = (function () {
@@ -8260,32 +8302,31 @@ webpackJsonp([0],[
 	    DeviationChartComponent.prototype.ngOnChanges = function () {
 	        this.setResults();
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DeviationChartComponent.prototype, "values", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DeviationChartComponent.prototype, "highlight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DeviationChartComponent.prototype, "xLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DeviationChartComponent.prototype, "yLabel", void 0);
-	    DeviationChartComponent = __decorate([
-	        core_1.Component({
-	            selector: 'deviation-chart',
-	            styles: [__webpack_require__(143)],
-	            template: __webpack_require__(145)
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], DeviationChartComponent);
 	    return DeviationChartComponent;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Array)
+	], DeviationChartComponent.prototype, "values", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], DeviationChartComponent.prototype, "highlight", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], DeviationChartComponent.prototype, "xLabel", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], DeviationChartComponent.prototype, "yLabel", void 0);
+	DeviationChartComponent = __decorate([
+	    core_1.Component({
+	        selector: 'deviation-chart',
+	        styles: [__webpack_require__(143)],
+	        template: __webpack_require__(145)
+	    })
+	], DeviationChartComponent);
 	exports.DeviationChartComponent = DeviationChartComponent;
 
 
@@ -8315,7 +8356,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ":host {\n  width: 600px;\n  padding: 20px 10px;\n  position: relative;\n  display: block;\n  height: 300px; }\n  :host .deviation-chart {\n    position: relative;\n    margin-left: 80px; }\n    :host .deviation-chart .x-axis {\n      position: relative;\n      width: 100%;\n      height: 200px;\n      z-index: 1; }\n      :host .deviation-chart .x-axis .background {\n        background: linear-gradient(to right, rgba(53, 234, 138, 0.6) 0%, rgba(242, 232, 55, 0.6) 51%, rgba(255, 93, 0, 0.6) 100%);\n        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n        position: absolute;\n        width: 100%;\n        height: 5px;\n        bottom: 0%; }\n      :host .deviation-chart .x-axis .x {\n        position: absolute;\n        border-right: 1px solid #bbb;\n        left: 0;\n        top: -2px;\n        height: 100%; }\n        :host .deviation-chart .x-axis .x.res-10 {\n          width: 10%; }\n        :host .deviation-chart .x-axis .x.res-20 {\n          width: 20%; }\n        :host .deviation-chart .x-axis .x.res-30 {\n          width: 30%; }\n        :host .deviation-chart .x-axis .x.res-40 {\n          width: 40%; }\n        :host .deviation-chart .x-axis .x.res-50 {\n          width: 50%; }\n        :host .deviation-chart .x-axis .x.res-60 {\n          width: 60%; }\n        :host .deviation-chart .x-axis .x.res-70 {\n          width: 70%; }\n        :host .deviation-chart .x-axis .x.res-80 {\n          width: 80%; }\n        :host .deviation-chart .x-axis .x.res-90 {\n          width: 90%; }\n        :host .deviation-chart .x-axis .x.res-100 {\n          width: 100%; }\n        :host .deviation-chart .x-axis .x.hasValue {\n          border-color: #5bc0de; }\n        :host .deviation-chart .x-axis .x .x-label {\n          position: absolute;\n          right: -18px;\n          bottom: -30px; }\n      :host .deviation-chart .x-axis .result {\n        position: absolute;\n        height: 100%;\n        border-right: 4px solid #1F8A70;\n        bottom: 4px;\n        left: 2px; }\n      :host .deviation-chart .x-axis .average-marker {\n        border-right-color: #5bc0de;\n        left: 1px;\n        border-width: 2px; }\n        :host .deviation-chart .x-axis .average-marker .indicator-label {\n          color: #5bc0de; }\n      :host .deviation-chart .x-axis .highlight {\n        border-right-color: #5cb85c;\n        left: 1px;\n        border-width: 2px; }\n        :host .deviation-chart .x-axis .highlight .indicator-label {\n          color: #5cb85c; }\n      :host .deviation-chart .x-axis .indicator-label {\n        position: absolute;\n        top: -26px;\n        right: -11px;\n        border: 1px solid;\n        width: 20px;\n        height: 20px;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        border-radius: 50%;\n        font-size: 11px; }\n      :host .deviation-chart .x-axis .axis-label {\n        transform: rotate(-90deg);\n        position: absolute;\n        left: -109px;\n        margin-top: 20%; }\n    :host .deviation-chart .y-axis {\n      width: 100%;\n      height: 100%;\n      position: absolute;\n      top: -5px; }\n      :host .deviation-chart .y-axis .y {\n        height: 10%;\n        border-top: 1px solid #bbb; }\n        :host .deviation-chart .y-axis .y.res-10 {\n          top: 10%; }\n        :host .deviation-chart .y-axis .y.res-20 {\n          top: 20%; }\n        :host .deviation-chart .y-axis .y.res-30 {\n          top: 30%; }\n        :host .deviation-chart .y-axis .y.res-40 {\n          top: 40%; }\n        :host .deviation-chart .y-axis .y.res-50 {\n          top: 50%; }\n        :host .deviation-chart .y-axis .y.res-60 {\n          top: 60%; }\n        :host .deviation-chart .y-axis .y.res-70 {\n          top: 70%; }\n        :host .deviation-chart .y-axis .y.res-80 {\n          top: 80%; }\n        :host .deviation-chart .y-axis .y.res-90 {\n          top: 90%; }\n        :host .deviation-chart .y-axis .y.res-100 {\n          top: 100%; }\n        :host .deviation-chart .y-axis .y .y-label {\n          display: block;\n          left: -45px;\n          position: absolute;\n          margin-top: -11px; }\n      :host .deviation-chart .y-axis .axis-label {\n        position: absolute;\n        bottom: -60px;\n        width: 100%;\n        text-align: center; }\n  :host .legend {\n    position: absolute;\n    left: 0;\n    bottom: 0;\n    display: flex; }\n    :host .legend .label {\n      margin: 0 5px 0 15px; }\n", ""]);
+	exports.push([module.id, ":host {\n  width: 600px;\n  padding: 20px 10px;\n  position: relative;\n  display: block;\n  height: 340px; }\n  :host .deviation-chart {\n    position: relative;\n    margin-left: 80px; }\n    :host .deviation-chart .x-axis {\n      position: relative;\n      width: 100%;\n      height: 200px;\n      z-index: 1; }\n      :host .deviation-chart .x-axis .background {\n        background: linear-gradient(to right, rgba(53, 234, 138, 0.6) 0%, rgba(242, 232, 55, 0.6) 51%, rgba(255, 93, 0, 0.6) 100%);\n        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n        position: absolute;\n        width: 100%;\n        height: 5px;\n        bottom: 0%; }\n      :host .deviation-chart .x-axis .x {\n        position: absolute;\n        border-right: 1px solid #bbb;\n        left: 0;\n        top: -2px;\n        height: 100%; }\n        :host .deviation-chart .x-axis .x.res-10 {\n          width: 10%; }\n        :host .deviation-chart .x-axis .x.res-20 {\n          width: 20%; }\n        :host .deviation-chart .x-axis .x.res-30 {\n          width: 30%; }\n        :host .deviation-chart .x-axis .x.res-40 {\n          width: 40%; }\n        :host .deviation-chart .x-axis .x.res-50 {\n          width: 50%; }\n        :host .deviation-chart .x-axis .x.res-60 {\n          width: 60%; }\n        :host .deviation-chart .x-axis .x.res-70 {\n          width: 70%; }\n        :host .deviation-chart .x-axis .x.res-80 {\n          width: 80%; }\n        :host .deviation-chart .x-axis .x.res-90 {\n          width: 90%; }\n        :host .deviation-chart .x-axis .x.res-100 {\n          width: 100%; }\n        :host .deviation-chart .x-axis .x.hasValue {\n          border-color: #5bc0de; }\n        :host .deviation-chart .x-axis .x .x-label {\n          position: absolute;\n          right: -18px;\n          bottom: -30px; }\n      :host .deviation-chart .x-axis .result {\n        position: absolute;\n        height: 100%;\n        border-right: 4px solid #1F8A70;\n        bottom: 4px;\n        left: 2px; }\n      :host .deviation-chart .x-axis .average-marker {\n        border-right-color: #5bc0de;\n        left: 1px;\n        border-width: 2px; }\n        :host .deviation-chart .x-axis .average-marker .indicator-label {\n          color: #5bc0de; }\n      :host .deviation-chart .x-axis .highlight {\n        border-right-color: #5cb85c;\n        left: 1px;\n        border-width: 2px; }\n        :host .deviation-chart .x-axis .highlight .indicator-label {\n          color: #5cb85c; }\n      :host .deviation-chart .x-axis .indicator-label {\n        position: absolute;\n        top: -26px;\n        right: -11px;\n        border: 1px solid;\n        width: 20px;\n        height: 20px;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        border-radius: 50%;\n        font-size: 11px; }\n      :host .deviation-chart .x-axis .axis-label {\n        transform: rotate(-90deg);\n        position: absolute;\n        left: -109px;\n        margin-top: 20%; }\n    :host .deviation-chart .y-axis {\n      width: 100%;\n      height: 100%;\n      position: absolute;\n      top: -5px; }\n      :host .deviation-chart .y-axis .y {\n        height: 10%;\n        border-top: 1px solid #bbb; }\n        :host .deviation-chart .y-axis .y.res-10 {\n          top: 10%; }\n        :host .deviation-chart .y-axis .y.res-20 {\n          top: 20%; }\n        :host .deviation-chart .y-axis .y.res-30 {\n          top: 30%; }\n        :host .deviation-chart .y-axis .y.res-40 {\n          top: 40%; }\n        :host .deviation-chart .y-axis .y.res-50 {\n          top: 50%; }\n        :host .deviation-chart .y-axis .y.res-60 {\n          top: 60%; }\n        :host .deviation-chart .y-axis .y.res-70 {\n          top: 70%; }\n        :host .deviation-chart .y-axis .y.res-80 {\n          top: 80%; }\n        :host .deviation-chart .y-axis .y.res-90 {\n          top: 90%; }\n        :host .deviation-chart .y-axis .y.res-100 {\n          top: 100%; }\n        :host .deviation-chart .y-axis .y .y-label {\n          display: block;\n          left: -45px;\n          position: absolute;\n          margin-top: -11px; }\n      :host .deviation-chart .y-axis .axis-label {\n        position: absolute;\n        bottom: -60px;\n        width: 100%;\n        text-align: center; }\n  :host .legend {\n    position: absolute;\n    left: 0;\n    bottom: 10px;\n    display: flex; }\n    :host .legend .label {\n      margin: 0 5px 0 15px; }\n", ""]);
 
 	// exports
 

@@ -5,10 +5,10 @@ var serviceWorkerOption = {
     "/fee66e712a8a08eef5805a46892932ad.woff",
     "/b06871f281fee6b241d60582ae9369b9.ttf",
     "/912ec66d7572ff821749319396470bde.svg",
-    "/app.9c8290a5b10c7a37875d.js",
-    "/polyfills.9c8290a5b10c7a37875d.js",
-    "/vendor.9c8290a5b10c7a37875d.js",
-    "/vendor.9c8290a5b10c7a37875d.css"
+    "/app.4de55c165faa5bac160f.js",
+    "/polyfills.4de55c165faa5bac160f.js",
+    "/vendor.4de55c165faa5bac160f.js",
+    "/vendor.4de55c165faa5bac160f.css"
   ]
 };
         
@@ -58,7 +58,7 @@ var serviceWorkerOption = {
 /* 0 */
 /***/ (function(module, exports) {
 
-	"use strict";// declare const VERSION: string;
+	// declare const VERSION: string;
 	//
 	// var g: any = global;
 	// var cacheVersion: string = VERSION;

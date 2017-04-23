@@ -13,28 +13,7 @@
 /******/ 		}
 /******/ 		for(moduleId in moreModules) {
 /******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				var _m = moreModules[moduleId];
-
-/******/ 				// Check if module is deduplicated
-/******/ 				switch(typeof _m) {
-/******/ 				case "object":
-/******/ 					// Module can be created from a template
-/******/ 					modules[moduleId] = (function(_m) {
-/******/ 						var args = _m.slice(1), templateId = _m[0];
-/******/ 						return function (a,b,c) {
-/******/ 							modules[templateId].apply(this, [a,b,c].concat(args));
-/******/ 						};
-/******/ 					}(_m));
-/******/ 					break;
-/******/ 				case "function":
-/******/ 					// Normal module
-/******/ 					modules[moduleId] = _m;
-/******/ 					break;
-/******/ 				default:
-/******/ 					// Module is a copy of another module
-/******/ 					modules[moduleId] = modules[_m];
-/******/ 					break;
-/******/ 				}
+/******/ 				modules[moduleId] = moreModules[moduleId];
 /******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
@@ -99,7 +78,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + "9c8290a5b10c7a37875d" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + "4de55c165faa5bac160f" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -117,39 +96,18 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ((function(modules) {
-	// Check all modules for deduplicated modules
-	for(var i in modules) {
-		if(Object.prototype.hasOwnProperty.call(modules, i)) {
-			switch(typeof modules[i]) {
-			case "function": break;
-			case "object":
-				// Module can be created from a template
-				modules[i] = (function(_m) {
-					var args = _m.slice(1), fn = modules[_m[0]];
-					return function (a,b,c) {
-						fn.apply(this, [a,b,c].concat(args));
-					};
-				}(modules[i]));
-				break;
-			default:
-				// Module is a copy of another module
-				modules[i] = modules[modules[i]];
-				break;
-			}
-		}
-	}
-	return modules;
-}([
+/******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	__webpack_require__(146);
 	__webpack_require__(391);
 	__webpack_require__(403);
 	__webpack_require__(405);
 	if (true) {
+	    // Production
 	}
 	else {
 	    // Development
@@ -9023,4 +8981,4 @@
 	//# sourceMappingURL=web-animations.min.js.map
 
 /***/ })
-/******/ ])));
+/******/ ]);
