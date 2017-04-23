@@ -84,6 +84,34 @@
             [transformDisplayValue]="transformRangeVal"
             (valueChanged)="changedValCircle3($event)"></range-slider>
         </wizard-entry>
+
+        <wizard-entry>
+          <div class="circle-container square">
+            <div class="circle-holder">
+              <div class="circle left-circle blue">
+                <span>100%</span>
+              </div>
+            </div>
+            <div class="circle-holder">
+              <div class="circle right-circle orange"
+                   #square
+                   randomSize
+                   [orgSize]="100">
+                <span>{{circleExperimentModel.get('square')+100}}%</span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3>Guess how much bigger the orange circle is (right circle)</h3>
+          <range-slider
+            [min]="0"
+            [max]="100"
+            [value]="circleExperimentModel.get('square')"
+            [step]="10"
+            [transformDisplayValue]="transformRangeVal"
+            (valueChanged)="changedValSquare($event)"></range-slider>
+        </wizard-entry>
+
       </wizard>
       <hr>
       <span *ngIf="circleExperimentModel.validate()"

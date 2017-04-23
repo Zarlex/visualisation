@@ -11,12 +11,13 @@ export class CircleExperimentModel extends VisualisationModel {
     return {
       circle1: 0,
       circle2: 0,
-      circle3: 0
+      circle3: 0,
+      square: 0
     }
   }
 
   validate(): string{
-    if(!isNumber(this.get('circle1Dev')) || !isNumber(this.get('circle2Dev')) || !isNumber(this.get('circle3Dev'))){
+    if(!isNumber(this.get('circle1Dev')) || !isNumber(this.get('circle2Dev')) || !isNumber(this.get('circle3Dev')) || !isNumber(this.get('squareDev'))){
       return 'Please guess a circle size for all circles';
     }
   }

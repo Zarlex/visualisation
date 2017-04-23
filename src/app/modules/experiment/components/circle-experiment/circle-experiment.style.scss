@@ -11,6 +11,43 @@
 
 :host{
 
+  .circle{
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    span{
+      background: inherit;
+      padding: 3px;
+    }
+
+    &.blue{
+      background: #004358;
+    }
+
+    &.green{
+      background: #BEDB39;
+    }
+
+    &.yellow{
+      background: #FFE11A;
+    }
+
+    &.orange{
+      background: #FD7400;
+    }
+
+    &.green{
+      background: $brand-primary;
+    }
+
+    .fa{
+      font-size: 40px;
+    }
+  }
+
   .circle-container{
     display: flex;
     align-items: center;
@@ -25,49 +62,18 @@
       }
     }
 
+    &.square{
+      .circle{
+        border-radius: 0;
+      }
+    }
+
     .circle-holder{
       flex-basis: 50%;
       align-items: center;
       display: flex;
       justify-content: center;
       min-height: 300px;
-    }
-
-    .circle{
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-
-      span{
-        background: inherit;
-        padding: 3px;
-      }
-
-      &.blue{
-        background: #004358;
-      }
-
-      &.green{
-        background: #BEDB39;
-      }
-
-      &.yellow{
-        background: #FFE11A;
-      }
-
-      &.orange{
-        background: #FD7400;
-      }
-
-      &.green{
-        background: $brand-primary;
-      }
-
-      .fa{
-        font-size: 40px;
-      }
     }
 
     .left-circle{

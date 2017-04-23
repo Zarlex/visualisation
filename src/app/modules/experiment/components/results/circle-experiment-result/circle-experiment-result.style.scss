@@ -1,6 +1,25 @@
 @import '../../../../../variables';
 @import '../../circle-experiment/circle-experiment.style';
 
+:host{
+  .legend{
+    display: flex;
+    margin-top: 20px;
+
+    .item{
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+
+      .circle{
+        height: 10px;
+        width: 10px;
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
 
 
 

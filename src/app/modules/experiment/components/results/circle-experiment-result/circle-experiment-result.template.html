@@ -80,16 +80,61 @@
             </div>
           </div>
         </wizard-entry>
+
+        <wizard-entry>
+          <div class="circle-container square">
+            <div class="circle-holder">
+              <div class="circle left-circle blue" #orgCircle>
+                <span>100%</span>
+              </div>
+            </div>
+            <div class="circle-holder">
+              <div class="circle right-circle orange"
+                   [class.green]="circleExperimentModel.userWasRight('square')"
+                   [style.width]="circleExperimentModel.getUserSetSize('square')+'px'"
+                   [style.height]="circleExperimentModel.getUserSetSize('square')+'px'">
+                <div *ngIf="!circleExperimentModel.userWasRight('square')"
+                     class="circle yellow"
+                     [style.width]="circleExperimentModel.getOrgSize('square')+'px'"
+                     [style.height]="circleExperimentModel.getOrgSize('square')+'px'">
+                  <span class="fa fa-times"></span>
+                </div>
+                <span *ngIf="circleExperimentModel.userWasRight('square')"
+                      class="fa fa-check"></span>
+              </div>
+            </div>
+          </div>
+        </wizard-entry>
+
       </wizard>
+      <div class="legend">
+        <div class="item orange-circle">
+          <div class="circle yellow"></div>
+          Your guess
+        </div>
+
+        <div class="item orange-circle">
+          <div class="circle orange"></div>
+          Deviation
+        </div>
+
+        <div class="item orange-circle">
+          <div class="circle green"></div>
+          You guess was right
+        </div>
+
+      </div>
       <hr>
-      <a [routerLink]="['/experiments/results/circle',circleExperimentModel.get('id'),'all']" class="btn btn-primary pull-right">
+
+      <button *ngIf="wizard.hasNext()"
+              class="btn btn-primary pull-right"
+              (click)="wizard.next()">
+        Continue
+      </button>
+      <a *ngIf="!wizard.hasNext()"
+         [routerLink]="['/experiments/results/circle',circleExperimentModel.get('id'),'all']" class="btn btn-primary pull-right">
         All results
       </a>
-      <button *ngIf="wizard.hasNext()"
-              class="btn btn-default pull-right"
-              (click)="wizard.next()">
-        Next
-      </button>
       <button *ngIf="wizard.hasPrevious()"
               class="btn btn-default pull-right"
               (click)="wizard.previous()">

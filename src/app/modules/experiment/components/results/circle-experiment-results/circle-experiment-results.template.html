@@ -26,6 +26,13 @@
       [highlight]="circleExperimentModel.get('circle3Dev')"
       xLabel="Deviation"
       yLabel="Participants"></deviation-chart>
+    <hr>
+    <h2>Square</h2>
+    <deviation-chart
+      [values]="circleExperimentsCollection.pluck('squareDev')"
+      [highlight]="circleExperimentModel.get('squareDev')"
+      xLabel="Deviation"
+      yLabel="Participants"></deviation-chart>
 
   </section>
 

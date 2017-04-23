@@ -17,6 +17,7 @@ export class CircleExperimentComponent {
   @ViewChild('circle1') circle1: ElementRef;
   @ViewChild('circle2') circle2: ElementRef;
   @ViewChild('circle3') circle3: ElementRef;
+  @ViewChild('square') square: ElementRef;
 
   constructor(private circleExperimentModel: CircleExperimentModel, private router: Router, private route: ActivatedRoute) {
   }
@@ -49,6 +50,11 @@ export class CircleExperimentComponent {
   public changedValCircle3(val: number){
     this.circleExperimentModel.set('circle3', val);
     this.updateExperimentVal('circle3Dev', this.circle3, val);
+  }
+
+  public changedValSquare(val: number){
+    this.circleExperimentModel.set('square', val);
+    this.updateExperimentVal('squareDev', this.square, val);
   }
 
   public save(): void{
