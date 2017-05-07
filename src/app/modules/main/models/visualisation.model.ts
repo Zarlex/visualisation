@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 export class VisualisationModel extends BaseModel {
   hostName(): string {
     if (process.env.ENV === 'prod') {
-      return 'http://api.viz.zarg.es:3000';
+      return 'http://ec2-52-59-231-57.eu-central-1.compute.amazonaws.com:3000';
     } else {
       return 'http://localhost:3000';
     }

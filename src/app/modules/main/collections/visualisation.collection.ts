@@ -6,7 +6,7 @@ import {BaseCollection} from '../../backbone/collections/base.collection';
 export class VisualisationCollection extends BaseCollection<BaseModel> {
   hostName(): string {
     if (process.env.ENV === 'prod') {
-      return 'http://api.viz.zarg.es:3000';
+      return 'http://ec2-52-59-231-57.eu-central-1.compute.amazonaws.com:3000';
     } else {
       return 'http://localhost:3000';
     }
