@@ -213,7 +213,7 @@ webpackJsonp([0],[
 	var common_1 = __webpack_require__(22);
 	var nav_component_1 = __webpack_require__(106);
 	var experiment_module_1 = __webpack_require__(110);
-	var shared_module_1 = __webpack_require__(133);
+	var shared_module_1 = __webpack_require__(157);
 	var MainModule = (function () {
 	    function MainModule() {
 	    }
@@ -6842,7 +6842,7 @@ webpackJsonp([0],[
 /* 82 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/circle\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/circle\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Perception</h3>\n          <div class=\"sub-title\">Find the object</div>\n        </div>\n        <a routerLink=\"/experiments/perception\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/perception\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
 
 /***/ }),
 /* 83 */
@@ -6963,7 +6963,7 @@ webpackJsonp([0],[
 /* 104 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"main\">\n\n  <div class=\"native-bar\"></div>\n\n  <main class=\"flex-container\">\n\n    <div class=\"routes\">\n      <router-outlet class=\"flex-item\"></router-outlet>\n    </div>\n\n  </main>\n\n</section>\n";
+	module.exports = "<section class=\"main\">\n\n  <main class=\"flex-container\">\n\n    <div class=\"routes\">\n      <router-outlet class=\"flex-item\"></router-outlet>\n    </div>\n\n  </main>\n\n</section>\n";
 
 /***/ }),
 /* 105 */
@@ -7086,10 +7086,14 @@ webpackJsonp([0],[
 	var backbone_module_1 = __webpack_require__(66);
 	var experiment_routes_1 = __webpack_require__(111);
 	var circle_experiment_component_1 = __webpack_require__(112);
-	var random_size_directive_1 = __webpack_require__(132);
-	var shared_module_1 = __webpack_require__(133);
+	var random_size_directive_1 = __webpack_require__(156);
+	var shared_module_1 = __webpack_require__(157);
 	var circle_experiment_result_component_1 = __webpack_require__(122);
 	var circle_experiment_results_component_1 = __webpack_require__(126);
+	var perception_experiment_component_1 = __webpack_require__(132);
+	var hide_after_time_component_1 = __webpack_require__(139);
+	var target_finder_areas_component_1 = __webpack_require__(143);
+	var perception_experiment_results_component_1 = __webpack_require__(151);
 	var ExperimentModule = (function () {
 	    function ExperimentModule() {
 	    }
@@ -7106,8 +7110,12 @@ webpackJsonp([0],[
 	        ],
 	        declarations: [
 	            circle_experiment_component_1.CircleExperimentComponent,
+	            perception_experiment_component_1.PerceptionExperimentComponent,
+	            target_finder_areas_component_1.TargetFinderAreasComponent,
+	            hide_after_time_component_1.HideAfterTimeComponent,
 	            circle_experiment_result_component_1.CircleExperimentResultComponent,
 	            circle_experiment_results_component_1.CircleExperimentResultsComponent,
+	            perception_experiment_results_component_1.PerceptionExperimentResultsComponent,
 	            random_size_directive_1.RandomSizeDirective
 	        ]
 	    })
@@ -7132,11 +7140,15 @@ webpackJsonp([0],[
 	var circle_experiment_component_1 = __webpack_require__(112);
 	var circle_experiment_result_component_1 = __webpack_require__(122);
 	var circle_experiment_results_component_1 = __webpack_require__(126);
+	var perception_experiment_component_1 = __webpack_require__(132);
+	var perception_experiment_results_component_1 = __webpack_require__(151);
 	var routes = [
 	    { path: 'experiments/circle', component: circle_experiment_component_1.CircleExperimentComponent },
+	    { path: 'experiments/perception', component: perception_experiment_component_1.PerceptionExperimentComponent },
 	    { path: 'experiments/results/circle', component: circle_experiment_results_component_1.CircleExperimentResultsComponent },
 	    { path: 'experiments/results/circle/:id', component: circle_experiment_result_component_1.CircleExperimentResultComponent },
-	    { path: 'experiments/results/circle/:id/all', component: circle_experiment_results_component_1.CircleExperimentResultsComponent }
+	    { path: 'experiments/results/circle/:id/all', component: circle_experiment_results_component_1.CircleExperimentResultsComponent },
+	    { path: 'experiments/results/perception', component: perception_experiment_results_component_1.PerceptionExperimentResultsComponent },
 	];
 	var CircleExperimentRoutingModule = (function () {
 	    function CircleExperimentRoutingModule() {
@@ -7828,6 +7840,1030 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
+	var random_element_placing_component_1 = __webpack_require__(133);
+	var hide_after_time_component_1 = __webpack_require__(139);
+	var target_finder_areas_component_1 = __webpack_require__(143);
+	var perception_experiment_model_1 = __webpack_require__(147);
+	var PerceptionExperimentComponent = (function () {
+	    function PerceptionExperimentComponent(perceptionExperimentModel) {
+	        this.perceptionExperimentModel = perceptionExperimentModel;
+	        this.testTime = 1000;
+	        this.lastTestTime = this.testTime;
+	        this.resultChooserIsVisible = false;
+	        this.testIsRunning = false;
+	        this.targetAmount = 200;
+	        this.targetSize = 40;
+	        this.selectedTargetAmount = 10;
+	        this.selectedMode = random_element_placing_component_1.Modes.COLOR;
+	        this.mode = random_element_placing_component_1.Modes.COLOR;
+	        this.modes = [
+	            { label: 'Color', value: random_element_placing_component_1.Modes.COLOR },
+	            { label: 'Enclosure', value: random_element_placing_component_1.Modes.ENCLOSURE },
+	            { label: 'Animation', value: random_element_placing_component_1.Modes.BLINK },
+	            { label: 'Direction', value: random_element_placing_component_1.Modes.DIRECTION },
+	            { label: 'Shape', value: random_element_placing_component_1.Modes.SHAPE },
+	            { label: 'Size', value: random_element_placing_component_1.Modes.SIZE },
+	            { label: 'Composed', value: random_element_placing_component_1.Modes.COMPOSED }
+	        ];
+	    }
+	    PerceptionExperimentComponent.prototype.getRandomInt = function (min, max) {
+	        return Math.floor(Math.random() * (max - min + 1)) + min;
+	    };
+	    PerceptionExperimentComponent.prototype.test = function () {
+	        this.targetNum = this.getRandomInt(1, 4);
+	        this.targetFinder.initExperiment();
+	        this.hideAfterTime.start();
+	    };
+	    PerceptionExperimentComponent.prototype.abort = function () {
+	        this.perceptionExperimentModel.clear();
+	        this.perceptionExperimentModel.set({
+	            mode: parseInt(this.selectedMode.toString(), 10),
+	            amount: parseInt(this.selectedTargetAmount.toString(), 10),
+	            time: this.lastTestTime
+	        });
+	        this.perceptionExperimentModel.save();
+	        this.testIsRunning = false;
+	        this.resultChooserIsVisible = false;
+	        this.testTime = 1000;
+	    };
+	    PerceptionExperimentComponent.prototype.hideAfterTimeStatusChange = function (ev) {
+	        if (ev === hide_after_time_component_1.Status.CORRECT_RESULT_WAS_CHOSEN) {
+	            this.lastTestTime = this.testTime;
+	            if (this.testTime > 20) {
+	                this.testTime = this.testTime - this.testTime / 4;
+	            }
+	            this.test();
+	            this.resultChooserIsVisible = false;
+	        }
+	        if (ev === hide_after_time_component_1.Status.WRONG_RESULT_WAS_CHOSEN) {
+	            this.abort();
+	        }
+	        if (ev === hide_after_time_component_1.Status.COUNTDOWN) {
+	            this.testIsRunning = true;
+	            this.resultChooserIsVisible = false;
+	        }
+	        if (ev === hide_after_time_component_1.Status.TEST_IS_FINISHED) {
+	            this.testIsRunning = false;
+	            this.resultChooserIsVisible = true;
+	        }
+	    };
+	    PerceptionExperimentComponent.prototype.setTargetMode = function () {
+	    };
+	    PerceptionExperimentComponent.prototype.setTargetAmount = function (val) {
+	        var number = parseInt(val, 10);
+	        this.targetAmount = number;
+	        if (number === 100) {
+	            this.targetSize = 15;
+	        }
+	        if (number === 40) {
+	            this.targetSize = 20;
+	        }
+	        if (number === 20) {
+	            this.targetSize = 30;
+	        }
+	        if (number === 10) {
+	            this.targetSize = 40;
+	        }
+	    };
+	    PerceptionExperimentComponent.prototype.setMode = function (val) {
+	        this.mode = parseInt(val, 10);
+	    };
+	    PerceptionExperimentComponent.prototype.ngOnInit = function () {
+	        this.targetNum = this.getRandomInt(1, 4);
+	    };
+	    return PerceptionExperimentComponent;
+	}());
+	__decorate([
+	    core_1.ViewChild('hideAfterTime'),
+	    __metadata("design:type", hide_after_time_component_1.HideAfterTimeComponent)
+	], PerceptionExperimentComponent.prototype, "hideAfterTime", void 0);
+	__decorate([
+	    core_1.ViewChild('targetFinder'),
+	    __metadata("design:type", target_finder_areas_component_1.TargetFinderAreasComponent)
+	], PerceptionExperimentComponent.prototype, "targetFinder", void 0);
+	PerceptionExperimentComponent = __decorate([
+	    core_1.Component({
+	        selector: 'perception-experiment',
+	        styles: [__webpack_require__(148)],
+	        template: __webpack_require__(150),
+	        providers: [perception_experiment_model_1.PerceptionExperimentModel]
+	    }),
+	    __metadata("design:paramtypes", [perception_experiment_model_1.PerceptionExperimentModel])
+	], PerceptionExperimentComponent);
+	exports.PerceptionExperimentComponent = PerceptionExperimentComponent;
+
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var random_element_boxes_collection_1 = __webpack_require__(134);
+	var underscore_1 = __webpack_require__(67);
+	var Modes;
+	(function (Modes) {
+	    Modes[Modes["COLOR"] = 0] = "COLOR";
+	    Modes[Modes["SHAPE"] = 1] = "SHAPE";
+	    Modes[Modes["DIRECTION"] = 2] = "DIRECTION";
+	    Modes[Modes["BLINK"] = 3] = "BLINK";
+	    Modes[Modes["SIZE"] = 4] = "SIZE";
+	    Modes[Modes["ENCLOSURE"] = 5] = "ENCLOSURE";
+	    Modes[Modes["COMPOSED"] = 6] = "COMPOSED";
+	})(Modes = exports.Modes || (exports.Modes = {}));
+	var RandomElementPlacingComponent = (function () {
+	    function RandomElementPlacingComponent(randomElementBoxesCollection, el) {
+	        this.randomElementBoxesCollection = randomElementBoxesCollection;
+	        this.el = el;
+	        this.boxSize = 10;
+	        this.amount = 200;
+	        this.mode = Modes.COLOR;
+	        this.options = {
+	            fontSize: null,
+	            poiFontSize: null,
+	            className: null,
+	            icon: null,
+	            poiIcon: null,
+	            color: null,
+	            poiColor: null
+	        };
+	        this.debouncedBoxesGenerator = underscore_1.debounce(this.generateRandomBoxes, 100);
+	    }
+	    RandomElementPlacingComponent.prototype.unsetPoi = function () {
+	        var existingPoi = this.randomElementBoxesCollection.findWhere({ poi: true });
+	        if (existingPoi) {
+	            existingPoi.set({ poi: false });
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.getClass = function () {
+	        return this.options.className;
+	    };
+	    RandomElementPlacingComponent.prototype.getIconForBox = function (box) {
+	        if (box.get('poi')) {
+	            return this.options.poiIcon;
+	        }
+	        else if ((this.mode === Modes.COMPOSED)) {
+	            return box.get('type') === 1 ? 'fa-taxi' : 'fa-flask';
+	        }
+	        else {
+	            return this.options.icon;
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.getColorForBox = function (box) {
+	        if (box.get('poi')) {
+	            return this.options.poiColor;
+	        }
+	        else if (this.mode === Modes.COMPOSED) {
+	            return box.get('type') === 1 ? 'blue' : 'red';
+	        }
+	        else {
+	            return this.options.color;
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.getFontSizeForBox = function (box) {
+	        if (box.get('poi')) {
+	            return this.options.poiFontSize;
+	        }
+	        else {
+	            return this.options.fontSize;
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.generateRandomBoxes = function () {
+	        var canvasWidth = this.el.nativeElement.offsetWidth;
+	        var canvasHeight = this.el.nativeElement.offsetHeight;
+	        this.randomElementBoxesCollection.reset();
+	        this.randomElementBoxesCollection.generateRandomBoxes(this.amount, this.boxSize, canvasWidth, canvasHeight);
+	        this.setRandomPoi();
+	        this.setOptions();
+	        console.log('Generated ' + this.randomElementBoxesCollection.length + '/' + this.amount + ' boxes');
+	    };
+	    RandomElementPlacingComponent.prototype.setRandomPoi = function () {
+	        if (this.hasPoi) {
+	            this.unsetPoi();
+	            this.randomElementBoxesCollection.getRandomBox().set({ poi: true });
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.setOptions = function () {
+	        var box = this.randomElementBoxesCollection.first();
+	        if (!box) {
+	            return;
+	        }
+	        switch (this.mode) {
+	            default:
+	            case Modes.COLOR:
+	                this.options.fontSize = box.get('width') - 3;
+	                this.options.poiFontSize = box.get('width') - 3;
+	                this.options.className = 'color-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-taxi';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'red';
+	                break;
+	            case Modes.BLINK:
+	                this.options.fontSize = box.get('width') - 3;
+	                this.options.poiFontSize = box.get('width') - 3;
+	                this.options.className = 'blink-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-taxi';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'black';
+	                break;
+	            case Modes.DIRECTION:
+	                this.options.fontSize = box.get('width') - 3;
+	                this.options.poiFontSize = box.get('width') - 3;
+	                this.options.className = 'direction-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-taxi';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'black';
+	                break;
+	            case Modes.SHAPE:
+	                this.options.fontSize = box.get('width') - 3;
+	                this.options.poiFontSize = box.get('width') - 3;
+	                this.options.className = 'shape-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-flask';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'black';
+	                break;
+	            case Modes.SIZE:
+	                this.options.fontSize = box.get('width') / 3;
+	                this.options.poiFontSize = box.get('width') - 3;
+	                this.options.className = 'size-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-taxi';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'black';
+	                break;
+	            case Modes.ENCLOSURE:
+	                this.options.fontSize = box.get('width') / 2;
+	                this.options.poiFontSize = box.get('width') / 2;
+	                this.options.className = 'enclosure-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.icon = 'fa-taxi';
+	                this.options.color = 'black';
+	                this.options.poiColor = 'black';
+	                break;
+	            case Modes.COMPOSED:
+	                this.options.fontSize = box.get('width') / 2;
+	                this.options.poiFontSize = box.get('width') / 2;
+	                this.options.className = 'composed-mode';
+	                this.options.poiIcon = 'fa-taxi';
+	                this.options.poiColor = 'red';
+	                this.randomElementBoxesCollection.setUpComposedMode();
+	                break;
+	        }
+	    };
+	    RandomElementPlacingComponent.prototype.ngOnInit = function () {
+	        this.debouncedBoxesGenerator();
+	    };
+	    RandomElementPlacingComponent.prototype.ngOnChanges = function (changes) {
+	        if (changes.hasPoi && changes.hasPoi.currentValue) {
+	            if (this.randomElementBoxesCollection.length === 0) {
+	                this.debouncedBoxesGenerator();
+	            }
+	            else {
+	                this.setRandomPoi();
+	            }
+	        }
+	        else if (changes.hasPoi && !changes.hasPoi.currentValue) {
+	            this.unsetPoi();
+	        }
+	        else if (changes.amount || changes.boxSize) {
+	            this.debouncedBoxesGenerator();
+	        }
+	        else if (changes.mode) {
+	            console.log(changes.mode, Modes[this.mode]);
+	            this.setOptions();
+	        }
+	    };
+	    return RandomElementPlacingComponent;
+	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], RandomElementPlacingComponent.prototype, "name", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RandomElementPlacingComponent.prototype, "boxSize", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RandomElementPlacingComponent.prototype, "amount", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Boolean)
+	], RandomElementPlacingComponent.prototype, "hasPoi", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RandomElementPlacingComponent.prototype, "mode", void 0);
+	RandomElementPlacingComponent = __decorate([
+	    core_1.Component({
+	        selector: 'random-element-placing',
+	        styles: [__webpack_require__(136)],
+	        template: __webpack_require__(138),
+	        providers: [random_element_boxes_collection_1.RandomElementBoxesCollection]
+	    }),
+	    __metadata("design:paramtypes", [random_element_boxes_collection_1.RandomElementBoxesCollection, core_1.ElementRef])
+	], RandomElementPlacingComponent);
+	exports.RandomElementPlacingComponent = RandomElementPlacingComponent;
+
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_collection_1 = __webpack_require__(128);
+	var random_element_box_model_1 = __webpack_require__(135);
+	var RandomElementBoxesCollection = (function (_super) {
+	    __extends(RandomElementBoxesCollection, _super);
+	    function RandomElementBoxesCollection() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.model = random_element_box_model_1.RandomElementBoxModel;
+	        return _this;
+	    }
+	    RandomElementBoxesCollection.prototype.getRandomInt = function (min, max) {
+	        return Math.floor(Math.random() * (max - min + 1)) + min;
+	    };
+	    RandomElementBoxesCollection.prototype.linesAreIntersecting = function (line1Start, line1Width, line2Start, line2Width) {
+	        return line1Start + line1Width >= line2Start && line2Start + line2Width >= line1Start;
+	    };
+	    RandomElementBoxesCollection.prototype.boxIsIntersecting = function (box1, box2) {
+	        var xAxisIsOverlapping = this.linesAreIntersecting(box1.get('x'), box1.get('width'), box2.get('x'), box2.get('width'));
+	        var yAxisIsOverlapping = this.linesAreIntersecting(box1.get('y'), box1.get('height'), box2.get('y'), box2.get('height'));
+	        return xAxisIsOverlapping && yAxisIsOverlapping;
+	    };
+	    RandomElementBoxesCollection.prototype.isOverlappingExistingBox = function (box) {
+	        var _this = this;
+	        var overlapping = false;
+	        this.each(function (existingBox) {
+	            if (!overlapping) {
+	                overlapping = _this.boxIsIntersecting(box, existingBox);
+	            }
+	        });
+	        return overlapping;
+	    };
+	    RandomElementBoxesCollection.prototype.getRandomBox = function () {
+	        return this.at(this.getRandomInt(0, this.length - 1));
+	    };
+	    RandomElementBoxesCollection.prototype.generateRandomBox = function (boxSize, canvasWidth, canvasHeight, maxTries, currentTry) {
+	        if (maxTries === void 0) { maxTries = 5; }
+	        if (currentTry === void 0) { currentTry = 0; }
+	        if (currentTry > maxTries) {
+	            return;
+	        }
+	        var x = this.getRandomInt(0, canvasWidth - boxSize);
+	        var y = this.getRandomInt(0, canvasHeight - boxSize);
+	        var box = new random_element_box_model_1.RandomElementBoxModel({
+	            x: x,
+	            y: y,
+	            width: boxSize,
+	            height: boxSize
+	        });
+	        if (this.isOverlappingExistingBox(box)) {
+	            return this.generateRandomBox(boxSize, canvasWidth, canvasHeight, maxTries, currentTry + 1);
+	        }
+	        else {
+	            return box;
+	        }
+	    };
+	    RandomElementBoxesCollection.prototype.setUpComposedMode = function () {
+	        var _this = this;
+	        this.each(function (box) {
+	            if (!box.get('poi')) {
+	                box.set('type', _this.getRandomInt(1, 2));
+	            }
+	        });
+	    };
+	    RandomElementBoxesCollection.prototype.generateRandomBoxes = function (amount, boxSize, canvasWidth, canvasHeight) {
+	        for (var i = 0; i < amount; i++) {
+	            var box = this.generateRandomBox(boxSize, canvasWidth, canvasHeight);
+	            if (box) {
+	                this.add(box);
+	            }
+	            else {
+	                //console.info('Could not generate a box');
+	            }
+	        }
+	    };
+	    return RandomElementBoxesCollection;
+	}(visualisation_collection_1.VisualisationCollection));
+	RandomElementBoxesCollection = __decorate([
+	    core_1.Injectable()
+	], RandomElementBoxesCollection);
+	exports.RandomElementBoxesCollection = RandomElementBoxesCollection;
+
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(118);
+	var RandomElementBoxModel = (function (_super) {
+	    __extends(RandomElementBoxModel, _super);
+	    function RandomElementBoxModel() {
+	        return _super !== null && _super.apply(this, arguments) || this;
+	    }
+	    RandomElementBoxModel.prototype.defaults = function () {
+	        return {
+	            poi: false,
+	            x: 0,
+	            y: 0,
+	            width: 0,
+	            height: 0
+	        };
+	    };
+	    return RandomElementBoxModel;
+	}(visualisation_model_1.VisualisationModel));
+	RandomElementBoxModel = __decorate([
+	    core_1.Injectable()
+	], RandomElementBoxModel);
+	exports.RandomElementBoxModel = RandomElementBoxModel;
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(137);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .box-holder {\n  position: relative; }\n  :host .box-holder .box {\n    position: absolute;\n    color: black;\n    display: flex;\n    align-items: center;\n    justify-content: center; }\n  :host .box-holder.color-mode .box.poi {\n    color: red; }\n  :host .box-holder.blink-mode .box.poi {\n    animation: blink 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }\n  :host .box-holder.direction-mode .box.poi {\n    transform: rotate(45deg); }\n  :host .box-holder.enclosure-mode .box.poi {\n    border-radius: 50%;\n    border: 2px solid; }\n\n@keyframes blink {\n  30% {\n    opacity: 0; }\n  50% {\n    opacity: 1; }\n  70% {\n    opacity: 0; } }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"random-element-placing\">\n  <div class=\"box-holder {{getClass()}}\">\n    <div *ngFor=\"let box of randomElementBoxesCollection.models\"\n         class=\"box\"\n         [class.poi]=\"box.get('poi')\"\n         [style.left]=\"box.get('x')+'px'\"\n         [style.top]=\"box.get('y')+'px'\"\n         [style.width]=\"box.get('width')+'px'\"\n         [style.height]=\"box.get('height')+'px'\"\n         [style.color]=\"getColorForBox(box)\">\n      <div class=\"fa {{getIconForBox(box)}}\" [style.fontSize]=\"getFontSizeForBox(box)+'px'\"></div>\n    </div>\n  </div>\n</div>\n";
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var Status;
+	(function (Status) {
+	    Status[Status["COUNTDOWN"] = 0] = "COUNTDOWN";
+	    Status[Status["TEST_IS_RUNNING"] = 1] = "TEST_IS_RUNNING";
+	    Status[Status["TEST_IS_FINISHED"] = 2] = "TEST_IS_FINISHED";
+	    Status[Status["CORRECT_RESULT_WAS_CHOSEN"] = 3] = "CORRECT_RESULT_WAS_CHOSEN";
+	    Status[Status["WRONG_RESULT_WAS_CHOSEN"] = 4] = "WRONG_RESULT_WAS_CHOSEN";
+	})(Status = exports.Status || (exports.Status = {}));
+	var HideAfterTimeComponent = (function () {
+	    function HideAfterTimeComponent() {
+	        this.countdownIsVisible = true;
+	        this.countdown = 3;
+	        this.statusChange = new core_1.EventEmitter();
+	        this.testTime = 200;
+	    }
+	    HideAfterTimeComponent.prototype.getTestTime = function () {
+	        return Math.round(this.testTime);
+	    };
+	    HideAfterTimeComponent.prototype.start = function () {
+	        var _this = this;
+	        this.countdownIsVisible = true;
+	        this.resultChooserIsVisible = false;
+	        var _countdown = this.countdown;
+	        this.statusChange.emit(Status.COUNTDOWN);
+	        var startCountDown = window.setInterval(function () {
+	            if (_this.countdown <= 0) {
+	                var start_1 = performance.now();
+	                _this.countdownIsVisible = false;
+	                _this.testIsRunning = true;
+	                _this.statusChange.emit(Status.TEST_IS_RUNNING);
+	                window.setTimeout(function () {
+	                    console.log(performance.now() - start_1);
+	                    _this.testIsRunning = false;
+	                    _this.resultChooserIsVisible = true;
+	                    _this.statusChange.emit(Status.TEST_IS_FINISHED);
+	                }, _this.testTime);
+	                window.clearInterval(startCountDown);
+	                _this.countdown = _countdown;
+	            }
+	            else {
+	                _this.countdown--;
+	            }
+	        }, 200);
+	    };
+	    HideAfterTimeComponent.prototype.notify = function (type, el) {
+	        var _this = this;
+	        window.setTimeout(function () {
+	            el.classList.remove('correct');
+	            el.classList.remove('wrong');
+	            _this.statusChange.emit(type);
+	            _this.countdownIsVisible = true;
+	            _this.resultChooserIsVisible = false;
+	        }, 500);
+	    };
+	    HideAfterTimeComponent.prototype.choseResult = function (result, ev) {
+	        if (result === this.correctResultNum) {
+	            ev.srcElement.classList.add('correct');
+	            this.notify(Status.CORRECT_RESULT_WAS_CHOSEN, ev.srcElement);
+	        }
+	        else {
+	            ev.srcElement.classList.add('wrong');
+	            this.notify(Status.WRONG_RESULT_WAS_CHOSEN, ev.srcElement);
+	        }
+	    };
+	    HideAfterTimeComponent.prototype.ngOnChanges = function (changes) {
+	        this.countdownIsVisible = true;
+	        this.resultChooserIsVisible = false;
+	    };
+	    return HideAfterTimeComponent;
+	}());
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Object)
+	], HideAfterTimeComponent.prototype, "statusChange", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], HideAfterTimeComponent.prototype, "correctResultNum", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], HideAfterTimeComponent.prototype, "testTime", void 0);
+	HideAfterTimeComponent = __decorate([
+	    core_1.Component({
+	        selector: 'hide-after-time',
+	        styles: [__webpack_require__(140)],
+	        template: __webpack_require__(142)
+	    })
+	], HideAfterTimeComponent);
+	exports.HideAfterTimeComponent = HideAfterTimeComponent;
+
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(141);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host {\n  position: relative;\n  display: block; }\n  :host .content {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    flex-wrap: wrap;\n    opacity: 0; }\n    :host .content.visible {\n      opacity: 1; }\n  :host .countdown {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .countdown .test-time {\n      position: absolute;\n      width: 100%;\n      text-align: center;\n      top: 35%; }\n    :host .countdown .box-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%; }\n      :host .countdown .box-holder .box {\n        width: 30px;\n        height: 30px;\n        background: #eeeeee;\n        margin-right: 5px;\n        transition: background 0.2s ease; }\n        :host .countdown .box-holder .box.active {\n          background: transparent; }\n  :host .result-selector {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .result-selector .option-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%;\n      flex-wrap: wrap; }\n      :host .result-selector .option-holder .option {\n        width: calc(50% - 10px);\n        height: calc(50% - 10px);\n        margin: 5px;\n        background: #eeeeee;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 30px;\n        cursor: pointer;\n        transition: all 0.5s ease; }\n        :host .result-selector .option-holder .option:hover {\n          background: #f0ad4e;\n          color: white; }\n        :host .result-selector .option-holder .option.correct {\n          background: #5cb85c !important;\n          color: white; }\n        :host .result-selector .option-holder .option.wrong {\n          background: #d9534f !important;\n          color: white; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"content countdown\" [class.visible]=\"countdownIsVisible\">\n  <div class=\"test-time\">The object will be shown for {{getTestTime()}}ms</div>\n  <div class=\"box-holder\">\n    <div class=\"box\" [class.active]=\"countdown < 1\"></div>\n    <div class=\"box\" [class.active]=\"countdown < 2\"></div>\n    <div class=\"box\" [class.active]=\"countdown < 3\"></div>\n  </div>\n</div>\n\n<div class=\"content\" [class.visible]=\"testIsRunning\">\n  <ng-content></ng-content>\n</div>\n\n<div class=\"content result-selector\" [class.visible]=\"resultChooserIsVisible\">\n  <div class=\"option-holder\">\n    <div class=\"option\" (click)=\"choseResult(1, $event)\">\n      1\n    </div>\n    <div class=\"option\" (click)=\"choseResult(2, $event)\">\n      2\n    </div>\n    <div class=\"option\" (click)=\"choseResult(3, $event)\">\n      3\n    </div>\n    <div class=\"option\" (click)=\"choseResult(4, $event)\">\n      4\n    </div>\n  </div>\n</div>\n";
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var random_element_placing_component_1 = __webpack_require__(133);
+	var TargetFinderAreasComponent = (function () {
+	    function TargetFinderAreasComponent() {
+	    }
+	    TargetFinderAreasComponent.prototype.initExperiment = function () {
+	        this.segment1.generateRandomBoxes();
+	        this.segment2.generateRandomBoxes();
+	        this.segment3.generateRandomBoxes();
+	        this.segment4.generateRandomBoxes();
+	    };
+	    TargetFinderAreasComponent.prototype.ngOnInit = function () {
+	        this.initExperiment();
+	    };
+	    return TargetFinderAreasComponent;
+	}());
+	__decorate([
+	    core_1.ViewChild('segment1'),
+	    __metadata("design:type", random_element_placing_component_1.RandomElementPlacingComponent)
+	], TargetFinderAreasComponent.prototype, "segment1", void 0);
+	__decorate([
+	    core_1.ViewChild('segment2'),
+	    __metadata("design:type", random_element_placing_component_1.RandomElementPlacingComponent)
+	], TargetFinderAreasComponent.prototype, "segment2", void 0);
+	__decorate([
+	    core_1.ViewChild('segment3'),
+	    __metadata("design:type", random_element_placing_component_1.RandomElementPlacingComponent)
+	], TargetFinderAreasComponent.prototype, "segment3", void 0);
+	__decorate([
+	    core_1.ViewChild('segment4'),
+	    __metadata("design:type", random_element_placing_component_1.RandomElementPlacingComponent)
+	], TargetFinderAreasComponent.prototype, "segment4", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], TargetFinderAreasComponent.prototype, "targetArea", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], TargetFinderAreasComponent.prototype, "amount", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], TargetFinderAreasComponent.prototype, "size", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], TargetFinderAreasComponent.prototype, "mode", void 0);
+	TargetFinderAreasComponent = __decorate([
+	    core_1.Component({
+	        selector: 'target-finder-areas',
+	        styles: [__webpack_require__(144)],
+	        template: __webpack_require__(146)
+	    }),
+	    __metadata("design:paramtypes", [])
+	], TargetFinderAreasComponent);
+	exports.TargetFinderAreasComponent = TargetFinderAreasComponent;
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(145);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .target-finder-areas {\n  display: flex;\n  flex-wrap: wrap; }\n  :host .target-finder-areas .segment {\n    margin: 5px;\n    flex-basis: calc(50% - 10px);\n    height: 200px;\n    display: flex; }\n  :host .target-finder-areas random-element-placing {\n    width: 100%;\n    height: 100%; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"target-finder-areas\">\n  <div class=\"segment top left\">\n    <random-element-placing [hasPoi]=\"targetArea === 1\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment1></random-element-placing>\n  </div>\n  <div class=\"segment top right\">\n    <random-element-placing [hasPoi]=\"targetArea === 2\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment2></random-element-placing>\n  </div>\n  <div class=\"segment bottom left\">\n    <random-element-placing [hasPoi]=\"targetArea === 3\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment3></random-element-placing>\n  </div>\n  <div class=\"segment bottom right\">\n    <random-element-placing [hasPoi]=\"targetArea === 4\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment4></random-element-placing>\n  </div>\n</div>\n";
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(118);
+	var PerceptionExperimentModel = (function (_super) {
+	    __extends(PerceptionExperimentModel, _super);
+	    function PerceptionExperimentModel() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.endpoint = '/perception-results';
+	        return _this;
+	    }
+	    PerceptionExperimentModel.prototype.defaults = function () {
+	        return {
+	            mode: 0,
+	            amount: 0,
+	            time: 0
+	        };
+	    };
+	    return PerceptionExperimentModel;
+	}(visualisation_model_1.VisualisationModel));
+	PerceptionExperimentModel = __decorate([
+	    core_1.Injectable()
+	], PerceptionExperimentModel);
+	exports.PerceptionExperimentModel = PerceptionExperimentModel;
+
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(149);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host target-finder-areas {\n  width: inherit;\n  height: inherit; }\n\n:host .options-holder {\n  display: flex; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports) {
+
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Perception Experiment</h1>\n  </header>\n\n  <section>\n    <hide-after-time #hideAfterTime\n                     [correctResultNum]=\"targetNum\"\n                     [testTime]=\"testTime\"\n                     (statusChange)=\"hideAfterTimeStatusChange($event)\">\n      <target-finder-areas #targetFinder [targetArea]=\"targetNum\" [size]=\"targetSize\" [amount]=\"targetAmount\" [mode]=\"mode\"></target-finder-areas>\n    </hide-after-time>\n  </section>\n\n  <button *ngIf=\"!resultChooserIsVisible\" class=\"btn btn-primary\" (click)=\"test()\" [disabled]=\"testIsRunning\">Start</button>\n  <a *ngIf=\"!resultChooserIsVisible && !testIsRunning\" routerLink=\"/experiments/results/perception\" class=\"btn btn-default\" (click)=\"test()\">See results</a>\n  <button *ngIf=\"resultChooserIsVisible\" class=\"btn btn-primary\" (click)=\"test()\">Retry</button>\n  <button *ngIf=\"resultChooserIsVisible\" class=\"btn btn-danger\" (click)=\"abort()\">I couldn't find it</button>\n\n  <div *ngIf=\"!this.testIsRunning && !resultChooserIsVisible\" class=\"options-holder pull-right\">\n    <div>\n      <label>Mode</label>\n      <select [(ngModel)]=\"selectedMode\" (ngModelChange)=\"setMode($event)\">\n        <option *ngFor=\"let mode of modes\" [value]=\"mode.value\">{{mode.label}}</option>\n      </select>\n    </div>\n    <div>\n      <label>Amount</label>\n      <select [(ngModel)]=\"selectedTargetAmount\" (ngModelChange)=\"setTargetAmount($event)\">\n        <option [value]=\"10\">10</option>\n        <option [value]=\"20\">20</option>\n        <option [value]=\"40\">40</option>\n        <option [value]=\"100\">100</option>\n      </select>\n    </div>\n  </div>\n\n\n</section>\n";
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var perception_experiments_collection_1 = __webpack_require__(152);
+	var random_element_placing_component_1 = __webpack_require__(133);
+	var underscore_1 = __webpack_require__(67);
+	var PerceptionExperimentResultsComponent = (function () {
+	    function PerceptionExperimentResultsComponent(perceptionExperimentsCollection) {
+	        this.perceptionExperimentsCollection = perceptionExperimentsCollection;
+	    }
+	    PerceptionExperimentResultsComponent.prototype.setUpResultFor = function (result) {
+	        var results = [];
+	        var resultJSON = underscore_1.map(result, function (item) {
+	            return item.toJSON();
+	        });
+	        [10, 20, 40, 100].forEach(function (amount) {
+	            var totalResultForAmount;
+	            var resultsForAmount = underscore_1.where(resultJSON, { amount: amount });
+	            if (resultsForAmount.length === 0) {
+	                return;
+	            }
+	            else if (resultsForAmount.length > 1) {
+	                totalResultForAmount = underscore_1.reduce(resultsForAmount, function (memo, num) {
+	                    return memo.time + num.time;
+	                }) / resultsForAmount.length;
+	            }
+	            else {
+	                totalResultForAmount = resultsForAmount[0].time;
+	            }
+	            results.push({ amount: amount, time: totalResultForAmount });
+	        });
+	        return results;
+	    };
+	    PerceptionExperimentResultsComponent.prototype.setUpResults = function () {
+	        if (this.perceptionExperimentsCollection.length > 0) {
+	            this.colorResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.COLOR }));
+	            this.enclosureResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.ENCLOSURE }));
+	            this.animationResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.BLINK }));
+	            this.directionResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.DIRECTION }));
+	            this.shapeResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.SHAPE }));
+	            this.sizeResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.SIZE }));
+	            this.composedResults = this.setUpResultFor(this.perceptionExperimentsCollection.where({ mode: random_element_placing_component_1.Modes.COMPOSED }));
+	        }
+	    };
+	    PerceptionExperimentResultsComponent.prototype.ngOnInit = function () {
+	        this.perceptionExperimentsCollection.on('update', this.setUpResults, this);
+	        this.perceptionExperimentsCollection.fetch();
+	    };
+	    return PerceptionExperimentResultsComponent;
+	}());
+	PerceptionExperimentResultsComponent = __decorate([
+	    core_1.Component({
+	        selector: 'perception-experiment-results',
+	        styles: [__webpack_require__(153)],
+	        template: __webpack_require__(155),
+	        providers: [perception_experiments_collection_1.PerceptionExperimentsCollection]
+	    }),
+	    __metadata("design:paramtypes", [perception_experiments_collection_1.PerceptionExperimentsCollection])
+	], PerceptionExperimentResultsComponent);
+	exports.PerceptionExperimentResultsComponent = PerceptionExperimentResultsComponent;
+
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_collection_1 = __webpack_require__(128);
+	var perception_experiment_model_1 = __webpack_require__(147);
+	var PerceptionExperimentsCollection = (function (_super) {
+	    __extends(PerceptionExperimentsCollection, _super);
+	    function PerceptionExperimentsCollection() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.endpoint = '/perception-results';
+	        _this.model = perception_experiment_model_1.PerceptionExperimentModel;
+	        return _this;
+	    }
+	    return PerceptionExperimentsCollection;
+	}(visualisation_collection_1.VisualisationCollection));
+	PerceptionExperimentsCollection = __decorate([
+	    core_1.Injectable()
+	], PerceptionExperimentsCollection);
+	exports.PerceptionExperimentsCollection = PerceptionExperimentsCollection;
+
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(154);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 154 */
+130,
+/* 155 */
+/***/ (function(module, exports) {
+
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Perception Experiment–All results</h1>\n  </header>\n\n  <section>\n\n    <div *ngIf=\"colorResults && colorResults.length>0\">\n      <h2>Color</h2>\n      <perception-chart\n        [values]=\"colorResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"enclosureResults && enclosureResults.length>0\">\n      <h2>Enclosure</h2>\n      <perception-chart\n        [values]=\"enclosureResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"animationResults && animationResults.length>0\">\n      <h2>Animation</h2>\n      <perception-chart\n        [values]=\"animationResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"directionResults && directionResults.length>0\">\n      <h2>Direction</h2>\n      <perception-chart\n        [values]=\"directionResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"shapeResults && shapeResults.length>0\">\n      <h2>Shape</h2>\n      <perception-chart\n        [values]=\"shapeResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"sizeResults && sizeResults.length>0\">\n      <h2>Size</h2>\n      <perception-chart\n        [values]=\"sizeResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"composedResults && composedResults.length>0\">\n      <h2>Composed</h2>\n      <perception-chart\n        [values]=\"composedResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n\n  </section>\n\n</section>\n";
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
 	var RandomSizeDirective = (function () {
 	    function RandomSizeDirective(el) {
 	        this.el = el;
@@ -7870,7 +8906,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 133 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7884,10 +8920,12 @@ webpackJsonp([0],[
 	var core_1 = __webpack_require__(3);
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
-	var range_slider_component_1 = __webpack_require__(134);
+	var range_slider_component_1 = __webpack_require__(158);
 	var wizard_component_1 = __webpack_require__(113);
-	var wizard_entry_component_1 = __webpack_require__(138);
-	var deviation_chart_component_1 = __webpack_require__(142);
+	var wizard_entry_component_1 = __webpack_require__(162);
+	var deviation_chart_component_1 = __webpack_require__(166);
+	var random_element_placing_component_1 = __webpack_require__(133);
+	var perception_chart_component_1 = __webpack_require__(170);
 	var SharedModule = (function () {
 	    function SharedModule() {
 	    }
@@ -7901,15 +8939,19 @@ webpackJsonp([0],[
 	        ],
 	        declarations: [
 	            deviation_chart_component_1.DeviationChartComponent,
+	            perception_chart_component_1.PerceptionChartComponent,
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
-	            wizard_entry_component_1.WizardEntryComponent
+	            wizard_entry_component_1.WizardEntryComponent,
+	            random_element_placing_component_1.RandomElementPlacingComponent
 	        ],
 	        exports: [
 	            deviation_chart_component_1.DeviationChartComponent,
+	            perception_chart_component_1.PerceptionChartComponent,
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
-	            wizard_entry_component_1.WizardEntryComponent
+	            wizard_entry_component_1.WizardEntryComponent,
+	            random_element_placing_component_1.RandomElementPlacingComponent
 	        ]
 	    })
 	], SharedModule);
@@ -7917,7 +8959,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 134 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8111,8 +9153,8 @@ webpackJsonp([0],[
 	RangeSliderComponent = __decorate([
 	    core_1.Component({
 	        selector: 'range-slider',
-	        styles: [__webpack_require__(135)],
-	        template: __webpack_require__(137)
+	        styles: [__webpack_require__(159)],
+	        template: __webpack_require__(161)
 	    }),
 	    __metadata("design:paramtypes", [core_1.ElementRef])
 	], RangeSliderComponent);
@@ -8120,13 +9162,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 135 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(136);
+	var styles = __webpack_require__(160);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8137,7 +9179,7 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 136 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(81)();
@@ -8151,13 +9193,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 137 */
+/* 161 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"range-slider-component\" [class.is-loading]=\"showLoadingSpinner\" [class.is-dragging]=\"dragInProgress\">\n  <div *ngIf=\"!hideSliderValue && min !== null\"\n       class=\"min-value\">\n    <span *ngIf=\"showCurrentValue\">\n      {{getDisplayValue(value)}}\n    </span>\n    <span *ngIf=\"!showCurrentValue\">\n      {{getDisplayValue(min)}}\n    </span>\n  </div>\n\n  <div #progressBar class=\"progress-bar\">\n    <div #progressLine class=\"progress-line\"></div>\n    <div #handle class=\"visible-dragger\" [class.display-value]=\"!hideSliderValue\">\n      <span>{{dragDisplayValue}}</span>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    <input type=\"range\" [min]=\"min\" [max]=\"max\" [(ngModel)]=\"tmpValue\" [step]=\"step\">\n  </div>\n\n  <div *ngIf=\"!hideSliderValue && max !== null\"\n       class=\"max-value\">\n    {{getDisplayValue(max)}}\n  </div>\n</div>\n";
 
 /***/ }),
-/* 138 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8195,8 +9237,8 @@ webpackJsonp([0],[
 	WizardEntryComponent = __decorate([
 	    core_1.Component({
 	        selector: 'wizard-entry',
-	        styles: [__webpack_require__(139)],
-	        template: __webpack_require__(141)
+	        styles: [__webpack_require__(163)],
+	        template: __webpack_require__(165)
 	    }),
 	    __metadata("design:paramtypes", [wizard_component_1.WizardComponent, core_1.ElementRef])
 	], WizardEntryComponent);
@@ -8204,13 +9246,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 139 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(140);
+	var styles = __webpack_require__(164);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8221,7 +9263,7 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 140 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(81)();
@@ -8235,13 +9277,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 141 */
+/* 165 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"slide\" *ngIf=\"opened\">\n  <ng-content></ng-content>\n</div>\n";
 
 /***/ }),
-/* 142 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8323,21 +9365,21 @@ webpackJsonp([0],[
 	DeviationChartComponent = __decorate([
 	    core_1.Component({
 	        selector: 'deviation-chart',
-	        styles: [__webpack_require__(143)],
-	        template: __webpack_require__(145)
+	        styles: [__webpack_require__(167)],
+	        template: __webpack_require__(169)
 	    })
 	], DeviationChartComponent);
 	exports.DeviationChartComponent = DeviationChartComponent;
 
 
 /***/ }),
-/* 143 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(144);
+	var styles = __webpack_require__(168);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8348,7 +9390,7 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 144 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(81)();
@@ -8362,10 +9404,118 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 145 */
+/* 169 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"deviation-chart\">\n  <div class=\"x-axis\">\n    <div *ngFor=\"let num of bars\"\n         class=\"x res-{{num}}\">\n      <div class=\"x-label\">{{num}}%</div>\n    </div>\n\n    <div *ngFor=\"let result of results\"\n         class=\"result\"\n         [style.width]=\"result.key+'%'\"\n         [style.height]=\"getPercentageVal(result.key)*10+'%'\">\n    </div>\n\n    <div class=\"result average-marker\" [style.width]=\"this.average+'%'\">\n      <span class=\"indicator-label\">\n        <span class=\"fa fa-users\"></span>\n      </span>\n    </div>\n\n    <div *ngIf=\"hasHighlight()\" class=\"result highlight\" [style.width]=\"this.highlight+'%'\">\n      <span class=\"indicator-label\">\n        <span class=\"fa fa-user\"></span>\n      </span>\n    </div>\n\n    <div class=\"background\"></div>\n    <b class=\"axis-label y\">{{yLabel}}</b>\n  </div>\n\n  <div class=\"y-axis\">\n    <div *ngFor=\"let num of bars\"\n         class=\"y res-{{num}}\">\n      <div *ngIf=\"(num/10)%2 === 0\" class=\"y-label\">{{100-num}}%</div>\n    </div>\n\n    <b class=\"axis-label x\">{{xLabel}}</b>\n  </div>\n</div>\n\n<div class=\"legend\">\n    <span class=\"label label-info label-light\">\n      <span class=\"fa fa-users\"></span>\n    </span> = Average Deviation ({{this.average}}%/{{values.length}} participants)\n\n    <span *ngIf=\"hasHighlight()\">\n      <span class=\"label label-success label-light\">\n        <span class=\"fa fa-user\"></span>\n      </span> = Your guess\n    </span>\n</div>\n";
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var PerceptionChartComponent = (function () {
+	    function PerceptionChartComponent() {
+	        this.results = [];
+	        this.xBars = [];
+	        this.yBars = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+	    }
+	    PerceptionChartComponent.prototype.getPercentageValue = function (value) {
+	        return (value / 1000) * 100;
+	    };
+	    PerceptionChartComponent.prototype.setResults = function () {
+	        var _this = this;
+	        if (this.values.length > 0) {
+	            this.results = [];
+	            var total = 0;
+	            console.log(this.values);
+	            this.values.forEach(function (value) {
+	                _this.xBars.push(value.amount);
+	                _this.results.push({ key: value.amount, value: value.time });
+	            });
+	        }
+	    };
+	    PerceptionChartComponent.prototype.ngOnInit = function () {
+	        this.setResults();
+	    };
+	    PerceptionChartComponent.prototype.ngOnChanges = function () {
+	        this.setResults();
+	    };
+	    return PerceptionChartComponent;
+	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Array)
+	], PerceptionChartComponent.prototype, "values", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], PerceptionChartComponent.prototype, "highlight", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], PerceptionChartComponent.prototype, "xLabel", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], PerceptionChartComponent.prototype, "yLabel", void 0);
+	PerceptionChartComponent = __decorate([
+	    core_1.Component({
+	        selector: 'perception-chart',
+	        styles: [__webpack_require__(171)],
+	        template: __webpack_require__(173)
+	    })
+	], PerceptionChartComponent);
+	exports.PerceptionChartComponent = PerceptionChartComponent;
+
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(172);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(81)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host {\n  width: 600px;\n  padding: 20px 10px;\n  position: relative;\n  display: block;\n  height: 340px; }\n  :host .perception-chart {\n    position: relative;\n    margin-left: 80px; }\n    :host .perception-chart .x-axis {\n      position: relative;\n      width: 100%;\n      height: 200px;\n      z-index: 1; }\n      :host .perception-chart .x-axis .x {\n        position: absolute;\n        border-right: 1px solid #bbb;\n        left: 0;\n        top: -2px;\n        height: 100%; }\n        :host .perception-chart .x-axis .x.res-10 {\n          width: 10%; }\n        :host .perception-chart .x-axis .x.res-20 {\n          width: 20%; }\n        :host .perception-chart .x-axis .x.res-30 {\n          width: 30%; }\n        :host .perception-chart .x-axis .x.res-40 {\n          width: 40%; }\n        :host .perception-chart .x-axis .x.res-50 {\n          width: 50%; }\n        :host .perception-chart .x-axis .x.res-60 {\n          width: 60%; }\n        :host .perception-chart .x-axis .x.res-70 {\n          width: 70%; }\n        :host .perception-chart .x-axis .x.res-80 {\n          width: 80%; }\n        :host .perception-chart .x-axis .x.res-90 {\n          width: 90%; }\n        :host .perception-chart .x-axis .x.res-100 {\n          width: 100%; }\n        :host .perception-chart .x-axis .x.hasValue {\n          border-color: #5bc0de; }\n        :host .perception-chart .x-axis .x .x-label {\n          position: absolute;\n          right: -8px;\n          bottom: -30px; }\n      :host .perception-chart .x-axis .result {\n        position: absolute;\n        border-right: 4px solid #1F8A70;\n        left: 2px; }\n        :host .perception-chart .x-axis .result:after {\n          content: '';\n          position: absolute;\n          top: -7.5px;\n          right: -4px;\n          height: 5px;\n          width: 5px;\n          background: #1F8A70;\n          border-radius: 50%; }\n      :host .perception-chart .x-axis .axis-label {\n        transform: rotate(-90deg);\n        position: absolute;\n        left: -128px;\n        margin-top: 16%; }\n    :host .perception-chart .y-axis {\n      width: 100%;\n      height: 100%;\n      position: absolute;\n      top: -5px; }\n      :host .perception-chart .y-axis .y {\n        height: 10%;\n        border-top: 1px solid #bbb; }\n        :host .perception-chart .y-axis .y.res-10 {\n          top: 10%; }\n        :host .perception-chart .y-axis .y.res-20 {\n          top: 20%; }\n        :host .perception-chart .y-axis .y.res-30 {\n          top: 30%; }\n        :host .perception-chart .y-axis .y.res-40 {\n          top: 40%; }\n        :host .perception-chart .y-axis .y.res-50 {\n          top: 50%; }\n        :host .perception-chart .y-axis .y.res-60 {\n          top: 60%; }\n        :host .perception-chart .y-axis .y.res-70 {\n          top: 70%; }\n        :host .perception-chart .y-axis .y.res-80 {\n          top: 80%; }\n        :host .perception-chart .y-axis .y.res-90 {\n          top: 90%; }\n        :host .perception-chart .y-axis .y.res-100 {\n          top: 100%; }\n        :host .perception-chart .y-axis .y .y-label {\n          display: block;\n          left: -45px;\n          position: absolute;\n          margin-top: -11px; }\n      :host .perception-chart .y-axis .axis-label {\n        position: absolute;\n        bottom: -60px;\n        width: 100%;\n        text-align: center; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"perception-chart\">\n  <div class=\"x-axis\">\n    <div *ngFor=\"let num of xBars\"\n         class=\"x res-{{num}}\">\n      <div class=\"x-label\">{{num}}</div>\n    </div>\n\n    <div *ngFor=\"let result of results\"\n         class=\"result\"\n         [style.width]=\"result.key+'%'\"\n         [style.bottom]=\"getPercentageValue(result.value)+'%'\">\n    </div>\n\n    <div class=\"background\"></div>\n    <b class=\"axis-label y\">{{yLabel}}</b>\n  </div>\n\n  <div class=\"y-axis\">\n    <div *ngFor=\"let num of yBars\"\n         class=\"y res-{{num}}\">\n      <div *ngIf=\"(num/10)%2 === 0\" class=\"y-label\">{{1000-num*10}}ms</div>\n    </div>\n\n    <b class=\"axis-label x\">{{xLabel}}</b>\n  </div>\n</div>\n";
 
 /***/ })
 ]);
