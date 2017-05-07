@@ -1,0 +1,29 @@
+<div class="content countdown" [class.visible]="countdownIsVisible">
+  <div class="test-time">The object will be shown for {{getTestTime()}}ms</div>
+  <div class="box-holder">
+    <div class="box" [class.active]="countdown < 1"></div>
+    <div class="box" [class.active]="countdown < 2"></div>
+    <div class="box" [class.active]="countdown < 3"></div>
+  </div>
+</div>
+
+<div class="content" [class.visible]="testIsRunning">
+  <ng-content></ng-content>
+</div>
+
+<div class="content result-selector" [class.visible]="resultChooserIsVisible">
+  <div class="option-holder">
+    <div class="option" (click)="choseResult(1, $event)">
+      1
+    </div>
+    <div class="option" (click)="choseResult(2, $event)">
+      2
+    </div>
+    <div class="option" (click)="choseResult(3, $event)">
+      3
+    </div>
+    <div class="option" (click)="choseResult(4, $event)">
+      4
+    </div>
+  </div>
+</div>

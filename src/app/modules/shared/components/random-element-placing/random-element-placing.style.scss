@@ -1,0 +1,53 @@
+@import '../../../../variables';
+
+:host{
+  .box-holder{
+    position: relative;
+
+    .box{
+      position: absolute;
+      color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.color-mode{
+      .box.poi{
+        color: red;
+      }
+    }
+
+    &.blink-mode{
+      .box.poi{
+        animation: blink 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      }
+    }
+
+    &.direction-mode{
+      .box.poi{
+        transform: rotate(45deg);
+      }
+    }
+
+    &.enclosure-mode{
+      .box.poi{
+        border-radius: 50%;
+        border: 2px solid;
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  30%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+}
+

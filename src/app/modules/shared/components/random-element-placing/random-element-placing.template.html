@@ -1,0 +1,14 @@
+<div class="random-element-placing">
+  <div class="box-holder {{getClass()}}">
+    <div *ngFor="let box of randomElementBoxesCollection.models"
+         class="box"
+         [class.poi]="box.get('poi')"
+         [style.left]="box.get('x')+'px'"
+         [style.top]="box.get('y')+'px'"
+         [style.width]="box.get('width')+'px'"
+         [style.height]="box.get('height')+'px'"
+         [style.color]="getColorForBox(box)">
+      <div class="fa {{getIconForBox(box)}}" [style.fontSize]="getFontSizeForBox(box)+'px'"></div>
+    </div>
+  </div>
+</div>

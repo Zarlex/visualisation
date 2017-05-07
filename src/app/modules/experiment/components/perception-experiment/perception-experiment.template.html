@@ -1,0 +1,40 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Perception Experiment</h1>
+  </header>
+
+  <section>
+    <hide-after-time #hideAfterTime
+                     [correctResultNum]="targetNum"
+                     [testTime]="testTime"
+                     (statusChange)="hideAfterTimeStatusChange($event)">
+      <target-finder-areas #targetFinder [targetArea]="targetNum" [size]="targetSize" [amount]="targetAmount" [mode]="mode"></target-finder-areas>
+    </hide-after-time>
+  </section>
+
+  <button *ngIf="!resultChooserIsVisible" class="btn btn-primary" (click)="test()" [disabled]="testIsRunning">Start</button>
+  <a *ngIf="!resultChooserIsVisible && !testIsRunning" routerLink="/experiments/results/perception" class="btn btn-default" (click)="test()">See results</a>
+  <button *ngIf="resultChooserIsVisible" class="btn btn-primary" (click)="test()">Retry</button>
+  <button *ngIf="resultChooserIsVisible" class="btn btn-danger" (click)="abort()">I couldn't find it</button>
+
+  <div *ngIf="!this.testIsRunning && !resultChooserIsVisible" class="options-holder pull-right">
+    <div>
+      <label>Mode</label>
+      <select [(ngModel)]="selectedMode" (ngModelChange)="setMode($event)">
+        <option *ngFor="let mode of modes" [value]="mode.value">{{mode.label}}</option>
+      </select>
+    </div>
+    <div>
+      <label>Amount</label>
+      <select [(ngModel)]="selectedTargetAmount" (ngModelChange)="setTargetAmount($event)">
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="40">40</option>
+        <option [value]="100">100</option>
+      </select>
+    </div>
+  </div>
+
+
+</section>

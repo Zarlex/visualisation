@@ -1,0 +1,26 @@
+<div class="perception-chart">
+  <div class="x-axis">
+    <div *ngFor="let num of xBars"
+         class="x res-{{num}}">
+      <div class="x-label">{{num}}</div>
+    </div>
+
+    <div *ngFor="let result of results"
+         class="result"
+         [style.width]="result.key+'%'"
+         [style.bottom]="getPercentageValue(result.value)+'%'">
+    </div>
+
+    <div class="background"></div>
+    <b class="axis-label y">{{yLabel}}</b>
+  </div>
+
+  <div class="y-axis">
+    <div *ngFor="let num of yBars"
+         class="y res-{{num}}">
+      <div *ngIf="(num/10)%2 === 0" class="y-label">{{1000-num*10}}ms</div>
+    </div>
+
+    <b class="axis-label x">{{xLabel}}</b>
+  </div>
+</div>

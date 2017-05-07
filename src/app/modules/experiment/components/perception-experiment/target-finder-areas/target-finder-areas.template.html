@@ -1,0 +1,14 @@
+<div class="target-finder-areas">
+  <div class="segment top left">
+    <random-element-placing [hasPoi]="targetArea === 1" [amount]="amount" [boxSize]="size" [mode]="mode" #segment1></random-element-placing>
+  </div>
+  <div class="segment top right">
+    <random-element-placing [hasPoi]="targetArea === 2" [amount]="amount" [boxSize]="size" [mode]="mode" #segment2></random-element-placing>
+  </div>
+  <div class="segment bottom left">
+    <random-element-placing [hasPoi]="targetArea === 3" [amount]="amount" [boxSize]="size" [mode]="mode" #segment3></random-element-placing>
+  </div>
+  <div class="segment bottom right">
+    <random-element-placing [hasPoi]="targetArea === 4" [amount]="amount" [boxSize]="size" [mode]="mode" #segment4></random-element-placing>
+  </div>
+</div>

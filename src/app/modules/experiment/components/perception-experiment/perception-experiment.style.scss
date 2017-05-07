@@ -1,0 +1,14 @@
+@import '../../../../variables';
+
+:host{
+ target-finder-areas{
+   width: inherit;
+   height: inherit;
+ }
+
+ .options-holder{
+   display: flex;
+ }
+}
+
+

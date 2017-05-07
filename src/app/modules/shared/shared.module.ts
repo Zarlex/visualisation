@@ -5,6 +5,8 @@ import {RangeSliderComponent} from './components/range-slider/range-slider.compo
 import {WizardComponent} from './components/wizard/wizard.component';
 import {WizardEntryComponent} from './components/wizard/wizard-entry/wizard-entry.component';
 import {DeviationChartComponent} from './components/deviation-chart/deviation-chart.component';
+import {RandomElementPlacingComponent} from './components/random-element-placing/random-element-placing.component';
+import {PerceptionChartComponent} from './components/perception-chart/perception-chart.component';
 
 @NgModule({
   imports: [
@@ -13,15 +15,19 @@ import {DeviationChartComponent} from './components/deviation-chart/deviation-ch
   ],
   declarations: [
     DeviationChartComponent,
+    PerceptionChartComponent,
     RangeSliderComponent,
     WizardComponent,
-    WizardEntryComponent
+    WizardEntryComponent,
+    RandomElementPlacingComponent
   ],
   exports: [
     DeviationChartComponent,
+    PerceptionChartComponent,
     RangeSliderComponent,
     WizardComponent,
-    WizardEntryComponent
+    WizardEntryComponent,
+    RandomElementPlacingComponent
   ]
 })
 export class SharedModule {

@@ -1,0 +1,68 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Perception Experiment–All results</h1>
+  </header>
+
+  <section>
+
+    <div *ngIf="colorResults && colorResults.length>0">
+      <h2>Color</h2>
+      <perception-chart
+        [values]="colorResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="enclosureResults && enclosureResults.length>0">
+      <h2>Enclosure</h2>
+      <perception-chart
+        [values]="enclosureResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="animationResults && animationResults.length>0">
+      <h2>Animation</h2>
+      <perception-chart
+        [values]="animationResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="directionResults && directionResults.length>0">
+      <h2>Direction</h2>
+      <perception-chart
+        [values]="directionResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="shapeResults && shapeResults.length>0">
+      <h2>Shape</h2>
+      <perception-chart
+        [values]="shapeResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="sizeResults && sizeResults.length>0">
+      <h2>Size</h2>
+      <perception-chart
+        [values]="sizeResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+    <div *ngIf="composedResults && composedResults.length>0">
+      <h2>Composed</h2>
+      <perception-chart
+        [values]="composedResults"
+        xLabel="Distractor Amount"
+        yLabel="Avg. Time needed"></perception-chart>
+      <hr>
+    </div>
+
+  </section>
+
+</section>

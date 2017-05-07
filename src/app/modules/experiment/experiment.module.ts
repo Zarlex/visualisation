@@ -8,6 +8,10 @@ import {RandomSizeDirective} from './directives/random-size.directive';
 import {SharedModule} from '../shared/shared.module';
 import {CircleExperimentResultComponent} from './components/results/circle-experiment-result/circle-experiment-result.component';
 import {CircleExperimentResultsComponent} from './components/results/circle-experiment-results/circle-experiment-results.component';
+import {PerceptionExperimentComponent} from './components/perception-experiment/perception-experiment.component';
+import {HideAfterTimeComponent} from './components/perception-experiment/hide-after-time/hide-after-time.component';
+import {TargetFinderAreasComponent} from './components/perception-experiment/target-finder-areas/target-finder-areas.component';
+import {PerceptionExperimentResultsComponent} from './components/results/perception-experiment-results/perception-experiment-results.component';
 
 @NgModule({
   imports: [
@@ -19,8 +23,12 @@ import {CircleExperimentResultsComponent} from './components/results/circle-expe
   ],
   declarations: [
     CircleExperimentComponent,
+    PerceptionExperimentComponent,
+    TargetFinderAreasComponent,
+    HideAfterTimeComponent,
     CircleExperimentResultComponent,
     CircleExperimentResultsComponent,
+    PerceptionExperimentResultsComponent,
     RandomSizeDirective
   ]
 })
