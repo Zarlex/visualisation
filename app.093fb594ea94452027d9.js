@@ -7466,7 +7466,7 @@ webpackJsonp([0],[
 	    }
 	    VisualisationModel.prototype.hostName = function () {
 	        if (true) {
-	            return 'http://api.viz.zarg.es:3000';
+	            return 'http://ec2-52-59-231-57.eu-central-1.compute.amazonaws.com:3000';
 	        }
 	        else {
 	            return 'http://localhost:3000';
@@ -7768,7 +7768,7 @@ webpackJsonp([0],[
 	    }
 	    VisualisationCollection.prototype.hostName = function () {
 	        if (true) {
-	            return 'http://api.viz.zarg.es:3000';
+	            return 'http://ec2-52-59-231-57.eu-central-1.compute.amazonaws.com:3000';
 	        }
 	        else {
 	            return 'http://localhost:3000';
