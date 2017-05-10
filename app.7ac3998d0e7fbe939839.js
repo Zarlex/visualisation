@@ -8439,13 +8439,14 @@ webpackJsonp([0],[
 	        }, 500);
 	    };
 	    HideAfterTimeComponent.prototype.choseResult = function (result, ev) {
+	        var el = ev.target;
 	        if (result === this.correctResultNum) {
-	            ev.srcElement.classList.add('correct');
-	            this.notify(Status.CORRECT_RESULT_WAS_CHOSEN, ev.srcElement);
+	            el.classList.add('correct');
+	            this.notify(Status.CORRECT_RESULT_WAS_CHOSEN, el);
 	        }
 	        else {
-	            ev.srcElement.classList.add('wrong');
-	            this.notify(Status.WRONG_RESULT_WAS_CHOSEN, ev.srcElement);
+	            el.classList.add('wrong');
+	            this.notify(Status.WRONG_RESULT_WAS_CHOSEN, el);
 	        }
 	    };
 	    HideAfterTimeComponent.prototype.ngOnChanges = function (changes) {
@@ -8502,7 +8503,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ":host {\n  position: relative;\n  display: block; }\n  :host .content {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    flex-wrap: wrap;\n    opacity: 0; }\n    :host .content.visible {\n      opacity: 1; }\n  :host .countdown {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .countdown .test-time {\n      position: absolute;\n      width: 100%;\n      text-align: center;\n      top: 35%; }\n    :host .countdown .box-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%; }\n      :host .countdown .box-holder .box {\n        width: 30px;\n        height: 30px;\n        background: #eeeeee;\n        margin-right: 5px;\n        transition: background 0.2s ease; }\n        :host .countdown .box-holder .box.active {\n          background: transparent; }\n  :host .result-selector {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .result-selector .option-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%;\n      flex-wrap: wrap; }\n      :host .result-selector .option-holder .option {\n        width: calc(50% - 10px);\n        height: calc(50% - 10px);\n        margin: 5px;\n        background: #eeeeee;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 30px;\n        cursor: pointer;\n        transition: all 0.5s ease; }\n        :host .result-selector .option-holder .option:hover {\n          background: #f0ad4e;\n          color: white; }\n        :host .result-selector .option-holder .option.correct {\n          background: #5cb85c !important;\n          color: white; }\n        :host .result-selector .option-holder .option.wrong {\n          background: #d9534f !important;\n          color: white; }\n", ""]);
+	exports.push([module.id, ":host {\n  position: relative;\n  display: block; }\n  :host .content {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    flex-wrap: wrap;\n    opacity: 0; }\n    :host .content.visible {\n      opacity: 1; }\n  :host .countdown {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .countdown .test-time {\n      position: absolute;\n      width: 100%;\n      text-align: center;\n      top: 35%; }\n    :host .countdown .box-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%; }\n      :host .countdown .box-holder .box {\n        width: 30px;\n        height: 30px;\n        background: #eeeeee;\n        margin-right: 5px;\n        transition: background 0.2s ease; }\n        :host .countdown .box-holder .box.active {\n          background: transparent; }\n  :host .result-selector {\n    position: absolute;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%; }\n    :host .result-selector .option-holder {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 100%;\n      height: 100%;\n      flex-wrap: wrap; }\n      :host .result-selector .option-holder .option {\n        width: calc(50% - 10px);\n        height: calc(50% - 10px);\n        margin: 5px;\n        background: #eeeeee;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 30px;\n        cursor: pointer;\n        transition: all 0.5s ease; }\n        :host .result-selector .option-holder .option:hover {\n          background: #f0ad4e;\n          color: white; }\n        :host .result-selector .option-holder .option.correct {\n          background: #5cb85c !important;\n          color: white; }\n        :host .result-selector .option-holder .option.wrong {\n          background: #d9534f !important;\n          color: white; }\n", ""]);
 
 	// exports
 
