@@ -69,12 +69,13 @@ export class HideAfterTimeComponent{
   }
 
   public choseResult(result: number, ev: MouseEvent){
+    let el: HTMLElement = <HTMLElement>ev.target;
     if(result === this.correctResultNum){
-      ev.srcElement.classList.add('correct');
-      this.notify(Status.CORRECT_RESULT_WAS_CHOSEN, ev.srcElement);
+      el.classList.add('correct');
+      this.notify(Status.CORRECT_RESULT_WAS_CHOSEN, el);
     } else {
-      ev.srcElement.classList.add('wrong');
-      this.notify(Status.WRONG_RESULT_WAS_CHOSEN, ev.srcElement);
+      el.classList.add('wrong');
+      this.notify(Status.WRONG_RESULT_WAS_CHOSEN, el);
     }
   }
 
