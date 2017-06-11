@@ -2,11 +2,12 @@ import {Collection} from 'backbone';
 import {BaseModel} from '../models/base.model';
 import {Injectable} from '@angular/core';
 import {getUrl} from '../utils/get_url.util';
-import {extend} from 'underscore';
+import {isUndefined, extend} from 'underscore';
 import {prepareSearchParams} from '../utils/prepare_search_params';
+import {Selectable} from './selectable';
+import {SelectableCollection} from './selectable.collection';
 
-@Injectable()
-export class BaseCollection<TModel extends BaseModel> extends Collection<TModel> {
+export class BaseCollection<TModel extends BaseModel> extends SelectableCollection<TModel> {
   model: any = BaseModel;
 
   queryParams: Object = {};
@@ -14,13 +15,6 @@ export class BaseCollection<TModel extends BaseModel> extends Collection<TModel>
   endpoint: string = null;
 
   sortOrder: string = null;
-
-  constructor() {
-    super();
-    this.on('sync', () => {
-      this.sortOrder = null;
-    });
-  }
 
   hostName(): string {
     return '';

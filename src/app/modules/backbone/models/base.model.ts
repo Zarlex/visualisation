@@ -4,9 +4,10 @@ import {getUrl} from '../utils/get_url.util';
 import {request} from '../utils/request.util';
 import {extend} from 'underscore';
 import {prepareSearchParams} from '../utils/prepare_search_params';
+import {SelectableModel} from './selectable.model';
 
-@Injectable()
-export class BaseModel extends NestedModel {
+export class BaseModel extends SelectableModel {
+
   queryParams: Object = {};
 
   endpoint: string = null;
