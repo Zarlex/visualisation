@@ -7,6 +7,7 @@ import {WizardEntryComponent} from './components/wizard/wizard-entry/wizard-entr
 import {DeviationChartComponent} from './components/deviation-chart/deviation-chart.component';
 import {RandomElementPlacingComponent} from './components/random-element-placing/random-element-placing.component';
 import {PerceptionChartComponent} from './components/perception-chart/perception-chart.component';
+import {RadarChartComponent} from './components/radar-chart/radar-chart.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {PerceptionChartComponent} from './components/perception-chart/perception
   declarations: [
     DeviationChartComponent,
     PerceptionChartComponent,
+    RadarChartComponent,
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
@@ -24,6 +26,7 @@ import {PerceptionChartComponent} from './components/perception-chart/perception
   exports: [
     DeviationChartComponent,
     PerceptionChartComponent,
+    RadarChartComponent,
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
