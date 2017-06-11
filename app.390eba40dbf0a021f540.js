@@ -207,13 +207,13 @@ webpackJsonp([0],[
 	var forms_1 = __webpack_require__(62);
 	var http_1 = __webpack_require__(65);
 	var backbone_module_1 = __webpack_require__(66);
-	var dashboard_module_1 = __webpack_require__(77);
-	var main_component_1 = __webpack_require__(101);
-	var main_routes_1 = __webpack_require__(105);
+	var dashboard_module_1 = __webpack_require__(81);
+	var main_component_1 = __webpack_require__(105);
+	var main_routes_1 = __webpack_require__(109);
 	var common_1 = __webpack_require__(22);
-	var nav_component_1 = __webpack_require__(106);
-	var experiment_module_1 = __webpack_require__(110);
-	var shared_module_1 = __webpack_require__(157);
+	var nav_component_1 = __webpack_require__(110);
+	var experiment_module_1 = __webpack_require__(114);
+	var shared_module_1 = __webpack_require__(170);
 	var MainModule = (function () {
 	    function MainModule() {
 	    }
@@ -6214,7 +6214,7 @@ webpackJsonp([0],[
 	var underscore_1 = __webpack_require__(67);
 	__webpack_require__(68);
 	var base_model_1 = __webpack_require__(70);
-	var base_collection_1 = __webpack_require__(76);
+	var base_collection_1 = __webpack_require__(78);
 	var BackboneModule = (function () {
 	    function BackboneModule(http) {
 	        this.http = http;
@@ -6295,19 +6295,12 @@ webpackJsonp([0],[
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var nested_model_1 = __webpack_require__(71);
-	var core_1 = __webpack_require__(3);
-	var get_url_util_1 = __webpack_require__(72);
-	var request_util_1 = __webpack_require__(74);
+	var get_url_util_1 = __webpack_require__(71);
+	var request_util_1 = __webpack_require__(73);
 	var underscore_1 = __webpack_require__(67);
-	var prepare_search_params_1 = __webpack_require__(75);
+	var prepare_search_params_1 = __webpack_require__(74);
+	var selectable_model_1 = __webpack_require__(75);
 	var BaseModel = (function (_super) {
 	    __extends(BaseModel, _super);
 	    function BaseModel() {
@@ -6340,15 +6333,178 @@ webpackJsonp([0],[
 	        return _super.prototype.sync.call(this, method, model, options);
 	    };
 	    return BaseModel;
-	}(nested_model_1.NestedModel));
-	BaseModel = __decorate([
-	    core_1.Injectable()
-	], BaseModel);
+	}(selectable_model_1.SelectableModel));
 	exports.BaseModel = BaseModel;
 
 
 /***/ }),
 /* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var backbone_1 = __webpack_require__(68);
+	var underscore_1 = __webpack_require__(67);
+	var concat_url_parts_util_1 = __webpack_require__(72);
+	function getUrl(instance) {
+	    var hostName, basePath, endpoint;
+	    if (instance instanceof backbone_1.Model || instance instanceof backbone_1.Collection) {
+	        hostName = underscore_1.result(instance, 'hostName') || '';
+	        basePath = underscore_1.result(instance, 'basePath') || '';
+	        endpoint = underscore_1.result(instance, 'endpoint');
+	    }
+	    else {
+	        throw new Error('An instance of a collection or a model has to be passed as argument to the function');
+	    }
+	    if (!endpoint || endpoint.length === 0) {
+	        throw new Error('An endpoint has to be specified');
+	    }
+	    return concat_url_parts_util_1.concatUrlParts(hostName, basePath, endpoint);
+	}
+	exports.getUrl = getUrl;
+	;
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var underscore_1 = __webpack_require__(67);
+	function concatUrlParts() {
+	    var args = [];
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	        args[_i] = arguments[_i];
+	    }
+	    var urlParts = underscore_1.toArray(arguments), cleanedUrlParts = [];
+	    // remove empty strings
+	    urlParts = underscore_1.compact(urlParts);
+	    underscore_1.each(urlParts, function (url, index) {
+	        if (index === 0) {
+	            // remove only trailing slash
+	            url = url.replace(/\/$/g, '');
+	        }
+	        else {
+	            // Removing leading and trailing slash
+	            url = url.replace(/^\/|\/$/g, '');
+	        }
+	        cleanedUrlParts.push(url);
+	    });
+	    return cleanedUrlParts.join('/');
+	}
+	exports.concatUrlParts = concatUrlParts;
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var backbone_1 = __webpack_require__(68);
+	var underscore_1 = __webpack_require__(67);
+	var concat_url_parts_util_1 = __webpack_require__(72);
+	function request(url, method, options, instance) {
+	    options = options || {};
+	    var requestOptions = {
+	        url: url,
+	        type: method
+	    }, hostName;
+	    if (url && !url.match(/\/\//)) {
+	        if (instance instanceof backbone_1.Model || instance instanceof backbone_1.Collection) {
+	            hostName = underscore_1.result(instance, 'hostName');
+	        }
+	        else {
+	            hostName = '';
+	        }
+	        requestOptions.url = concat_url_parts_util_1.concatUrlParts(hostName, url);
+	    }
+	    return backbone_1.ajax(underscore_1.extend(requestOptions, options));
+	}
+	exports.request = request;
+
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var http_1 = __webpack_require__(65);
+	var underscore_1 = __webpack_require__(67);
+	function setSearchParams(searchParams, queryParams) {
+	    if (queryParams === void 0) { queryParams = {}; }
+	    underscore_1.pairs(queryParams).forEach(function (pair) {
+	        var key = pair[0], value = pair[1];
+	        searchParams.set(key, value);
+	    });
+	    return searchParams;
+	}
+	function prepareSearchParams(searchParams, queryParams) {
+	    if (!searchParams) {
+	        return setSearchParams(new http_1.URLSearchParams(), queryParams);
+	    }
+	    else if (searchParams instanceof http_1.URLSearchParams) {
+	        return setSearchParams(searchParams, queryParams);
+	    }
+	    else if (!(searchParams instanceof http_1.URLSearchParams) && underscore_1.isObject(searchParams)) {
+	        queryParams = underscore_1.extend({}, queryParams, searchParams);
+	        return setSearchParams(new http_1.URLSearchParams(), queryParams);
+	    }
+	    else {
+	        throw new Error('Search property of options has to be an object');
+	    }
+	}
+	exports.prepareSearchParams = prepareSearchParams;
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var nested_model_1 = __webpack_require__(76);
+	var selectable_1 = __webpack_require__(77);
+	var underscore_1 = __webpack_require__(67);
+	var SelectableModel = (function (_super) {
+	    __extends(SelectableModel, _super);
+	    function SelectableModel(attributes, options) {
+	        if (options === void 0) { options = {}; }
+	        var _this = _super.call(this, attributes, options) || this;
+	        _this.selectableModelConstructor(options);
+	        return _this;
+	    }
+	    SelectableModel.prototype.selectableOptions = function () {
+	        return {
+	            selected: false,
+	            isDisabled: null
+	        };
+	    };
+	    SelectableModel.prototype.selectableModelConstructor = function (options) {
+	        if (options === void 0) { options = {}; }
+	        if (underscore_1.isUndefined(options.selectable) || options.selectable) {
+	            this.selectable = new selectable_1.Selectable(this, this.selectableOptions.call(this, options));
+	        }
+	    };
+	    return SelectableModel;
+	}(nested_model_1.NestedModel));
+	exports.SelectableModel = SelectableModel;
+
+
+/***/ }),
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6529,129 +6685,76 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 72 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
+	var base_model_1 = __webpack_require__(70);
 	var backbone_1 = __webpack_require__(68);
 	var underscore_1 = __webpack_require__(67);
-	var concat_url_parts_util_1 = __webpack_require__(73);
-	function getUrl(instance) {
-	    var hostName, basePath, endpoint;
-	    if (instance instanceof backbone_1.Model || instance instanceof backbone_1.Collection) {
-	        hostName = underscore_1.result(instance, 'hostName') || '';
-	        basePath = underscore_1.result(instance, 'basePath') || '';
-	        endpoint = underscore_1.result(instance, 'endpoint');
+	var Selectable = (function () {
+	    function Selectable(modelInstance, options) {
+	        if (options === void 0) { options = {}; }
+	        this._selected = false;
+	        this.isInCollection = false;
+	        this.unSelect = function (options) {
+	            if (options === void 0) { options = {}; }
+	            options = options || {};
+	            if (this.isSelected()) {
+	                this._selected = false;
+	                if (!options.silent) {
+	                    this.trigger('change change:unselect', this._model, this);
+	                }
+	            }
+	        };
+	        this._model = modelInstance;
+	        this._options = options;
+	        this._selected = options.selected || false;
+	        this.hasDisabledFn = (typeof options.isDisabled === 'function') || false;
+	        if (!(this._model instanceof base_model_1.BaseModel)) {
+	            throw new Error('First parameter has to be the instance of a model');
+	        }
 	    }
-	    else {
-	        throw new Error('An instance of a collection or a model has to be passed as argument to the function');
-	    }
-	    if (!endpoint || endpoint.length === 0) {
-	        throw new Error('An endpoint has to be specified');
-	    }
-	    return concat_url_parts_util_1.concatUrlParts(hostName, basePath, endpoint);
-	}
-	exports.getUrl = getUrl;
-	;
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var underscore_1 = __webpack_require__(67);
-	function concatUrlParts() {
-	    var args = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i] = arguments[_i];
-	    }
-	    var urlParts = underscore_1.toArray(arguments), cleanedUrlParts = [];
-	    // remove empty strings
-	    urlParts = underscore_1.compact(urlParts);
-	    underscore_1.each(urlParts, function (url, index) {
-	        if (index === 0) {
-	            // remove only trailing slash
-	            url = url.replace(/\/$/g, '');
+	    Selectable.prototype.isDisabled = function () {
+	        if (this.hasDisabledFn) {
+	            return this._options.isDisabled.apply(this._model, arguments);
+	        }
+	        return false;
+	    };
+	    ;
+	    Selectable.prototype.isSelected = function () {
+	        return this._selected;
+	    };
+	    ;
+	    Selectable.prototype.select = function (options) {
+	        if (options === void 0) { options = {}; }
+	        options = options || {};
+	        if ((!this.isDisabled() || options.force) && !this.isSelected()) {
+	            this._selected = true;
+	            if (!options.silent) {
+	                this.trigger('change change:select', this._model, this);
+	            }
+	        }
+	    };
+	    ;
+	    Selectable.prototype.toggleSelect = function () {
+	        if (this.isSelected()) {
+	            this.unSelect();
 	        }
 	        else {
-	            // Removing leading and trailing slash
-	            url = url.replace(/^\/|\/$/g, '');
+	            this.select();
 	        }
-	        cleanedUrlParts.push(url);
-	    });
-	    return cleanedUrlParts.join('/');
-	}
-	exports.concatUrlParts = concatUrlParts;
+	    };
+	    ;
+	    return Selectable;
+	}());
+	exports.Selectable = Selectable;
+	underscore_1.extend(Selectable.prototype, backbone_1.Events);
 
 
 /***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var backbone_1 = __webpack_require__(68);
-	var underscore_1 = __webpack_require__(67);
-	var concat_url_parts_util_1 = __webpack_require__(73);
-	function request(url, method, options, instance) {
-	    options = options || {};
-	    var requestOptions = {
-	        url: url,
-	        type: method
-	    }, hostName;
-	    if (url && !url.match(/\/\//)) {
-	        if (instance instanceof backbone_1.Model || instance instanceof backbone_1.Collection) {
-	            hostName = underscore_1.result(instance, 'hostName');
-	        }
-	        else {
-	            hostName = '';
-	        }
-	        requestOptions.url = concat_url_parts_util_1.concatUrlParts(hostName, url);
-	    }
-	    return backbone_1.ajax(underscore_1.extend(requestOptions, options));
-	}
-	exports.request = request;
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var http_1 = __webpack_require__(65);
-	var underscore_1 = __webpack_require__(67);
-	function setSearchParams(searchParams, queryParams) {
-	    if (queryParams === void 0) { queryParams = {}; }
-	    underscore_1.pairs(queryParams).forEach(function (pair) {
-	        var key = pair[0], value = pair[1];
-	        searchParams.set(key, value);
-	    });
-	    return searchParams;
-	}
-	function prepareSearchParams(searchParams, queryParams) {
-	    if (!searchParams) {
-	        return setSearchParams(new http_1.URLSearchParams(), queryParams);
-	    }
-	    else if (searchParams instanceof http_1.URLSearchParams) {
-	        return setSearchParams(searchParams, queryParams);
-	    }
-	    else if (!(searchParams instanceof http_1.URLSearchParams) && underscore_1.isObject(searchParams)) {
-	        queryParams = underscore_1.extend({}, queryParams, searchParams);
-	        return setSearchParams(new http_1.URLSearchParams(), queryParams);
-	    }
-	    else {
-	        throw new Error('Search property of options has to be an object');
-	    }
-	}
-	exports.prepareSearchParams = prepareSearchParams;
-
-
-/***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6665,26 +6768,16 @@ webpackJsonp([0],[
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var backbone_1 = __webpack_require__(68);
 	var base_model_1 = __webpack_require__(70);
-	var core_1 = __webpack_require__(3);
-	var get_url_util_1 = __webpack_require__(72);
+	var get_url_util_1 = __webpack_require__(71);
 	var underscore_1 = __webpack_require__(67);
-	var prepare_search_params_1 = __webpack_require__(75);
+	var prepare_search_params_1 = __webpack_require__(74);
+	var selectable_collection_1 = __webpack_require__(79);
 	var BaseCollection = (function (_super) {
 	    __extends(BaseCollection, _super);
 	    function BaseCollection() {
-	        var _this = _super.call(this) || this;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        _this.model = base_model_1.BaseModel;
 	        _this.queryParams = {};
 	        _this.endpoint = null;
@@ -6692,9 +6785,6 @@ webpackJsonp([0],[
 	        _this.url = function () {
 	            return get_url_util_1.getUrl(_this);
 	        };
-	        _this.on('sync', function () {
-	            _this.sortOrder = null;
-	        });
 	        return _this;
 	    }
 	    BaseCollection.prototype.hostName = function () {
@@ -6727,16 +6817,363 @@ webpackJsonp([0],[
 	        this.sortOrder = 'DESC';
 	    };
 	    return BaseCollection;
-	}(backbone_1.Collection));
-	BaseCollection = __decorate([
-	    core_1.Injectable(),
-	    __metadata("design:paramtypes", [])
-	], BaseCollection);
+	}(selectable_collection_1.SelectableCollection));
 	exports.BaseCollection = BaseCollection;
 
 
 /***/ }),
-/* 77 */
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var backbone_1 = __webpack_require__(68);
+	var underscore_1 = __webpack_require__(67);
+	var selectable_1 = __webpack_require__(80);
+	var SelectableCollection = (function (_super) {
+	    __extends(SelectableCollection, _super);
+	    function SelectableCollection(models, options) {
+	        var _this = _super.call(this) || this;
+	        _this.selectableCollectionConstructor(options);
+	        return _this;
+	    }
+	    SelectableCollection.prototype.selectableOptions = function () {
+	        return {
+	            isSingleSelection: false,
+	            addPreSelectedToCollection: false,
+	            unSelectOnRemove: false,
+	            preSelected: new SelectableCollection(null, { selectable: false })
+	        };
+	    };
+	    SelectableCollection.prototype.selectableCollectionConstructor = function (options) {
+	        if (options === void 0) { options = {}; }
+	        if (underscore_1.isUndefined(options.selectable) || options.selectable) {
+	            this.selectable = new selectable_1.Selectable(this, this.selectableOptions.call(this, options));
+	        }
+	    };
+	    return SelectableCollection;
+	}(backbone_1.Collection));
+	exports.SelectableCollection = SelectableCollection;
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var backbone_1 = __webpack_require__(68);
+	var underscore_1 = __webpack_require__(67);
+	var selectable_collection_1 = __webpack_require__(79);
+	var selectable_model_1 = __webpack_require__(75);
+	var Selectable = (function () {
+	    function Selectable(collectionInstance, options) {
+	        if (options === void 0) { options = {}; }
+	        var _this = this;
+	        this._modelHasDisabledFn = true;
+	        this.reset = function () {
+	            this.unSelectAll();
+	            this._preselect.call(this);
+	        };
+	        this.useSelectionFor = function (modelOrCollection) {
+	            if (modelOrCollection instanceof selectable_model_1.SelectableModel) {
+	                return this.setModelFromSelection(modelOrCollection);
+	            }
+	            else if (modelOrCollection instanceof selectable_collection_1.SelectableCollection) {
+	                return this.setCollectionFromSelection(modelOrCollection);
+	            }
+	        };
+	        this._collection = collectionInstance;
+	        this._options = options;
+	        this._isSingleSelection = options.isSingleSelection || false;
+	        this._addPreSelectedToCollection = options.addPreSelectedToCollection || false;
+	        this._unSelectOnRemove = options.unSelectOnRemove || false;
+	        this._preSelected = options.preSelected;
+	        this._hasPreSelectedItems = !!options.preSelected;
+	        this._selected = new selectable_collection_1.SelectableCollection(null, { selectable: false });
+	        if (!(this._collection instanceof selectable_collection_1.SelectableCollection)) {
+	            throw new Error('The first parameter has to be from type Backbone.Collection');
+	        }
+	        this._collection.each(function (model) {
+	            _this._modelHasDisabledFn = model.selectable.hasDisabledFn;
+	            _this._setModelSelectableOptions.call(_this, model);
+	            _this._updateSelectedModel.call(_this, model);
+	        });
+	        this._collection.on('add', function (model) {
+	            _this._modelHasDisabledFn = model.selectable.hasDisabledFn;
+	            _this._setModelSelectableOptions.call(_this, model);
+	            _this._updateSelectedModel.call(_this, model);
+	        }, this);
+	        this._collection.on('remove', function (model) {
+	            if (_this._unSelectOnRemove) {
+	                _this.unSelect(model);
+	            }
+	            else {
+	                _this._setModelSelectableOptions.call(_this, model);
+	            }
+	        }, this);
+	        this._collection.on('reset', function () {
+	            if (_this._unSelectOnRemove) {
+	                _this.unSelectAll();
+	            }
+	            else {
+	                _this.getSelected().each(function (model) {
+	                    _this._setModelSelectableOptions.call(_this, model);
+	                }, _this);
+	            }
+	        }, this);
+	        if (this._hasPreSelectedItems) {
+	            this._preselect.call(this);
+	        }
+	    }
+	    Selectable.prototype._preselect = function () {
+	        if (this._preSelected instanceof selectable_model_1.SelectableModel) {
+	            this._isSingleSelection = true;
+	            this.preSelectModel(this._preSelected);
+	        }
+	        else if (this._preSelected instanceof selectable_collection_1.SelectableCollection) {
+	            this._isSingleSelection = false;
+	            this.preSelectCollection(this._preSelected);
+	        }
+	        else {
+	            throw new Error('The option preSelected has to be either a Backbone Model or Collection');
+	        }
+	    };
+	    ;
+	    Selectable.prototype._selectWhenModelIsSelected = function (model) {
+	        if (!this._selected.get(model)) {
+	            this.select(model);
+	        }
+	    };
+	    ;
+	    Selectable.prototype._unSelectWhenModelIsUnSelected = function (model) {
+	        if (this._selected.get(model)) {
+	            this.unSelect(model);
+	        }
+	    };
+	    ;
+	    Selectable.prototype._unSelectWhenModelIsUnset = function (model, opts) {
+	        if (opts === void 0) { opts = {}; }
+	        if (opts.unset || !model.id || model.id.length < 1) {
+	            this.unSelect(model);
+	        }
+	    };
+	    ;
+	    Selectable.prototype._bindModelOnSelectListener = function (model) {
+	        model.selectable.off('change:select', this._selectWhenModelIsSelected, this);
+	        model.selectable.on('change:select', this._selectWhenModelIsSelected, this);
+	    };
+	    ;
+	    Selectable.prototype._bindModelOnUnSelectListener = function (model) {
+	        model.selectable.off('change:unselect', this._unSelectWhenModelIsUnSelected, this);
+	        model.selectable.on('change:unselect', this._unSelectWhenModelIsUnSelected, this);
+	    };
+	    ;
+	    Selectable.prototype._setModelSelectableOptions = function (model, options) {
+	        if (options === void 0) { options = {}; }
+	        if (model && model.selectable) {
+	            var selectedModel = this._selected.get(model);
+	            if (selectedModel) {
+	                if (this._collection.get(model)) {
+	                    model.selectable.isInCollection = true;
+	                    selectedModel.selectable.isInCollection = true;
+	                }
+	                else {
+	                    model.selectable.isInCollection = false;
+	                    selectedModel.selectable.isInCollection = false;
+	                }
+	                model.selectable.select(options);
+	                selectedModel.selectable.select(options);
+	            }
+	            else {
+	                model.selectable.unSelect(options);
+	            }
+	            this._bindModelOnSelectListener.call(this, model);
+	            this._bindModelOnUnSelectListener.call(this, model);
+	        }
+	    };
+	    ;
+	    Selectable.prototype._updatePreSelectedModel = function (preSelectedModel, model) {
+	        if (this._hasPreSelectedItems) {
+	            if (this._preSelected instanceof selectable_model_1.SelectableModel) {
+	                this._preSelected = model;
+	            }
+	            else if (this._preSelected instanceof selectable_collection_1.SelectableCollection) {
+	                this._preSelected.remove(preSelectedModel, { silent: true });
+	                this._preSelected.add(model, { silent: true });
+	            }
+	        }
+	    };
+	    ;
+	    Selectable.prototype._updateSelectedModel = function (model) {
+	        var selectedModel = this.getSelected().get(model);
+	        if (selectedModel) {
+	            this.unSelect(selectedModel, { silent: true });
+	            this.select(model, { silent: true });
+	            this._updatePreSelectedModel.call(this, selectedModel, model);
+	            this._setModelSelectableOptions.call(this, selectedModel, { silent: true });
+	        }
+	    };
+	    ;
+	    Selectable.prototype.getSelected = function () {
+	        return this._selected;
+	    };
+	    ;
+	    Selectable.prototype.getDisabled = function () {
+	        var disabled = new selectable_collection_1.SelectableCollection(null, { selectable: false });
+	        if (this._modelHasDisabledFn) {
+	            this._collection.each(function (model) {
+	                if (model.selectable && model.selectable.isDisabled()) {
+	                    disabled.add(model);
+	                }
+	            });
+	        }
+	        return disabled;
+	    };
+	    ;
+	    Selectable.prototype.select = function (model, options) {
+	        if (options === void 0) { options = {}; }
+	        if (model instanceof selectable_model_1.SelectableModel) {
+	            if (!(model instanceof this._collection.model)) {
+	                model = new this._collection.model(model.toJSON());
+	            }
+	            if (!model.selectable || (model.selectable.isDisabled() && !options.force)) {
+	                return;
+	            }
+	            if (this._isSingleSelection) {
+	                this.unSelectAll();
+	            }
+	            if (this._collection.get(model)) {
+	                model = this._collection.get(model);
+	            }
+	            model.on('change', this._unSelectWhenModelIsUnset, this);
+	            this._selected.add(model, options);
+	            this._setModelSelectableOptions.call(this, model, options);
+	            if (!options.silent) {
+	                this.trigger('change change:add', model, this);
+	            }
+	        }
+	        else {
+	            throw new Error('The first argument has to be a Backbone Model');
+	        }
+	    };
+	    ;
+	    Selectable.prototype.selectAll = function () {
+	        this._collection.each(function (model) {
+	            this.select(model);
+	        }, this);
+	    };
+	    ;
+	    Selectable.prototype.unSelect = function (model, options) {
+	        if (options === void 0) { options = {}; }
+	        options = options || {};
+	        model.off('change', this._unSelectWhenModelIsUnset, this);
+	        this._selected.remove(model, options);
+	        this._setModelSelectableOptions.call(this, model, options);
+	        if (!options.silent) {
+	            this.trigger('change change:remove', model, this);
+	        }
+	    };
+	    ;
+	    Selectable.prototype.unSelectAll = function () {
+	        this.getSelected().each(function (model) {
+	            this.unSelect(model);
+	        }, this);
+	    };
+	    ;
+	    Selectable.prototype.toggleSelectAll = function () {
+	        if (this.allSelected()) {
+	            this.unSelectAll();
+	        }
+	        else {
+	            this.selectAll();
+	        }
+	    };
+	    ;
+	    Selectable.prototype.allSelected = function () {
+	        var disabledModelsAmount = this.getDisabled().length;
+	        return this.getSelected().length === this._collection.length - disabledModelsAmount;
+	    };
+	    ;
+	    Selectable.prototype.allDisabled = function () {
+	        return this.getDisabled().length === this._collection.length;
+	    };
+	    ;
+	    Selectable.prototype.isSingleSelection = function () {
+	        return this._isSingleSelection;
+	    };
+	    ;
+	    Selectable.prototype.preSelectModel = function (model) {
+	        if (model.id) {
+	            this._hasPreSelectedItems = true;
+	            if (!this._collection.get(model) && this._addPreSelectedToCollection) {
+	                this._collection.add(model);
+	            }
+	            else if (this._collection.get(model)) {
+	                model = this._collection.get(model);
+	            }
+	            this.select(model, { force: true, silent: true });
+	        }
+	    };
+	    ;
+	    Selectable.prototype.preSelectCollection = function (collection) {
+	        var _this = this;
+	        collection.each(function (model) {
+	            _this.preSelectModel(model);
+	        }, this);
+	        collection.on('add', function (model) {
+	            _this.preSelectModel(model);
+	        }, this);
+	        collection.on('remove', function (model) {
+	            _this.unSelect(model);
+	        }, this);
+	    };
+	    ;
+	    Selectable.prototype.setCollectionFromSelection = function (collection) {
+	        var selected = this.getSelected();
+	        if (collection instanceof selectable_collection_1.SelectableCollection) {
+	            collection.reset(selected.toJSON());
+	        }
+	        else {
+	            throw new Error('[Selectable] The passed collection is not an instance of mwUI.Backbone.Collection');
+	        }
+	        return collection;
+	    };
+	    ;
+	    Selectable.prototype.setModelFromSelection = function (model) {
+	        var selected = this.getSelected();
+	        if (model instanceof selectable_model_1.SelectableModel) {
+	            if (selected.length === 0) {
+	                model.clear();
+	            }
+	            else {
+	                model.set(selected.first().toJSON());
+	            }
+	        }
+	        else {
+	            throw new Error('[Selectable] The passed model is not an instance of Backbone.Model');
+	        }
+	        return model;
+	    };
+	    ;
+	    return Selectable;
+	}());
+	exports.Selectable = Selectable;
+	underscore_1.extend(Selectable.prototype, backbone_1.Events);
+
+
+/***/ }),
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6748,8 +7185,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var index_component_1 = __webpack_require__(78);
-	var dashboard_routes_1 = __webpack_require__(83);
+	var index_component_1 = __webpack_require__(82);
+	var dashboard_routes_1 = __webpack_require__(87);
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
 	var backbone_module_1 = __webpack_require__(66);
@@ -6775,7 +7212,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6798,8 +7235,8 @@ webpackJsonp([0],[
 	DashboardIndexComponent = __decorate([
 	    core_1.Component({
 	        selector: 'my-dashboard',
-	        styles: [__webpack_require__(79)],
-	        template: __webpack_require__(82)
+	        styles: [__webpack_require__(83)],
+	        template: __webpack_require__(86)
 	    }),
 	    __metadata("design:paramtypes", [])
 	], DashboardIndexComponent);
@@ -6807,13 +7244,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(80);
+	var styles = __webpack_require__(84);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -6824,10 +7261,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -6838,14 +7275,14 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 81 */,
-/* 82 */
+/* 85 */,
+/* 86 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/circle\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Perception</h3>\n          <div class=\"sub-title\">Find the object</div>\n        </div>\n        <a routerLink=\"/experiments/perception\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n        <a routerLink=\"/experiments/results/perception\" class=\"btn btn-link\">\n          All results\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <h1><i class=\"fa fa-flask\"></i> Visualisation Experiments</h1>\n  </header>\n  <ul class=\"experiments\">\n    <li>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Circles</h3>\n          <div class=\"sub-title\">Guess the sizes of the circle</div>\n        </div>\n        <a routerLink=\"/experiments/results/circle\" class=\"btn btn-link\">\n          All results\n        </a>\n        <a routerLink=\"/experiments/circle\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n      </div>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Perception</h3>\n          <div class=\"sub-title\">Find the object</div>\n        </div>\n        <a routerLink=\"/experiments/results/perception\" class=\"btn btn-link\">\n          All results\n        </a>\n        <a routerLink=\"/experiments/perception\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n      </div>\n      <div class=\"experiment\">\n        <div class=\"meta\">\n          <h3 class=\"title\">Car Data</h3>\n          <div class=\"sub-title\">Multi Dimension Data Visualisation</div>\n        </div>\n        <a routerLink=\"/experiments/multi-data-dimension\" class=\"btn btn-default btn-primary\">\n          Start\n        </a>\n      </div>\n    </li>\n  </ul>\n</section>\n";
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6857,8 +7294,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var router_1 = __webpack_require__(84);
-	var index_component_1 = __webpack_require__(78);
+	var router_1 = __webpack_require__(88);
+	var index_component_1 = __webpack_require__(82);
 	var routes = [
 	    { path: 'dashboard', component: index_component_1.DashboardIndexComponent }
 	];
@@ -6877,10 +7314,6 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
 /* 88 */,
 /* 89 */,
 /* 90 */,
@@ -6894,7 +7327,11 @@ webpackJsonp([0],[
 /* 98 */,
 /* 99 */,
 /* 100 */,
-/* 101 */
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6919,8 +7356,8 @@ webpackJsonp([0],[
 	MainComponent = __decorate([
 	    core_1.Component({
 	        selector: 'visualisation-prj',
-	        styles: [__webpack_require__(102)],
-	        template: __webpack_require__(104),
+	        styles: [__webpack_require__(106)],
+	        template: __webpack_require__(108),
 	        encapsulation: core_1.ViewEncapsulation.None
 	    }),
 	    __metadata("design:paramtypes", [])
@@ -6929,13 +7366,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(103);
+	var styles = __webpack_require__(107);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -6946,10 +7383,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,600);", ""]);
 
@@ -6960,13 +7397,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"main\">\n\n  <main class=\"flex-container\">\n\n    <div class=\"routes\">\n      <router-outlet class=\"flex-item\"></router-outlet>\n    </div>\n\n  </main>\n\n</section>\n";
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6978,7 +7415,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var router_1 = __webpack_require__(84);
+	var router_1 = __webpack_require__(88);
 	var routes = [
 	    { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 	];
@@ -6997,7 +7434,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7023,8 +7460,8 @@ webpackJsonp([0],[
 	NavComponent = __decorate([
 	    core_1.Component({
 	        selector: 'nav-sidebar',
-	        styles: [__webpack_require__(107)],
-	        template: __webpack_require__(109)
+	        styles: [__webpack_require__(111)],
+	        template: __webpack_require__(113)
 	    }),
 	    __metadata("design:paramtypes", [])
 	], NavComponent);
@@ -7032,13 +7469,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(108);
+	var styles = __webpack_require__(112);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -7049,10 +7486,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -7063,13 +7500,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n\n  <div class=\"sidebar\">\n    <div class=\"cloud-player\">\n\n    </div>\n\n    <div class=\"menu\">\n      <nav>\n        <a routerLink=\"/dashboard\"\n           [routerLinkActive]=\"['is-active']\">\n          <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\n          <div class=\"text\">Search</div>\n        </a>\n      </nav>\n    </div>\n\n  </div>\n\n</section>\n";
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7084,16 +7521,17 @@ webpackJsonp([0],[
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
 	var backbone_module_1 = __webpack_require__(66);
-	var experiment_routes_1 = __webpack_require__(111);
-	var circle_experiment_component_1 = __webpack_require__(112);
-	var random_size_directive_1 = __webpack_require__(156);
-	var shared_module_1 = __webpack_require__(157);
-	var circle_experiment_result_component_1 = __webpack_require__(122);
-	var circle_experiment_results_component_1 = __webpack_require__(126);
-	var perception_experiment_component_1 = __webpack_require__(132);
-	var hide_after_time_component_1 = __webpack_require__(139);
-	var target_finder_areas_component_1 = __webpack_require__(143);
-	var perception_experiment_results_component_1 = __webpack_require__(151);
+	var experiment_routes_1 = __webpack_require__(115);
+	var circle_experiment_component_1 = __webpack_require__(116);
+	var random_size_directive_1 = __webpack_require__(169);
+	var shared_module_1 = __webpack_require__(170);
+	var circle_experiment_result_component_1 = __webpack_require__(126);
+	var circle_experiment_results_component_1 = __webpack_require__(130);
+	var perception_experiment_component_1 = __webpack_require__(136);
+	var hide_after_time_component_1 = __webpack_require__(143);
+	var target_finder_areas_component_1 = __webpack_require__(147);
+	var perception_experiment_results_component_1 = __webpack_require__(155);
+	var multi_data_dimension_experiment_component_1 = __webpack_require__(160);
 	var ExperimentModule = (function () {
 	    function ExperimentModule() {
 	    }
@@ -7116,6 +7554,7 @@ webpackJsonp([0],[
 	            circle_experiment_result_component_1.CircleExperimentResultComponent,
 	            circle_experiment_results_component_1.CircleExperimentResultsComponent,
 	            perception_experiment_results_component_1.PerceptionExperimentResultsComponent,
+	            multi_data_dimension_experiment_component_1.MultiDataDimensionExperimentComponent,
 	            random_size_directive_1.RandomSizeDirective
 	        ]
 	    })
@@ -7124,7 +7563,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7136,12 +7575,13 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var router_1 = __webpack_require__(84);
-	var circle_experiment_component_1 = __webpack_require__(112);
-	var circle_experiment_result_component_1 = __webpack_require__(122);
-	var circle_experiment_results_component_1 = __webpack_require__(126);
-	var perception_experiment_component_1 = __webpack_require__(132);
-	var perception_experiment_results_component_1 = __webpack_require__(151);
+	var router_1 = __webpack_require__(88);
+	var circle_experiment_component_1 = __webpack_require__(116);
+	var circle_experiment_result_component_1 = __webpack_require__(126);
+	var circle_experiment_results_component_1 = __webpack_require__(130);
+	var perception_experiment_component_1 = __webpack_require__(136);
+	var perception_experiment_results_component_1 = __webpack_require__(155);
+	var multi_data_dimension_experiment_component_1 = __webpack_require__(160);
 	var routes = [
 	    { path: 'experiments/circle', component: circle_experiment_component_1.CircleExperimentComponent },
 	    { path: 'experiments/perception', component: perception_experiment_component_1.PerceptionExperimentComponent },
@@ -7149,6 +7589,7 @@ webpackJsonp([0],[
 	    { path: 'experiments/results/circle/:id', component: circle_experiment_result_component_1.CircleExperimentResultComponent },
 	    { path: 'experiments/results/circle/:id/all', component: circle_experiment_results_component_1.CircleExperimentResultsComponent },
 	    { path: 'experiments/results/perception', component: perception_experiment_results_component_1.PerceptionExperimentResultsComponent },
+	    { path: 'experiments/multi-data-dimension', component: multi_data_dimension_experiment_component_1.MultiDataDimensionExperimentComponent }
 	];
 	var CircleExperimentRoutingModule = (function () {
 	    function CircleExperimentRoutingModule() {
@@ -7165,7 +7606,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7180,9 +7621,9 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var wizard_component_1 = __webpack_require__(113);
-	var circle_experiment_model_1 = __webpack_require__(117);
-	var router_1 = __webpack_require__(84);
+	var wizard_component_1 = __webpack_require__(117);
+	var circle_experiment_model_1 = __webpack_require__(121);
+	var router_1 = __webpack_require__(88);
 	var CircleExperimentComponent = (function () {
 	    function CircleExperimentComponent(circleExperimentModel, router, route) {
 	        this.circleExperimentModel = circleExperimentModel;
@@ -7255,8 +7696,8 @@ webpackJsonp([0],[
 	CircleExperimentComponent = __decorate([
 	    core_1.Component({
 	        selector: 'circle-experiment',
-	        styles: [__webpack_require__(119)],
-	        template: __webpack_require__(121),
+	        styles: [__webpack_require__(123)],
+	        template: __webpack_require__(125),
 	        providers: [circle_experiment_model_1.CircleExperimentModel]
 	    }),
 	    __metadata("design:paramtypes", [circle_experiment_model_1.CircleExperimentModel, router_1.Router, router_1.ActivatedRoute])
@@ -7265,7 +7706,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7328,8 +7769,8 @@ webpackJsonp([0],[
 	    core_1.Component({
 	        moduleId: module.id.toString(),
 	        selector: 'wizard',
-	        styles: [__webpack_require__(114)],
-	        template: __webpack_require__(116)
+	        styles: [__webpack_require__(118)],
+	        template: __webpack_require__(120)
 	    }),
 	    __metadata("design:paramtypes", [])
 	], WizardComponent);
@@ -7337,13 +7778,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(115);
+	var styles = __webpack_require__(119);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -7354,10 +7795,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -7368,13 +7809,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"slide-manager\">\n  <ng-content></ng-content>\n</div>\n";
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7396,7 +7837,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var visualisation_model_1 = __webpack_require__(118);
+	var visualisation_model_1 = __webpack_require__(122);
 	var underscore_1 = __webpack_require__(67);
 	var CircleExperimentModel = (function (_super) {
 	    __extends(CircleExperimentModel, _super);
@@ -7436,7 +7877,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7486,13 +7927,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(120);
+	var styles = __webpack_require__(124);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -7503,10 +7944,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -7517,13 +7958,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle1\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle1')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle1')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle1($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle2\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('circle2')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle2')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle2($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #circle3\n                   randomSize\n                   [orgSize]=\"100\">\n                <div class=\"circle left-circle blue\"\n                     #orgCircle>\n                </div>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (outer circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('circle3')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValCircle3($event)\"></range-slider>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container square\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\">\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   #square\n                   randomSize\n                   [orgSize]=\"100\">\n                <span>{{circleExperimentModel.get('square')+100}}%</span>\n              </div>\n            </div>\n          </div>\n          <hr>\n          <h3>Guess how much bigger the orange circle is (right circle)</h3>\n          <range-slider\n            [min]=\"0\"\n            [max]=\"100\"\n            [value]=\"circleExperimentModel.get('square')\"\n            [step]=\"10\"\n            [transformDisplayValue]=\"transformRangeVal\"\n            (valueChanged)=\"changedValSquare($event)\"></range-slider>\n        </wizard-entry>\n\n      </wizard>\n      <hr>\n      <span *ngIf=\"circleExperimentModel.validate()\"\n            class=\"error pull-left\">\n        {{circleExperimentModel.validate()}}\n      </span>\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"wizard.next()\">\n        Continue\n      </button>\n      <button *ngIf=\"!wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"save()\"\n              [disabled]=\"circleExperimentModel.validate() || isSaving\">\n        Save\n      </button>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7538,9 +7979,9 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var wizard_component_1 = __webpack_require__(113);
-	var circle_experiment_model_1 = __webpack_require__(117);
-	var router_1 = __webpack_require__(84);
+	var wizard_component_1 = __webpack_require__(117);
+	var circle_experiment_model_1 = __webpack_require__(121);
+	var router_1 = __webpack_require__(88);
 	var CircleExperimentResultComponent = (function () {
 	    function CircleExperimentResultComponent(route, circleExperimentModel) {
 	        this.route = route;
@@ -7579,8 +8020,8 @@ webpackJsonp([0],[
 	CircleExperimentResultComponent = __decorate([
 	    core_1.Component({
 	        selector: 'circle-experiment-result',
-	        styles: [__webpack_require__(123)],
-	        template: __webpack_require__(125),
+	        styles: [__webpack_require__(127)],
+	        template: __webpack_require__(129),
 	        providers: [circle_experiment_model_1.CircleExperimentModel]
 	    }),
 	    __metadata("design:paramtypes", [router_1.ActivatedRoute, circle_experiment_model_1.CircleExperimentModel])
@@ -7589,13 +8030,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(124);
+	var styles = __webpack_require__(128);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -7606,10 +8047,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 124 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -7620,13 +8061,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 125 */
+/* 129 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–Your result</h1>\n  </header>\n\n  <section>\n    <form #devForm=\"ngForm\">\n      <wizard #wizard>\n        <wizard-entry>\n          <div class=\"circle-container\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle1')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle1')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle1')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle1')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle1')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle1')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container grid-bg\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle2')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle2')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('circle2')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle2')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle2')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('circle2')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container circle-in-circle\">\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('circle3')+'px'\">\n                <div class=\"circle yellow\"\n                     [class.green]=\"circleExperimentModel.userWasRight('circle3')\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('circle3')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('circle3')+'px'\">\n                  <div class=\"circle blue\"\n                       style=\"width: 100px; height: 100px\">\n                    <span *ngIf=\"circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-check\"></span>\n                    <span *ngIf=\"!circleExperimentModel.userWasRight('circle3')\"\n                          class=\"fa fa-times\"></span>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n        <wizard-entry>\n          <div class=\"circle-container square\">\n            <div class=\"circle-holder\">\n              <div class=\"circle left-circle blue\" #orgCircle>\n                <span>100%</span>\n              </div>\n            </div>\n            <div class=\"circle-holder\">\n              <div class=\"circle right-circle orange\"\n                   [class.green]=\"circleExperimentModel.userWasRight('square')\"\n                   [style.width]=\"circleExperimentModel.getUserSetSize('square')+'px'\"\n                   [style.height]=\"circleExperimentModel.getUserSetSize('square')+'px'\">\n                <div *ngIf=\"!circleExperimentModel.userWasRight('square')\"\n                     class=\"circle yellow\"\n                     [style.width]=\"circleExperimentModel.getOrgSize('square')+'px'\"\n                     [style.height]=\"circleExperimentModel.getOrgSize('square')+'px'\">\n                  <span class=\"fa fa-times\"></span>\n                </div>\n                <span *ngIf=\"circleExperimentModel.userWasRight('square')\"\n                      class=\"fa fa-check\"></span>\n              </div>\n            </div>\n          </div>\n        </wizard-entry>\n\n      </wizard>\n      <div class=\"legend\">\n        <div class=\"item orange-circle\">\n          <div class=\"circle yellow\"></div>\n          Your guess\n        </div>\n\n        <div class=\"item orange-circle\">\n          <div class=\"circle orange\"></div>\n          Deviation\n        </div>\n\n        <div class=\"item orange-circle\">\n          <div class=\"circle green\"></div>\n          You guess was right\n        </div>\n\n      </div>\n      <hr>\n\n      <button *ngIf=\"wizard.hasNext()\"\n              class=\"btn btn-primary pull-right\"\n              (click)=\"wizard.next()\">\n        Continue\n      </button>\n      <a *ngIf=\"!wizard.hasNext()\"\n         [routerLink]=\"['/experiments/results/circle',circleExperimentModel.get('id'),'all']\" class=\"btn btn-primary pull-right\">\n        All results\n      </a>\n      <button *ngIf=\"wizard.hasPrevious()\"\n              class=\"btn btn-default pull-right\"\n              (click)=\"wizard.previous()\">\n        Back\n      </button>\n    </form>\n  </section>\n\n</section>\n";
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7641,10 +8082,10 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var wizard_component_1 = __webpack_require__(113);
-	var circle_experiment_model_1 = __webpack_require__(117);
-	var router_1 = __webpack_require__(84);
-	var circle_experiments_collection_1 = __webpack_require__(127);
+	var wizard_component_1 = __webpack_require__(117);
+	var circle_experiment_model_1 = __webpack_require__(121);
+	var router_1 = __webpack_require__(88);
+	var circle_experiments_collection_1 = __webpack_require__(131);
 	var CircleExperimentResultsComponent = (function () {
 	    function CircleExperimentResultsComponent(route, circleExperimentModel, circleExperimentsCollection) {
 	        this.route = route;
@@ -7687,8 +8128,8 @@ webpackJsonp([0],[
 	CircleExperimentResultsComponent = __decorate([
 	    core_1.Component({
 	        selector: 'circle-experiment-results',
-	        styles: [__webpack_require__(129)],
-	        template: __webpack_require__(131),
+	        styles: [__webpack_require__(133)],
+	        template: __webpack_require__(135),
 	        providers: [circle_experiment_model_1.CircleExperimentModel, circle_experiments_collection_1.CircleExperimentsCollection]
 	    }),
 	    __metadata("design:paramtypes", [router_1.ActivatedRoute, circle_experiment_model_1.CircleExperimentModel, circle_experiments_collection_1.CircleExperimentsCollection])
@@ -7697,7 +8138,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 127 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7719,8 +8160,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var visualisation_collection_1 = __webpack_require__(128);
-	var circle_experiment_model_1 = __webpack_require__(117);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var circle_experiment_model_1 = __webpack_require__(121);
 	var CircleExperimentsCollection = (function (_super) {
 	    __extends(CircleExperimentsCollection, _super);
 	    function CircleExperimentsCollection() {
@@ -7738,7 +8179,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 128 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7760,7 +8201,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var base_collection_1 = __webpack_require__(76);
+	var base_collection_1 = __webpack_require__(78);
 	var VisualisationCollection = (function (_super) {
 	    __extends(VisualisationCollection, _super);
 	    function VisualisationCollection() {
@@ -7788,13 +8229,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 129 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(130);
+	var styles = __webpack_require__(134);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -7805,10 +8246,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 130 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -7819,13 +8260,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 131 */
+/* 135 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Circle Experiment–All results</h1>\n  </header>\n\n  <section>\n\n    <h2>Circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle1Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle1Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle with grid</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle2Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle2Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Circle in circle</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('circle3Dev')\"\n      [highlight]=\"circleExperimentModel.get('circle3Dev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n    <hr>\n    <h2>Square</h2>\n    <deviation-chart\n      [values]=\"circleExperimentsCollection.pluck('squareDev')\"\n      [highlight]=\"circleExperimentModel.get('squareDev')\"\n      xLabel=\"Deviation\"\n      yLabel=\"Participants\"></deviation-chart>\n\n  </section>\n\n</section>\n";
 
 /***/ }),
-/* 132 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7840,10 +8281,10 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var random_element_placing_component_1 = __webpack_require__(133);
-	var hide_after_time_component_1 = __webpack_require__(139);
-	var target_finder_areas_component_1 = __webpack_require__(143);
-	var perception_experiment_model_1 = __webpack_require__(147);
+	var random_element_placing_component_1 = __webpack_require__(137);
+	var hide_after_time_component_1 = __webpack_require__(143);
+	var target_finder_areas_component_1 = __webpack_require__(147);
+	var perception_experiment_model_1 = __webpack_require__(151);
 	var PerceptionExperimentComponent = (function () {
 	    function PerceptionExperimentComponent(perceptionExperimentModel) {
 	        this.perceptionExperimentModel = perceptionExperimentModel;
@@ -7944,8 +8385,8 @@ webpackJsonp([0],[
 	PerceptionExperimentComponent = __decorate([
 	    core_1.Component({
 	        selector: 'perception-experiment',
-	        styles: [__webpack_require__(148)],
-	        template: __webpack_require__(150),
+	        styles: [__webpack_require__(152)],
+	        template: __webpack_require__(154),
 	        providers: [perception_experiment_model_1.PerceptionExperimentModel]
 	    }),
 	    __metadata("design:paramtypes", [perception_experiment_model_1.PerceptionExperimentModel])
@@ -7954,7 +8395,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 133 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7969,7 +8410,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var random_element_boxes_collection_1 = __webpack_require__(134);
+	var random_element_boxes_collection_1 = __webpack_require__(138);
 	var underscore_1 = __webpack_require__(67);
 	var Modes;
 	(function (Modes) {
@@ -8172,8 +8613,8 @@ webpackJsonp([0],[
 	RandomElementPlacingComponent = __decorate([
 	    core_1.Component({
 	        selector: 'random-element-placing',
-	        styles: [__webpack_require__(136)],
-	        template: __webpack_require__(138),
+	        styles: [__webpack_require__(140)],
+	        template: __webpack_require__(142),
 	        providers: [random_element_boxes_collection_1.RandomElementBoxesCollection]
 	    }),
 	    __metadata("design:paramtypes", [random_element_boxes_collection_1.RandomElementBoxesCollection, core_1.ElementRef])
@@ -8182,7 +8623,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 134 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8204,8 +8645,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var visualisation_collection_1 = __webpack_require__(128);
-	var random_element_box_model_1 = __webpack_require__(135);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var random_element_box_model_1 = __webpack_require__(139);
 	var RandomElementBoxesCollection = (function (_super) {
 	    __extends(RandomElementBoxesCollection, _super);
 	    function RandomElementBoxesCollection() {
@@ -8286,7 +8727,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 135 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8308,7 +8749,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var visualisation_model_1 = __webpack_require__(118);
+	var visualisation_model_1 = __webpack_require__(122);
 	var RandomElementBoxModel = (function (_super) {
 	    __extends(RandomElementBoxModel, _super);
 	    function RandomElementBoxModel() {
@@ -8332,13 +8773,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 136 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(137);
+	var styles = __webpack_require__(141);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8349,10 +8790,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 137 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -8363,13 +8804,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 138 */
+/* 142 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"random-element-placing\">\n  <div class=\"box-holder {{getClass()}}\">\n    <div *ngFor=\"let box of randomElementBoxesCollection.models\"\n         class=\"box\"\n         [class.poi]=\"box.get('poi')\"\n         [style.left]=\"box.get('x')+'px'\"\n         [style.top]=\"box.get('y')+'px'\"\n         [style.width]=\"box.get('width')+'px'\"\n         [style.height]=\"box.get('height')+'px'\"\n         [style.color]=\"getColorForBox(box)\">\n      <div class=\"fa {{getIconForBox(box)}}\" [style.fontSize]=\"getFontSizeForBox(box)+'px'\"></div>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 139 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8470,21 +8911,21 @@ webpackJsonp([0],[
 	HideAfterTimeComponent = __decorate([
 	    core_1.Component({
 	        selector: 'hide-after-time',
-	        styles: [__webpack_require__(140)],
-	        template: __webpack_require__(142)
+	        styles: [__webpack_require__(144)],
+	        template: __webpack_require__(146)
 	    })
 	], HideAfterTimeComponent);
 	exports.HideAfterTimeComponent = HideAfterTimeComponent;
 
 
 /***/ }),
-/* 140 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(141);
+	var styles = __webpack_require__(145);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8495,10 +8936,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 141 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -8509,13 +8950,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 142 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"content countdown\" [class.visible]=\"countdownIsVisible\">\n  <div class=\"test-time\">The object will be shown for {{getTestTime()}}ms</div>\n  <div class=\"box-holder\">\n    <div class=\"box\" [class.active]=\"countdown < 1\"></div>\n    <div class=\"box\" [class.active]=\"countdown < 2\"></div>\n    <div class=\"box\" [class.active]=\"countdown < 3\"></div>\n  </div>\n</div>\n\n<div class=\"content\" [class.visible]=\"testIsRunning\">\n  <ng-content></ng-content>\n</div>\n\n<div class=\"content result-selector\" [class.visible]=\"resultChooserIsVisible\">\n  <div class=\"option-holder\">\n    <div class=\"option\" (click)=\"choseResult(1, $event)\">\n      1\n    </div>\n    <div class=\"option\" (click)=\"choseResult(2, $event)\">\n      2\n    </div>\n    <div class=\"option\" (click)=\"choseResult(3, $event)\">\n      3\n    </div>\n    <div class=\"option\" (click)=\"choseResult(4, $event)\">\n      4\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 143 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8530,7 +8971,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var random_element_placing_component_1 = __webpack_require__(133);
+	var random_element_placing_component_1 = __webpack_require__(137);
 	var TargetFinderAreasComponent = (function () {
 	    function TargetFinderAreasComponent() {
 	    }
@@ -8580,95 +9021,12 @@ webpackJsonp([0],[
 	TargetFinderAreasComponent = __decorate([
 	    core_1.Component({
 	        selector: 'target-finder-areas',
-	        styles: [__webpack_require__(144)],
-	        template: __webpack_require__(146)
+	        styles: [__webpack_require__(148)],
+	        template: __webpack_require__(150)
 	    }),
 	    __metadata("design:paramtypes", [])
 	], TargetFinderAreasComponent);
 	exports.TargetFinderAreasComponent = TargetFinderAreasComponent;
-
-
-/***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// css-to-string-loader: transforms styles from css-loader to a string output
-
-	// Get the styles
-	var styles = __webpack_require__(145);
-
-	if (typeof styles === 'string') {
-	  // Return an existing string
-	  module.exports = styles;
-	} else {
-	  // Call the custom toString method from css-loader module
-	  module.exports = styles.toString();
-	}
-
-/***/ }),
-/* 145 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(81)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ":host .target-finder-areas {\n  display: flex;\n  flex-wrap: wrap; }\n  :host .target-finder-areas .segment {\n    margin: 5px;\n    flex-basis: calc(50% - 10px);\n    height: 200px;\n    display: flex; }\n  :host .target-finder-areas random-element-placing {\n    width: 100%;\n    height: 100%; }\n", ""]);
-
-	// exports
-
-
-/***/ }),
-/* 146 */
-/***/ (function(module, exports) {
-
-	module.exports = "<div class=\"target-finder-areas\">\n  <div class=\"segment top left\">\n    <random-element-placing [hasPoi]=\"targetArea === 1\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment1></random-element-placing>\n  </div>\n  <div class=\"segment top right\">\n    <random-element-placing [hasPoi]=\"targetArea === 2\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment2></random-element-placing>\n  </div>\n  <div class=\"segment bottom left\">\n    <random-element-placing [hasPoi]=\"targetArea === 3\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment3></random-element-placing>\n  </div>\n  <div class=\"segment bottom right\">\n    <random-element-placing [hasPoi]=\"targetArea === 4\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment4></random-element-placing>\n  </div>\n</div>\n";
-
-/***/ }),
-/* 147 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || (function () {
-	    var extendStatics = Object.setPrototypeOf ||
-	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var core_1 = __webpack_require__(3);
-	var visualisation_model_1 = __webpack_require__(118);
-	var PerceptionExperimentModel = (function (_super) {
-	    __extends(PerceptionExperimentModel, _super);
-	    function PerceptionExperimentModel() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.endpoint = '/perception-results';
-	        return _this;
-	    }
-	    PerceptionExperimentModel.prototype.defaults = function () {
-	        return {
-	            mode: 0,
-	            amount: 0,
-	            time: 0
-	        };
-	    };
-	    return PerceptionExperimentModel;
-	}(visualisation_model_1.VisualisationModel));
-	PerceptionExperimentModel = __decorate([
-	    core_1.Injectable()
-	], PerceptionExperimentModel);
-	exports.PerceptionExperimentModel = PerceptionExperimentModel;
 
 
 /***/ }),
@@ -8692,7 +9050,90 @@ webpackJsonp([0],[
 /* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .target-finder-areas {\n  display: flex;\n  flex-wrap: wrap; }\n  :host .target-finder-areas .segment {\n    margin: 5px;\n    flex-basis: calc(50% - 10px);\n    height: 200px;\n    display: flex; }\n  :host .target-finder-areas random-element-placing {\n    width: 100%;\n    height: 100%; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"target-finder-areas\">\n  <div class=\"segment top left\">\n    <random-element-placing [hasPoi]=\"targetArea === 1\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment1></random-element-placing>\n  </div>\n  <div class=\"segment top right\">\n    <random-element-placing [hasPoi]=\"targetArea === 2\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment2></random-element-placing>\n  </div>\n  <div class=\"segment bottom left\">\n    <random-element-placing [hasPoi]=\"targetArea === 3\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment3></random-element-placing>\n  </div>\n  <div class=\"segment bottom right\">\n    <random-element-placing [hasPoi]=\"targetArea === 4\" [amount]=\"amount\" [boxSize]=\"size\" [mode]=\"mode\" #segment4></random-element-placing>\n  </div>\n</div>\n";
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(122);
+	var PerceptionExperimentModel = (function (_super) {
+	    __extends(PerceptionExperimentModel, _super);
+	    function PerceptionExperimentModel() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.endpoint = '/perception-results';
+	        return _this;
+	    }
+	    PerceptionExperimentModel.prototype.defaults = function () {
+	        return {
+	            mode: 0,
+	            amount: 0,
+	            time: 0
+	        };
+	    };
+	    return PerceptionExperimentModel;
+	}(visualisation_model_1.VisualisationModel));
+	PerceptionExperimentModel = __decorate([
+	    core_1.Injectable()
+	], PerceptionExperimentModel);
+	exports.PerceptionExperimentModel = PerceptionExperimentModel;
+
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(153);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -8703,13 +9144,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 150 */
+/* 154 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Perception Experiment</h1>\n  </header>\n\n  <section>\n    <hide-after-time #hideAfterTime\n                     [correctResultNum]=\"targetNum\"\n                     [testTime]=\"testTime\"\n                     (statusChange)=\"hideAfterTimeStatusChange($event)\">\n      <target-finder-areas #targetFinder [targetArea]=\"targetNum\" [size]=\"targetSize\" [amount]=\"targetAmount\" [mode]=\"mode\"></target-finder-areas>\n    </hide-after-time>\n  </section>\n\n  <button *ngIf=\"!resultChooserIsVisible\" class=\"btn btn-primary\" (click)=\"test()\" [disabled]=\"testIsRunning\">Start</button>\n  <a *ngIf=\"!resultChooserIsVisible && !testIsRunning\" routerLink=\"/experiments/results/perception\" class=\"btn btn-default\" (click)=\"test()\">See results</a>\n  <button *ngIf=\"resultChooserIsVisible\" class=\"btn btn-primary\" (click)=\"test()\">Retry</button>\n  <button *ngIf=\"resultChooserIsVisible\" class=\"btn btn-danger\" (click)=\"abort()\">I couldn't find it</button>\n\n  <div *ngIf=\"!this.testIsRunning && !resultChooserIsVisible\" class=\"options-holder pull-right\">\n    <div>\n      <label>Mode</label>\n      <select [(ngModel)]=\"selectedMode\" (ngModelChange)=\"setMode($event)\">\n        <option *ngFor=\"let mode of modes\" [value]=\"mode.value\">{{mode.label}}</option>\n      </select>\n    </div>\n    <div>\n      <label>Amount</label>\n      <select [(ngModel)]=\"selectedTargetAmount\" (ngModelChange)=\"setTargetAmount($event)\">\n        <option [value]=\"10\">10</option>\n        <option [value]=\"20\">20</option>\n        <option [value]=\"40\">40</option>\n        <option [value]=\"100\">100</option>\n      </select>\n    </div>\n  </div>\n\n\n</section>\n";
 
 /***/ }),
-/* 151 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8724,8 +9165,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var perception_experiments_collection_1 = __webpack_require__(152);
-	var random_element_placing_component_1 = __webpack_require__(133);
+	var perception_experiments_collection_1 = __webpack_require__(156);
+	var random_element_placing_component_1 = __webpack_require__(137);
 	var underscore_1 = __webpack_require__(67);
 	var PerceptionExperimentResultsComponent = (function () {
 	    function PerceptionExperimentResultsComponent(perceptionExperimentsCollection) {
@@ -8774,8 +9215,8 @@ webpackJsonp([0],[
 	PerceptionExperimentResultsComponent = __decorate([
 	    core_1.Component({
 	        selector: 'perception-experiment-results',
-	        styles: [__webpack_require__(153)],
-	        template: __webpack_require__(155),
+	        styles: [__webpack_require__(157)],
+	        template: __webpack_require__(159),
 	        providers: [perception_experiments_collection_1.PerceptionExperimentsCollection]
 	    }),
 	    __metadata("design:paramtypes", [perception_experiments_collection_1.PerceptionExperimentsCollection])
@@ -8784,7 +9225,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 152 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8806,8 +9247,8 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var visualisation_collection_1 = __webpack_require__(128);
-	var perception_experiment_model_1 = __webpack_require__(147);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var perception_experiment_model_1 = __webpack_require__(151);
 	var PerceptionExperimentsCollection = (function (_super) {
 	    __extends(PerceptionExperimentsCollection, _super);
 	    function PerceptionExperimentsCollection() {
@@ -8825,13 +9266,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 153 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(154);
+	var styles = __webpack_require__(158);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -8842,15 +9283,5255 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 154 */
-130,
-/* 155 */
+/* 158 */
+134,
+/* 159 */
 /***/ (function(module, exports) {
 
 	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Perception Experiment–All results</h1>\n  </header>\n\n  <section>\n\n    <div *ngIf=\"colorResults && colorResults.length>0\">\n      <h2>Color</h2>\n      <perception-chart\n        [values]=\"colorResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"enclosureResults && enclosureResults.length>0\">\n      <h2>Enclosure</h2>\n      <perception-chart\n        [values]=\"enclosureResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"animationResults && animationResults.length>0\">\n      <h2>Animation</h2>\n      <perception-chart\n        [values]=\"animationResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"directionResults && directionResults.length>0\">\n      <h2>Direction</h2>\n      <perception-chart\n        [values]=\"directionResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"shapeResults && shapeResults.length>0\">\n      <h2>Shape</h2>\n      <perception-chart\n        [values]=\"shapeResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"sizeResults && sizeResults.length>0\">\n      <h2>Size</h2>\n      <perception-chart\n        [values]=\"sizeResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n    <div *ngIf=\"composedResults && composedResults.length>0\">\n      <h2>Composed</h2>\n      <perception-chart\n        [values]=\"composedResults\"\n        xLabel=\"Distractor Amount\"\n        yLabel=\"Avg. Time needed\"></perception-chart>\n      <hr>\n    </div>\n\n  </section>\n\n</section>\n";
 
 /***/ }),
-/* 156 */
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var multi_data_experiment_items_collection_1 = __webpack_require__(161);
+	var radar_chart_collection_1 = __webpack_require__(164);
+	var radar_chart_model_1 = __webpack_require__(165);
+	var MultiDataDimensionExperimentComponent = (function () {
+	    function MultiDataDimensionExperimentComponent(multiDataExperimentItems, radarChartCollection) {
+	        this.multiDataExperimentItems = multiDataExperimentItems;
+	        this.radarChartCollection = radarChartCollection;
+	        this.viewModel = {
+	            yearFilter: 70
+	        };
+	        this.radarChartLabels = ['MPG', 'Cylinders', 'Displacement', 'Horsepower', 'Weight', 'Acceleration'];
+	    }
+	    MultiDataDimensionExperimentComponent.prototype.setRadarChartCollection = function (collection, yearFilter) {
+	        var _this = this;
+	        this.radarChartCollection.reset();
+	        collection.where({ modelYear: yearFilter }).forEach(function (item) {
+	            var radarChartModel = new radar_chart_model_1.RadarChartModel({
+	                color: item.getColor(),
+	                data: [
+	                    item.getPercentage('mpg'),
+	                    item.getPercentage('cylinders'),
+	                    item.getPercentage('displacement'),
+	                    item.getPercentage('horsepower'),
+	                    item.getPercentage('weight'),
+	                    item.getPercentage('acceleration')
+	                ]
+	            });
+	            _this.radarChartCollection.add(radarChartModel);
+	        });
+	    };
+	    MultiDataDimensionExperimentComponent.prototype.filterByYear = function (val) {
+	        this.setRadarChartCollection(this.multiDataExperimentItems, val);
+	    };
+	    MultiDataDimensionExperimentComponent.prototype.getColorForOrigin = function (origin) {
+	        var originRes = this.multiDataExperimentItems.findWhere({ origin: origin });
+	        if (originRes) {
+	            return originRes.getColor();
+	        }
+	    };
+	    MultiDataDimensionExperimentComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.setRadarChartCollection(this.multiDataExperimentItems, this.viewModel.yearFilter);
+	        this.multiDataExperimentItems.selectable.on('change:add', function () {
+	            if (_this.multiDataExperimentItems.selectable.getSelected().length > 0) {
+	                var selected = new multi_data_experiment_items_collection_1.MultiDataExperimentItems();
+	                selected.reset(_this.multiDataExperimentItems.selectable.getSelected().toJSON());
+	                _this.setRadarChartCollection(selected, _this.viewModel.yearFilter);
+	            }
+	            else {
+	                _this.setRadarChartCollection(_this.multiDataExperimentItems, _this.viewModel.yearFilter);
+	            }
+	        });
+	    };
+	    return MultiDataDimensionExperimentComponent;
+	}());
+	MultiDataDimensionExperimentComponent = __decorate([
+	    core_1.Component({
+	        selector: 'multi-data-dimension-experiment',
+	        styles: [__webpack_require__(166)],
+	        template: __webpack_require__(168),
+	        providers: [multi_data_experiment_items_collection_1.MultiDataExperimentItems, radar_chart_collection_1.RadarChartCollection]
+	    }),
+	    __metadata("design:paramtypes", [multi_data_experiment_items_collection_1.MultiDataExperimentItems, radar_chart_collection_1.RadarChartCollection])
+	], MultiDataDimensionExperimentComponent);
+	exports.MultiDataDimensionExperimentComponent = MultiDataDimensionExperimentComponent;
+
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var multi_data_experiment_item_model_1 = __webpack_require__(162);
+	var dataItems = __webpack_require__(163);
+	var MultiDataExperimentItems = (function (_super) {
+	    __extends(MultiDataExperimentItems, _super);
+	    function MultiDataExperimentItems() {
+	        var _this = _super.call(this) || this;
+	        _this._maxCache = {};
+	        _this.model = multi_data_experiment_item_model_1.MultiDataExperimentItemModel;
+	        console.log('INIT');
+	        return _this;
+	    }
+	    MultiDataExperimentItems.prototype.initialize = function () {
+	        var _this = this;
+	        dataItems.forEach(function (item) {
+	            _this.add(new multi_data_experiment_item_model_1.MultiDataExperimentItemModel(item, { parse: true }));
+	        });
+	    };
+	    MultiDataExperimentItems.prototype.getMax = function (attr) {
+	        if (!this._maxCache[attr]) {
+	            this._maxCache[attr] = this.max(function (model) {
+	                return model.get(attr);
+	            }).get(attr);
+	        }
+	        return this._maxCache[attr];
+	    };
+	    return MultiDataExperimentItems;
+	}(visualisation_collection_1.VisualisationCollection));
+	MultiDataExperimentItems = __decorate([
+	    core_1.Injectable(),
+	    __metadata("design:paramtypes", [])
+	], MultiDataExperimentItems);
+	exports.MultiDataExperimentItems = MultiDataExperimentItems;
+
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(122);
+	var MultiDataExperimentItemModel = (function (_super) {
+	    __extends(MultiDataExperimentItemModel, _super);
+	    function MultiDataExperimentItemModel() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._percentageCache = {};
+	        return _this;
+	    }
+	    MultiDataExperimentItemModel.prototype.parse = function (attrs) {
+	        for (var key in attrs) {
+	            if (attrs.hasOwnProperty(key) && attrs[key] === 'NA') {
+	                attrs[key] = -1;
+	            }
+	        }
+	        attrs.acceleration = parseFloat(attrs.acceleration);
+	        attrs.cylinders = parseInt(attrs.acceleration, 10);
+	        attrs.horsepower = parseInt(attrs.horsepower, 10);
+	        attrs.modelYear = parseInt(attrs.modelYear, 10);
+	        attrs.mpg = parseInt(attrs.mpg, 10);
+	        attrs.weight = parseInt(attrs.weight, 10);
+	        return attrs;
+	    };
+	    MultiDataExperimentItemModel.prototype.getPercentage = function (attr) {
+	        var collection = this.collection;
+	        var max = 0;
+	        if (collection) {
+	            max = collection.getMax(attr);
+	        }
+	        return (this.get(attr) / max) * 100;
+	    };
+	    MultiDataExperimentItemModel.prototype.getColor = function () {
+	        if (this.get('origin') === 'European') {
+	            return 'rgba(0,0,255,0.5)';
+	        }
+	        else if (this.get('origin') === 'American') {
+	            return 'rgba(0,255,255,0.5)';
+	        }
+	        else if (this.get('origin') === 'Japanese') {
+	            return 'rgba(255,0,255,0.5)';
+	        }
+	        else {
+	            return 'black';
+	        }
+	    };
+	    return MultiDataExperimentItemModel;
+	}(visualisation_model_1.VisualisationModel));
+	MultiDataExperimentItemModel = __decorate([
+	    core_1.Injectable()
+	], MultiDataExperimentItemModel);
+	exports.MultiDataExperimentItemModel = MultiDataExperimentItemModel;
+
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports) {
+
+	module.exports = [
+		{
+			"car": "chevelle malibu",
+			"manufacturer": "chevrolet",
+			"mpg": "18",
+			"cylinders": 8,
+			"displacement": 307,
+			"horsepower": "130",
+			"weight": 3504,
+			"acceleration": 12,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "skylark 320",
+			"manufacturer": "buick",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "165",
+			"weight": 3693,
+			"acceleration": 11.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "satellite",
+			"manufacturer": "plymouth",
+			"mpg": "18",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 3436,
+			"acceleration": 11,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "rebel sst",
+			"manufacturer": "amc",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "150",
+			"weight": 3433,
+			"acceleration": 12,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "torino",
+			"manufacturer": "ford",
+			"mpg": "17",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "140",
+			"weight": 3449,
+			"acceleration": 10.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "galaxie 500",
+			"manufacturer": "ford",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 429,
+			"horsepower": "198",
+			"weight": 4341,
+			"acceleration": 10,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "impala",
+			"manufacturer": "chevrolet",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 454,
+			"horsepower": "220",
+			"weight": 4354,
+			"acceleration": 9,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "fury iii",
+			"manufacturer": "plymouth",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 440,
+			"horsepower": "215",
+			"weight": 4312,
+			"acceleration": 8.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "catalina",
+			"manufacturer": "pontiac",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 455,
+			"horsepower": "225",
+			"weight": 4425,
+			"acceleration": 10,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "ambassador dpl",
+			"manufacturer": "amc",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 390,
+			"horsepower": "190",
+			"weight": 3850,
+			"acceleration": 8.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "ds-21 pallas",
+			"manufacturer": "citroen",
+			"mpg": "NA",
+			"cylinders": 4,
+			"displacement": 133,
+			"horsepower": "115",
+			"weight": 3090,
+			"acceleration": 17.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "chevelle concours (sw)",
+			"manufacturer": "chevrolet",
+			"mpg": "NA",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "165",
+			"weight": 4142,
+			"acceleration": 11.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "torino (sw)",
+			"manufacturer": "ford",
+			"mpg": "NA",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "153",
+			"weight": 4034,
+			"acceleration": 11,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "satellite (sw)",
+			"manufacturer": "plymouth",
+			"mpg": "NA",
+			"cylinders": 8,
+			"displacement": 383,
+			"horsepower": "175",
+			"weight": 4166,
+			"acceleration": 10.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "rebel sst (sw)",
+			"manufacturer": "amc",
+			"mpg": "NA",
+			"cylinders": 8,
+			"displacement": 360,
+			"horsepower": "175",
+			"weight": 3850,
+			"acceleration": 11,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "challenger se",
+			"manufacturer": "dodge",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 383,
+			"horsepower": "170",
+			"weight": 3563,
+			"acceleration": 10,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "'cuda 340",
+			"manufacturer": "plymouth",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 340,
+			"horsepower": "160",
+			"weight": 3609,
+			"acceleration": 8,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "mustang boss 302",
+			"manufacturer": "ford",
+			"mpg": "NA",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "140",
+			"weight": 3353,
+			"acceleration": 8,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "monte carlo",
+			"manufacturer": "chevrolet",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "150",
+			"weight": 3761,
+			"acceleration": 9.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "estate wagon (sw)",
+			"manufacturer": "buick",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 455,
+			"horsepower": "225",
+			"weight": 3086,
+			"acceleration": 10,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "corona mark ii",
+			"manufacturer": "toyota",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 113,
+			"horsepower": "95",
+			"weight": 2372,
+			"acceleration": 15,
+			"modelYear": 70,
+			"origin": "Japanese"
+		},
+		{
+			"car": "duster",
+			"manufacturer": "plymouth",
+			"mpg": "22",
+			"cylinders": 6,
+			"displacement": 198,
+			"horsepower": "95",
+			"weight": 2833,
+			"acceleration": 15.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "hornet",
+			"manufacturer": "amc",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 199,
+			"horsepower": "97",
+			"weight": 2774,
+			"acceleration": 15.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "maverick",
+			"manufacturer": "ford",
+			"mpg": "21",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "85",
+			"weight": 2587,
+			"acceleration": 16,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "pl510",
+			"manufacturer": "datsun",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "88",
+			"weight": 2130,
+			"acceleration": 14.5,
+			"modelYear": 70,
+			"origin": "Japanese"
+		},
+		{
+			"car": "1131 deluxe sedan",
+			"manufacturer": "vw",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "46",
+			"weight": 1835,
+			"acceleration": 20.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "504",
+			"manufacturer": "peugeot",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 110,
+			"horsepower": "87",
+			"weight": 2672,
+			"acceleration": 17.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "100 ls",
+			"manufacturer": "audi",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 107,
+			"horsepower": "90",
+			"weight": 2430,
+			"acceleration": 14.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "99e",
+			"manufacturer": "saab",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 104,
+			"horsepower": "95",
+			"weight": 2375,
+			"acceleration": 17.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "2002",
+			"manufacturer": "bmw",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "113",
+			"weight": 2234,
+			"acceleration": 12.5,
+			"modelYear": 70,
+			"origin": "European"
+		},
+		{
+			"car": "gremlin",
+			"manufacturer": "amc",
+			"mpg": "21",
+			"cylinders": 6,
+			"displacement": 199,
+			"horsepower": "90",
+			"weight": 2648,
+			"acceleration": 15,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "f250",
+			"manufacturer": "ford",
+			"mpg": "10",
+			"cylinders": 8,
+			"displacement": 360,
+			"horsepower": "215",
+			"weight": 4615,
+			"acceleration": 14,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "c20",
+			"manufacturer": "chevrolet",
+			"mpg": "10",
+			"cylinders": 8,
+			"displacement": 307,
+			"horsepower": "200",
+			"weight": 4376,
+			"acceleration": 15,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "d200",
+			"manufacturer": "dodge",
+			"mpg": "11",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "210",
+			"weight": 4382,
+			"acceleration": 13.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "1200d",
+			"manufacturer": "hi",
+			"mpg": "9",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "193",
+			"weight": 4732,
+			"acceleration": 18.5,
+			"modelYear": 70,
+			"origin": "American"
+		},
+		{
+			"car": "pl510",
+			"manufacturer": "datsun",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "88",
+			"weight": 2130,
+			"acceleration": 14.5,
+			"modelYear": 71,
+			"origin": "Japanese"
+		},
+		{
+			"car": "vega 2300",
+			"manufacturer": "chevrolet",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "90",
+			"weight": 2264,
+			"acceleration": 15.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "corona",
+			"manufacturer": "toyota",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 113,
+			"horsepower": "95",
+			"weight": 2228,
+			"acceleration": 14,
+			"modelYear": 71,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "NA",
+			"weight": 2046,
+			"acceleration": 19,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "super beetle 117",
+			"manufacturer": "vw",
+			"mpg": "NA",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "48",
+			"weight": 1978,
+			"acceleration": 20,
+			"modelYear": 71,
+			"origin": "European"
+		},
+		{
+			"car": "gremlin",
+			"manufacturer": "amc",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 2634,
+			"acceleration": 13,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "satellite custom",
+			"manufacturer": "plymouth",
+			"mpg": "16",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "105",
+			"weight": 3439,
+			"acceleration": 15.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "chevelle malibu",
+			"manufacturer": "chevrolet",
+			"mpg": "17",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "100",
+			"weight": 3329,
+			"acceleration": 15.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "torino 500",
+			"manufacturer": "ford",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "88",
+			"weight": 3302,
+			"acceleration": 15.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "matador",
+			"manufacturer": "amc",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 3288,
+			"acceleration": 15.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "impala",
+			"manufacturer": "chevrolet",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "165",
+			"weight": 4209,
+			"acceleration": 12,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "catalina brougham",
+			"manufacturer": "pontiac",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "175",
+			"weight": 4464,
+			"acceleration": 11.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "galaxie 500",
+			"manufacturer": "ford",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "153",
+			"weight": 4154,
+			"acceleration": 13.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "fury iii",
+			"manufacturer": "plymouth",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4096,
+			"acceleration": 13,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "monaco (sw)",
+			"manufacturer": "dodge",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 383,
+			"horsepower": "180",
+			"weight": 4955,
+			"acceleration": 11.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "country squire (sw)",
+			"manufacturer": "ford",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "170",
+			"weight": 4746,
+			"acceleration": 12,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "safari (sw)",
+			"manufacturer": "pontiac",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "175",
+			"weight": 5140,
+			"acceleration": 12,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "hornet sportabout (sw)",
+			"manufacturer": "amc",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 258,
+			"horsepower": "110",
+			"weight": 2962,
+			"acceleration": 13.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "vega (sw)",
+			"manufacturer": "chevrolet",
+			"mpg": "22",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "72",
+			"weight": 2408,
+			"acceleration": 19,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "firebird",
+			"manufacturer": "pontiac",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "100",
+			"weight": 3282,
+			"acceleration": 15,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "mustang",
+			"manufacturer": "ford",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "88",
+			"weight": 3139,
+			"acceleration": 14.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "capri 2000",
+			"manufacturer": "mercury",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "86",
+			"weight": 2220,
+			"acceleration": 14,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "opel 1900",
+			"manufacturer": "buick",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 116,
+			"horsepower": "90",
+			"weight": 2123,
+			"acceleration": 14,
+			"modelYear": 71,
+			"origin": "European"
+		},
+		{
+			"car": "304",
+			"manufacturer": "peugeot",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "70",
+			"weight": 2074,
+			"acceleration": 19.5,
+			"modelYear": 71,
+			"origin": "European"
+		},
+		{
+			"car": "124b",
+			"manufacturer": "fiat",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 88,
+			"horsepower": "76",
+			"weight": 2065,
+			"acceleration": 14.5,
+			"modelYear": 71,
+			"origin": "European"
+		},
+		{
+			"car": "corolla 1200",
+			"manufacturer": "toyota",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 71,
+			"horsepower": "65",
+			"weight": 1773,
+			"acceleration": 19,
+			"modelYear": 71,
+			"origin": "Japanese"
+		},
+		{
+			"car": "1200",
+			"manufacturer": "datsun",
+			"mpg": "35",
+			"cylinders": 4,
+			"displacement": 72,
+			"horsepower": "69",
+			"weight": 1613,
+			"acceleration": 18,
+			"modelYear": 71,
+			"origin": "Japanese"
+		},
+		{
+			"car": "model 111",
+			"manufacturer": "vw",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "60",
+			"weight": 1834,
+			"acceleration": 19,
+			"modelYear": 71,
+			"origin": "European"
+		},
+		{
+			"car": "cricket",
+			"manufacturer": "plymouth",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "70",
+			"weight": 1955,
+			"acceleration": 20.5,
+			"modelYear": 71,
+			"origin": "American"
+		},
+		{
+			"car": "corona hardtop",
+			"manufacturer": "toyota",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 113,
+			"horsepower": "95",
+			"weight": 2278,
+			"acceleration": 15.5,
+			"modelYear": 72,
+			"origin": "Japanese"
+		},
+		{
+			"car": "colt hardtop",
+			"manufacturer": "dodge",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 97.5,
+			"horsepower": "80",
+			"weight": 2126,
+			"acceleration": 17,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "type 3",
+			"manufacturer": "vw",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "54",
+			"weight": 2254,
+			"acceleration": 23.5,
+			"modelYear": 72,
+			"origin": "European"
+		},
+		{
+			"car": "vega",
+			"manufacturer": "chevrolet",
+			"mpg": "20",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "90",
+			"weight": 2408,
+			"acceleration": 19.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "pinto runabout",
+			"manufacturer": "ford",
+			"mpg": "21",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "86",
+			"weight": 2226,
+			"acceleration": 16.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "impala",
+			"manufacturer": "chevrolet",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "165",
+			"weight": 4274,
+			"acceleration": 12,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "catalina",
+			"manufacturer": "pontiac",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "175",
+			"weight": 4385,
+			"acceleration": 12,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "fury iii",
+			"manufacturer": "plymouth",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4135,
+			"acceleration": 13.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "galaxie 500",
+			"manufacturer": "ford",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "153",
+			"weight": 4129,
+			"acceleration": 13,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "ambassador sst",
+			"manufacturer": "amc",
+			"mpg": "17",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "150",
+			"weight": 3672,
+			"acceleration": 11.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "marquis",
+			"manufacturer": "mercury",
+			"mpg": "11",
+			"cylinders": 8,
+			"displacement": 429,
+			"horsepower": "208",
+			"weight": 4633,
+			"acceleration": 11,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "lesabre custom",
+			"manufacturer": "buick",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "155",
+			"weight": 4502,
+			"acceleration": 13.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "delta 88 royale",
+			"manufacturer": "oldsmobile",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "160",
+			"weight": 4456,
+			"acceleration": 13.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "newport royal",
+			"manufacturer": "chrysler",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "190",
+			"weight": 4422,
+			"acceleration": 12.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "rx2 coupe",
+			"manufacturer": "mazda",
+			"mpg": "19",
+			"cylinders": 3,
+			"displacement": 70,
+			"horsepower": "97",
+			"weight": 2330,
+			"acceleration": 13.5,
+			"modelYear": 72,
+			"origin": "Japanese"
+		},
+		{
+			"car": "matador (sw)",
+			"manufacturer": "amc",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "150",
+			"weight": 3892,
+			"acceleration": 12.5,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "chevelle concours (sw)",
+			"manufacturer": "chevrolet",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 307,
+			"horsepower": "130",
+			"weight": 4098,
+			"acceleration": 14,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "gran torino (sw)",
+			"manufacturer": "ford",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "140",
+			"weight": 4294,
+			"acceleration": 16,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "satellite custom (sw)",
+			"manufacturer": "plymouth",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4077,
+			"acceleration": 14,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "145e (sw)",
+			"manufacturer": "volvo",
+			"mpg": "18",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "112",
+			"weight": 2933,
+			"acceleration": 14.5,
+			"modelYear": 72,
+			"origin": "European"
+		},
+		{
+			"car": "411 (sw)",
+			"manufacturer": "vw",
+			"mpg": "22",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "76",
+			"weight": 2511,
+			"acceleration": 18,
+			"modelYear": 72,
+			"origin": "European"
+		},
+		{
+			"car": "504 (sw)",
+			"manufacturer": "peugeot",
+			"mpg": "21",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "87",
+			"weight": 2979,
+			"acceleration": 19.5,
+			"modelYear": 72,
+			"origin": "European"
+		},
+		{
+			"car": "12 (sw)",
+			"manufacturer": "renault",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 96,
+			"horsepower": "69",
+			"weight": 2189,
+			"acceleration": 18,
+			"modelYear": 72,
+			"origin": "European"
+		},
+		{
+			"car": "pinto (sw)",
+			"manufacturer": "ford",
+			"mpg": "22",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "86",
+			"weight": 2395,
+			"acceleration": 16,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "510 (sw)",
+			"manufacturer": "datsun",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "92",
+			"weight": 2288,
+			"acceleration": 17,
+			"modelYear": 72,
+			"origin": "Japanese"
+		},
+		{
+			"car": "corona mark ii (sw)",
+			"manufacturer": "toyota",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "97",
+			"weight": 2506,
+			"acceleration": 14.5,
+			"modelYear": 72,
+			"origin": "Japanese"
+		},
+		{
+			"car": "colt (sw)",
+			"manufacturer": "dodge",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "80",
+			"weight": 2164,
+			"acceleration": 15,
+			"modelYear": 72,
+			"origin": "American"
+		},
+		{
+			"car": "corolla 1600 (sw)",
+			"manufacturer": "toyota",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "88",
+			"weight": 2100,
+			"acceleration": 16.5,
+			"modelYear": 72,
+			"origin": "Japanese"
+		},
+		{
+			"car": "century 350",
+			"manufacturer": "buick",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "175",
+			"weight": 4100,
+			"acceleration": 13,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "matador",
+			"manufacturer": "amc",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "150",
+			"weight": 3672,
+			"acceleration": 11.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "malibu",
+			"manufacturer": "chevrolet",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "145",
+			"weight": 3988,
+			"acceleration": 13,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "gran torino",
+			"manufacturer": "ford",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "137",
+			"weight": 4042,
+			"acceleration": 14.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "coronet custom",
+			"manufacturer": "dodge",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 3777,
+			"acceleration": 12.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "marquis brougham",
+			"manufacturer": "mercury",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 429,
+			"horsepower": "198",
+			"weight": 4952,
+			"acceleration": 11.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "caprice classic",
+			"manufacturer": "chevrolet",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "150",
+			"weight": 4464,
+			"acceleration": 12,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "ltd",
+			"manufacturer": "ford",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "158",
+			"weight": 4363,
+			"acceleration": 13,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "fury gran sedan",
+			"manufacturer": "plymouth",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4237,
+			"acceleration": 14.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "new yorker brougham",
+			"manufacturer": "chrysler",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 440,
+			"horsepower": "215",
+			"weight": 4735,
+			"acceleration": 11,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "electra 225 custom",
+			"manufacturer": "buick",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 455,
+			"horsepower": "225",
+			"weight": 4951,
+			"acceleration": 11,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "ambassador brougham",
+			"manufacturer": "amc",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 360,
+			"horsepower": "175",
+			"weight": 3821,
+			"acceleration": 11,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "valiant",
+			"manufacturer": "plymouth",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "105",
+			"weight": 3121,
+			"acceleration": 16.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "nova custom",
+			"manufacturer": "chevrolet",
+			"mpg": "16",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "100",
+			"weight": 3278,
+			"acceleration": 18,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "hornet",
+			"manufacturer": "amc",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 2945,
+			"acceleration": 16,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "maverick",
+			"manufacturer": "ford",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "88",
+			"weight": 3021,
+			"acceleration": 16.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "duster",
+			"manufacturer": "plymouth",
+			"mpg": "23",
+			"cylinders": 6,
+			"displacement": 198,
+			"horsepower": "95",
+			"weight": 2904,
+			"acceleration": 16,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "super beetle",
+			"manufacturer": "vw",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "46",
+			"weight": 1950,
+			"acceleration": 21,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "impala",
+			"manufacturer": "chevrolet",
+			"mpg": "11",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "150",
+			"weight": 4997,
+			"acceleration": 14,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "country",
+			"manufacturer": "ford",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "167",
+			"weight": 4906,
+			"acceleration": 12.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "custom suburb",
+			"manufacturer": "plymouth",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 360,
+			"horsepower": "170",
+			"weight": 4654,
+			"acceleration": 13,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "vista cruiser",
+			"manufacturer": "oldsmobile",
+			"mpg": "12",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "180",
+			"weight": 4499,
+			"acceleration": 12.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "gremlin",
+			"manufacturer": "amc",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 2789,
+			"acceleration": 15,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "carina",
+			"manufacturer": "toyota",
+			"mpg": "20",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "88",
+			"weight": 2279,
+			"acceleration": 19,
+			"modelYear": 73,
+			"origin": "Japanese"
+		},
+		{
+			"car": "vega",
+			"manufacturer": "chevrolet",
+			"mpg": "21",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "72",
+			"weight": 2401,
+			"acceleration": 19.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "610",
+			"manufacturer": "datsun",
+			"mpg": "22",
+			"cylinders": 4,
+			"displacement": 108,
+			"horsepower": "94",
+			"weight": 2379,
+			"acceleration": 16.5,
+			"modelYear": 73,
+			"origin": "Japanese"
+		},
+		{
+			"car": "rx3",
+			"manufacturer": "mazda",
+			"mpg": "18",
+			"cylinders": 3,
+			"displacement": 70,
+			"horsepower": "90",
+			"weight": 2124,
+			"acceleration": 13.5,
+			"modelYear": 73,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "19",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "85",
+			"weight": 2310,
+			"acceleration": 18.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "capri v6",
+			"manufacturer": "mercury",
+			"mpg": "21",
+			"cylinders": 6,
+			"displacement": 155,
+			"horsepower": "107",
+			"weight": 2472,
+			"acceleration": 14,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "124 sport coupe",
+			"manufacturer": "fiat",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "90",
+			"weight": 2265,
+			"acceleration": 15.5,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "monte carlo s",
+			"manufacturer": "chevrolet",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "145",
+			"weight": 4082,
+			"acceleration": 13,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "grand prix",
+			"manufacturer": "pontiac",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "230",
+			"weight": 4278,
+			"acceleration": 9.5,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "128",
+			"manufacturer": "fiat",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 68,
+			"horsepower": "49",
+			"weight": 1867,
+			"acceleration": 19.5,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "opel manta",
+			"manufacturer": "buick",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 116,
+			"horsepower": "75",
+			"weight": 2158,
+			"acceleration": 15.5,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "100ls",
+			"manufacturer": "audi",
+			"mpg": "20",
+			"cylinders": 4,
+			"displacement": 114,
+			"horsepower": "91",
+			"weight": 2582,
+			"acceleration": 14,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "144ea",
+			"manufacturer": "volvo",
+			"mpg": "19",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "112",
+			"weight": 2868,
+			"acceleration": 15.5,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "dart custom",
+			"manufacturer": "dodge",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 3399,
+			"acceleration": 11,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "99le",
+			"manufacturer": "saab",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "110",
+			"weight": 2660,
+			"acceleration": 14,
+			"modelYear": 73,
+			"origin": "European"
+		},
+		{
+			"car": "mark ii",
+			"manufacturer": "toyota",
+			"mpg": "20",
+			"cylinders": 6,
+			"displacement": 156,
+			"horsepower": "122",
+			"weight": 2807,
+			"acceleration": 13.5,
+			"modelYear": 73,
+			"origin": "Japanese"
+		},
+		{
+			"car": "omega",
+			"manufacturer": "oldsmobile",
+			"mpg": "11",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "180",
+			"weight": 3664,
+			"acceleration": 11,
+			"modelYear": 73,
+			"origin": "American"
+		},
+		{
+			"car": "duster",
+			"manufacturer": "plymouth",
+			"mpg": "20",
+			"cylinders": 6,
+			"displacement": 198,
+			"horsepower": "95",
+			"weight": 3102,
+			"acceleration": 16.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "maverick",
+			"manufacturer": "ford",
+			"mpg": "21",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "NA",
+			"weight": 2875,
+			"acceleration": 17,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "hornet",
+			"manufacturer": "amc",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 2901,
+			"acceleration": 16,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "nova",
+			"manufacturer": "chevrolet",
+			"mpg": "15",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "100",
+			"weight": 3336,
+			"acceleration": 17,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "b210",
+			"manufacturer": "datsun",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "67",
+			"weight": 1950,
+			"acceleration": 19,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "80",
+			"weight": 2451,
+			"acceleration": 16.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "corolla 1200",
+			"manufacturer": "toyota",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 71,
+			"horsepower": "65",
+			"weight": 1836,
+			"acceleration": 21,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "vega",
+			"manufacturer": "chevrolet",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "75",
+			"weight": 2542,
+			"acceleration": 17,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "chevelle malibu classic",
+			"manufacturer": "chevrolet",
+			"mpg": "16",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "100",
+			"weight": 3781,
+			"acceleration": 17,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "matador",
+			"manufacturer": "amc",
+			"mpg": "16",
+			"cylinders": 6,
+			"displacement": 258,
+			"horsepower": "110",
+			"weight": 3632,
+			"acceleration": 18,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "satellite sebring",
+			"manufacturer": "plymouth",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "105",
+			"weight": 3613,
+			"acceleration": 16.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "gran torino",
+			"manufacturer": "ford",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "140",
+			"weight": 4141,
+			"acceleration": 14,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "century luxus (sw)",
+			"manufacturer": "buick",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "150",
+			"weight": 4699,
+			"acceleration": 14.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "coronet custom (sw)",
+			"manufacturer": "dodge",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4457,
+			"acceleration": 13.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "gran torino (sw)",
+			"manufacturer": "ford",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "140",
+			"weight": 4638,
+			"acceleration": 16,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "matador (sw)",
+			"manufacturer": "amc",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "150",
+			"weight": 4257,
+			"acceleration": 15.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "fox",
+			"manufacturer": "audi",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "83",
+			"weight": 2219,
+			"acceleration": 16.5,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "dasher",
+			"manufacturer": "vw",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "67",
+			"weight": 1963,
+			"acceleration": 15.5,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "opel manta",
+			"manufacturer": "buick",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "78",
+			"weight": 2300,
+			"acceleration": 14.5,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "corona",
+			"manufacturer": "toyota",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 76,
+			"horsepower": "52",
+			"weight": 1649,
+			"acceleration": 16.5,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "710",
+			"manufacturer": "datsun",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 83,
+			"horsepower": "61",
+			"weight": 2003,
+			"acceleration": 19,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "colt",
+			"manufacturer": "dodge",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "75",
+			"weight": 2125,
+			"acceleration": 14.5,
+			"modelYear": 74,
+			"origin": "American"
+		},
+		{
+			"car": "128",
+			"manufacturer": "fiat",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "75",
+			"weight": 2108,
+			"acceleration": 15.5,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "124 tc",
+			"manufacturer": "fiat",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 116,
+			"horsepower": "75",
+			"weight": 2246,
+			"acceleration": 14,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "civic",
+			"manufacturer": "honda",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "97",
+			"weight": 2489,
+			"acceleration": 15,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "none",
+			"manufacturer": "subaru",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 108,
+			"horsepower": "93",
+			"weight": 2391,
+			"acceleration": 15.5,
+			"modelYear": 74,
+			"origin": "Japanese"
+		},
+		{
+			"car": "x1.9",
+			"manufacturer": "fiat",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "67",
+			"weight": 2000,
+			"acceleration": 16,
+			"modelYear": 74,
+			"origin": "European"
+		},
+		{
+			"car": "valiant custom",
+			"manufacturer": "plymouth",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "95",
+			"weight": 3264,
+			"acceleration": 16,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "nova",
+			"manufacturer": "chevrolet",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "105",
+			"weight": 3459,
+			"acceleration": 16,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "monarch",
+			"manufacturer": "mercury",
+			"mpg": "15",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "72",
+			"weight": 3432,
+			"acceleration": 21,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "maverick",
+			"manufacturer": "ford",
+			"mpg": "15",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "72",
+			"weight": 3158,
+			"acceleration": 19.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "catalina",
+			"manufacturer": "pontiac",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "170",
+			"weight": 4668,
+			"acceleration": 11.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "bel air",
+			"manufacturer": "chevrolet",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "145",
+			"weight": 4440,
+			"acceleration": 14,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "grand fury",
+			"manufacturer": "plymouth",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4498,
+			"acceleration": 14.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "ltd",
+			"manufacturer": "ford",
+			"mpg": "14",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "148",
+			"weight": 4657,
+			"acceleration": 13.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "century",
+			"manufacturer": "buick",
+			"mpg": "17",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "110",
+			"weight": 3907,
+			"acceleration": 21,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "chevelle malibu",
+			"manufacturer": "chevrolet",
+			"mpg": "16",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "105",
+			"weight": 3897,
+			"acceleration": 18.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "matador",
+			"manufacturer": "amc",
+			"mpg": "15",
+			"cylinders": 6,
+			"displacement": 258,
+			"horsepower": "110",
+			"weight": 3730,
+			"acceleration": 19,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "fury",
+			"manufacturer": "plymouth",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "95",
+			"weight": 3785,
+			"acceleration": 19,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "skyhawk",
+			"manufacturer": "buick",
+			"mpg": "21",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "110",
+			"weight": 3039,
+			"acceleration": 15,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "monza 2+2",
+			"manufacturer": "chevrolet",
+			"mpg": "20",
+			"cylinders": 8,
+			"displacement": 262,
+			"horsepower": "110",
+			"weight": 3221,
+			"acceleration": 13.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "mustang ii",
+			"manufacturer": "ford",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "129",
+			"weight": 3169,
+			"acceleration": 12,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "corolla",
+			"manufacturer": "toyota",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "75",
+			"weight": 2171,
+			"acceleration": 16,
+			"modelYear": 75,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "83",
+			"weight": 2639,
+			"acceleration": 17,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "gremlin",
+			"manufacturer": "amc",
+			"mpg": "20",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "100",
+			"weight": 2914,
+			"acceleration": 16,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "astro",
+			"manufacturer": "pontiac",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "78",
+			"weight": 2592,
+			"acceleration": 18.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "corona",
+			"manufacturer": "toyota",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 134,
+			"horsepower": "96",
+			"weight": 2702,
+			"acceleration": 13.5,
+			"modelYear": 75,
+			"origin": "Japanese"
+		},
+		{
+			"car": "dasher",
+			"manufacturer": "vw",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "71",
+			"weight": 2223,
+			"acceleration": 16.5,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "710",
+			"manufacturer": "datsun",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "97",
+			"weight": 2545,
+			"acceleration": 17,
+			"modelYear": 75,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 171,
+			"horsepower": "97",
+			"weight": 2984,
+			"acceleration": 14.5,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit",
+			"manufacturer": "vw",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "70",
+			"weight": 1937,
+			"acceleration": 14,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "pacer",
+			"manufacturer": "amc",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "90",
+			"weight": 3211,
+			"acceleration": 17,
+			"modelYear": 75,
+			"origin": "American"
+		},
+		{
+			"car": "100ls",
+			"manufacturer": "audi",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 115,
+			"horsepower": "95",
+			"weight": 2694,
+			"acceleration": 15,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "504",
+			"manufacturer": "peugeot",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "88",
+			"weight": 2957,
+			"acceleration": 17,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "244dl",
+			"manufacturer": "volvo",
+			"mpg": "22",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "98",
+			"weight": 2945,
+			"acceleration": 14.5,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "99le",
+			"manufacturer": "saab",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "115",
+			"weight": 2671,
+			"acceleration": 13.5,
+			"modelYear": 75,
+			"origin": "European"
+		},
+		{
+			"car": "civic cvcc",
+			"manufacturer": "honda",
+			"mpg": "33",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "53",
+			"weight": 1795,
+			"acceleration": 17.5,
+			"modelYear": 75,
+			"origin": "Japanese"
+		},
+		{
+			"car": "131",
+			"manufacturer": "fiat",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 107,
+			"horsepower": "86",
+			"weight": 2464,
+			"acceleration": 15.5,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "opel 1900",
+			"manufacturer": "buick",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 116,
+			"horsepower": "81",
+			"weight": 2220,
+			"acceleration": 16.9,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "ii",
+			"manufacturer": "capri",
+			"mpg": "25",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "92",
+			"weight": 2572,
+			"acceleration": 14.9,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "colt",
+			"manufacturer": "dodge",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "79",
+			"weight": 2255,
+			"acceleration": 17.7,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "12tl",
+			"manufacturer": "renault",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 101,
+			"horsepower": "83",
+			"weight": 2202,
+			"acceleration": 15.3,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "chevelle malibu classic",
+			"manufacturer": "chevrolet",
+			"mpg": "17.5",
+			"cylinders": 8,
+			"displacement": 305,
+			"horsepower": "140",
+			"weight": 4215,
+			"acceleration": 13,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "coronet brougham",
+			"manufacturer": "dodge",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 4190,
+			"acceleration": 13,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "matador",
+			"manufacturer": "amc",
+			"mpg": "15.5",
+			"cylinders": 8,
+			"displacement": 304,
+			"horsepower": "120",
+			"weight": 3962,
+			"acceleration": 13.9,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "gran torino",
+			"manufacturer": "ford",
+			"mpg": "14.5",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "152",
+			"weight": 4215,
+			"acceleration": 12.8,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "valiant",
+			"manufacturer": "plymouth",
+			"mpg": "22",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "100",
+			"weight": 3233,
+			"acceleration": 15.4,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "nova",
+			"manufacturer": "chevrolet",
+			"mpg": "22",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "105",
+			"weight": 3353,
+			"acceleration": 14.5,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "maverick",
+			"manufacturer": "ford",
+			"mpg": "24",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "81",
+			"weight": 3012,
+			"acceleration": 17.6,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "hornet",
+			"manufacturer": "amc",
+			"mpg": "22.5",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "90",
+			"weight": 3085,
+			"acceleration": 17.6,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "chevette",
+			"manufacturer": "chevrolet",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "52",
+			"weight": 2035,
+			"acceleration": 22.2,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "woody",
+			"manufacturer": "chevrolet",
+			"mpg": "24.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "60",
+			"weight": 2164,
+			"acceleration": 22.1,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit",
+			"manufacturer": "vw",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "70",
+			"weight": 1937,
+			"acceleration": 14.2,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "civic",
+			"manufacturer": "honda",
+			"mpg": "33",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "53",
+			"weight": 1795,
+			"acceleration": 17.4,
+			"modelYear": 76,
+			"origin": "Japanese"
+		},
+		{
+			"car": "aspen se",
+			"manufacturer": "dodge",
+			"mpg": "20",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "100",
+			"weight": 3651,
+			"acceleration": 17.7,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "granada ghia",
+			"manufacturer": "ford",
+			"mpg": "18",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "78",
+			"weight": 3574,
+			"acceleration": 21,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "ventura sj",
+			"manufacturer": "pontiac",
+			"mpg": "18.5",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "110",
+			"weight": 3645,
+			"acceleration": 16.2,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "pacer d/l",
+			"manufacturer": "amc",
+			"mpg": "17.5",
+			"cylinders": 6,
+			"displacement": 258,
+			"horsepower": "95",
+			"weight": 3193,
+			"acceleration": 17.8,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit",
+			"manufacturer": "vw",
+			"mpg": "29.5",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "71",
+			"weight": 1825,
+			"acceleration": 12.2,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "b-210",
+			"manufacturer": "datsun",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "70",
+			"weight": 1990,
+			"acceleration": 17,
+			"modelYear": 76,
+			"origin": "Japanese"
+		},
+		{
+			"car": "corolla",
+			"manufacturer": "toyota",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "75",
+			"weight": 2155,
+			"acceleration": 16.4,
+			"modelYear": 76,
+			"origin": "Japanese"
+		},
+		{
+			"car": "pinto",
+			"manufacturer": "ford",
+			"mpg": "26.5",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "72",
+			"weight": 2565,
+			"acceleration": 13.6,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "245",
+			"manufacturer": "volvo",
+			"mpg": "20",
+			"cylinders": 4,
+			"displacement": 130,
+			"horsepower": "102",
+			"weight": 3150,
+			"acceleration": 15.7,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "volare premier v8",
+			"manufacturer": "plymouth",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 3940,
+			"acceleration": 13.2,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "504",
+			"manufacturer": "peugeot",
+			"mpg": "19",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "88",
+			"weight": 3270,
+			"acceleration": 21.9,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "mark ii",
+			"manufacturer": "toyota",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 156,
+			"horsepower": "108",
+			"weight": 2930,
+			"acceleration": 15.5,
+			"modelYear": 76,
+			"origin": "Japanese"
+		},
+		{
+			"car": "280s",
+			"manufacturer": "mercedes",
+			"mpg": "16.5",
+			"cylinders": 6,
+			"displacement": 168,
+			"horsepower": "120",
+			"weight": 3820,
+			"acceleration": 16.7,
+			"modelYear": 76,
+			"origin": "European"
+		},
+		{
+			"car": "seville",
+			"manufacturer": "cadillac",
+			"mpg": "16.5",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "180",
+			"weight": 4380,
+			"acceleration": 12.1,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "c10",
+			"manufacturer": "chevrolet",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "145",
+			"weight": 4055,
+			"acceleration": 12,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "f108",
+			"manufacturer": "ford",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "130",
+			"weight": 3870,
+			"acceleration": 15,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "d100",
+			"manufacturer": "dodge",
+			"mpg": "13",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "150",
+			"weight": 3755,
+			"acceleration": 14,
+			"modelYear": 76,
+			"origin": "American"
+		},
+		{
+			"car": "accord cvcc",
+			"manufacturer": "honda",
+			"mpg": "31.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "68",
+			"weight": 2045,
+			"acceleration": 18.5,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "opel isuzu deluxe",
+			"manufacturer": "buick",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 111,
+			"horsepower": "80",
+			"weight": 2155,
+			"acceleration": 14.8,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "5 gtl",
+			"manufacturer": "renault",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "58",
+			"weight": 1825,
+			"acceleration": 18.6,
+			"modelYear": 77,
+			"origin": "European"
+		},
+		{
+			"car": "arrow gs",
+			"manufacturer": "plymouth",
+			"mpg": "25.5",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "96",
+			"weight": 2300,
+			"acceleration": 15.5,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "f-10 hatchback",
+			"manufacturer": "datsun",
+			"mpg": "33.5",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "70",
+			"weight": 1945,
+			"acceleration": 16.8,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "caprice classic",
+			"manufacturer": "chevrolet",
+			"mpg": "17.5",
+			"cylinders": 8,
+			"displacement": 305,
+			"horsepower": "145",
+			"weight": 3880,
+			"acceleration": 12.5,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "cutlass supreme",
+			"manufacturer": "oldsmobile",
+			"mpg": "17",
+			"cylinders": 8,
+			"displacement": 260,
+			"horsepower": "110",
+			"weight": 4060,
+			"acceleration": 19,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "monaco brougham",
+			"manufacturer": "dodge",
+			"mpg": "15.5",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "145",
+			"weight": 4140,
+			"acceleration": 13.7,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "cougar brougham",
+			"manufacturer": "mercury",
+			"mpg": "15",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "130",
+			"weight": 4295,
+			"acceleration": 14.9,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "concours",
+			"manufacturer": "chevrolet",
+			"mpg": "17.5",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "110",
+			"weight": 3520,
+			"acceleration": 16.4,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "skylark",
+			"manufacturer": "buick",
+			"mpg": "20.5",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "105",
+			"weight": 3425,
+			"acceleration": 16.9,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "volare custom",
+			"manufacturer": "plymouth",
+			"mpg": "19",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "100",
+			"weight": 3630,
+			"acceleration": 17.7,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "granada",
+			"manufacturer": "ford",
+			"mpg": "18.5",
+			"cylinders": 6,
+			"displacement": 250,
+			"horsepower": "98",
+			"weight": 3525,
+			"acceleration": 19,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "grand prix lj",
+			"manufacturer": "pontiac",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "180",
+			"weight": 4220,
+			"acceleration": 11.1,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "monte carlo landau",
+			"manufacturer": "chevrolet",
+			"mpg": "15.5",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "170",
+			"weight": 4165,
+			"acceleration": 11.4,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "cordoba",
+			"manufacturer": "chrysler",
+			"mpg": "15.5",
+			"cylinders": 8,
+			"displacement": 400,
+			"horsepower": "190",
+			"weight": 4325,
+			"acceleration": 12.2,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "thunderbird",
+			"manufacturer": "ford",
+			"mpg": "16",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "149",
+			"weight": 4335,
+			"acceleration": 14.5,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit custom",
+			"manufacturer": "vw",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "78",
+			"weight": 1940,
+			"acceleration": 14.5,
+			"modelYear": 77,
+			"origin": "European"
+		},
+		{
+			"car": "sunbird coupe",
+			"manufacturer": "pontiac",
+			"mpg": "24.5",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "88",
+			"weight": 2740,
+			"acceleration": 16,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "corolla liftback",
+			"manufacturer": "toyota",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "75",
+			"weight": 2265,
+			"acceleration": 18.2,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "mustang ii 2+2",
+			"manufacturer": "ford",
+			"mpg": "25.5",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "89",
+			"weight": 2755,
+			"acceleration": 15.8,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "chevette",
+			"manufacturer": "chevrolet",
+			"mpg": "30.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "63",
+			"weight": 2051,
+			"acceleration": 17,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "colt m/m",
+			"manufacturer": "dodge",
+			"mpg": "33.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "83",
+			"weight": 2075,
+			"acceleration": 15.9,
+			"modelYear": 77,
+			"origin": "American"
+		},
+		{
+			"car": "dl",
+			"manufacturer": "subaru",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "67",
+			"weight": 1985,
+			"acceleration": 16.4,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "dasher",
+			"manufacturer": "vw",
+			"mpg": "30.5",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "78",
+			"weight": 2190,
+			"acceleration": 14.1,
+			"modelYear": 77,
+			"origin": "European"
+		},
+		{
+			"car": "810",
+			"manufacturer": "datsun",
+			"mpg": "22",
+			"cylinders": 6,
+			"displacement": 146,
+			"horsepower": "97",
+			"weight": 2815,
+			"acceleration": 14.5,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "320i",
+			"manufacturer": "bmw",
+			"mpg": "21.5",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "110",
+			"weight": 2600,
+			"acceleration": 12.8,
+			"modelYear": 77,
+			"origin": "European"
+		},
+		{
+			"car": "rx-4",
+			"manufacturer": "mazda",
+			"mpg": "21.5",
+			"cylinders": 3,
+			"displacement": 80,
+			"horsepower": "110",
+			"weight": 2720,
+			"acceleration": 13.5,
+			"modelYear": 77,
+			"origin": "Japanese"
+		},
+		{
+			"car": "rabbit custom diesel",
+			"manufacturer": "vw",
+			"mpg": "43.1",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "48",
+			"weight": 1985,
+			"acceleration": 21.5,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "fiesta",
+			"manufacturer": "ford",
+			"mpg": "36.1",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "66",
+			"weight": 1800,
+			"acceleration": 14.4,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "glc deluxe",
+			"manufacturer": "mazda",
+			"mpg": "32.8",
+			"cylinders": 4,
+			"displacement": 78,
+			"horsepower": "52",
+			"weight": 1985,
+			"acceleration": 19.4,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "b210 gx",
+			"manufacturer": "datsun",
+			"mpg": "39.4",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "70",
+			"weight": 2070,
+			"acceleration": 18.6,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "civic cvcc",
+			"manufacturer": "honda",
+			"mpg": "36.1",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "60",
+			"weight": 1800,
+			"acceleration": 16.4,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "cutlass salon brougham",
+			"manufacturer": "oldsmobile",
+			"mpg": "19.9",
+			"cylinders": 8,
+			"displacement": 260,
+			"horsepower": "110",
+			"weight": 3365,
+			"acceleration": 15.5,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "diplomat",
+			"manufacturer": "dodge",
+			"mpg": "19.4",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "140",
+			"weight": 3735,
+			"acceleration": 13.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "monarch ghia",
+			"manufacturer": "mercury",
+			"mpg": "20.2",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "139",
+			"weight": 3570,
+			"acceleration": 12.8,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "phoenix lj",
+			"manufacturer": "pontiac",
+			"mpg": "19.2",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "105",
+			"weight": 3535,
+			"acceleration": 19.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "malibu",
+			"manufacturer": "chevrolet",
+			"mpg": "20.5",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "95",
+			"weight": 3155,
+			"acceleration": 18.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "fairmont (auto)",
+			"manufacturer": "ford",
+			"mpg": "20.2",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "85",
+			"weight": 2965,
+			"acceleration": 15.8,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "fairmont (man)",
+			"manufacturer": "ford",
+			"mpg": "25.1",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "88",
+			"weight": 2720,
+			"acceleration": 15.4,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "volare",
+			"manufacturer": "plymouth",
+			"mpg": "20.5",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "100",
+			"weight": 3430,
+			"acceleration": 17.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "concord",
+			"manufacturer": "amc",
+			"mpg": "19.4",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "90",
+			"weight": 3210,
+			"acceleration": 17.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "century special",
+			"manufacturer": "buick",
+			"mpg": "20.6",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "105",
+			"weight": 3380,
+			"acceleration": 15.8,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "zephyr",
+			"manufacturer": "mercury",
+			"mpg": "20.8",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "85",
+			"weight": 3070,
+			"acceleration": 16.7,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "aspen",
+			"manufacturer": "dodge",
+			"mpg": "18.6",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "110",
+			"weight": 3620,
+			"acceleration": 18.7,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "concord d/l",
+			"manufacturer": "amc",
+			"mpg": "18.1",
+			"cylinders": 6,
+			"displacement": 258,
+			"horsepower": "120",
+			"weight": 3410,
+			"acceleration": 15.1,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "monte carlo landau",
+			"manufacturer": "chevrolet",
+			"mpg": "19.2",
+			"cylinders": 8,
+			"displacement": 305,
+			"horsepower": "145",
+			"weight": 3425,
+			"acceleration": 13.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "regal sport coupe (turbo)",
+			"manufacturer": "buick",
+			"mpg": "17.7",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "165",
+			"weight": 3445,
+			"acceleration": 13.4,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "futura",
+			"manufacturer": "ford",
+			"mpg": "18.1",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "139",
+			"weight": 3205,
+			"acceleration": 11.2,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "magnum xe",
+			"manufacturer": "dodge",
+			"mpg": "17.5",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "140",
+			"weight": 4080,
+			"acceleration": 13.7,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "chevette",
+			"manufacturer": "chevrolet",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "68",
+			"weight": 2155,
+			"acceleration": 16.5,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "corona",
+			"manufacturer": "toyota",
+			"mpg": "27.5",
+			"cylinders": 4,
+			"displacement": 134,
+			"horsepower": "95",
+			"weight": 2560,
+			"acceleration": 14.2,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "510",
+			"manufacturer": "datsun",
+			"mpg": "27.2",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "97",
+			"weight": 2300,
+			"acceleration": 14.7,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "omni",
+			"manufacturer": "dodge",
+			"mpg": "30.9",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "75",
+			"weight": 2230,
+			"acceleration": 14.5,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "celica gt liftback",
+			"manufacturer": "toyota",
+			"mpg": "21.1",
+			"cylinders": 4,
+			"displacement": 134,
+			"horsepower": "95",
+			"weight": 2515,
+			"acceleration": 14.8,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "sapporo",
+			"manufacturer": "plymouth",
+			"mpg": "23.2",
+			"cylinders": 4,
+			"displacement": 156,
+			"horsepower": "105",
+			"weight": 2745,
+			"acceleration": 16.7,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "starfire sx",
+			"manufacturer": "oldsmobile",
+			"mpg": "23.8",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "85",
+			"weight": 2855,
+			"acceleration": 17.6,
+			"modelYear": 78,
+			"origin": "American"
+		},
+		{
+			"car": "200-sx",
+			"manufacturer": "datsun",
+			"mpg": "23.9",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "97",
+			"weight": 2405,
+			"acceleration": 14.9,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "5000",
+			"manufacturer": "audi",
+			"mpg": "20.3",
+			"cylinders": 5,
+			"displacement": 131,
+			"horsepower": "103",
+			"weight": 2830,
+			"acceleration": 15.9,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "264gl",
+			"manufacturer": "volvo",
+			"mpg": "17",
+			"cylinders": 6,
+			"displacement": 163,
+			"horsepower": "125",
+			"weight": 3140,
+			"acceleration": 13.6,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "99gle",
+			"manufacturer": "saab",
+			"mpg": "21.6",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "115",
+			"weight": 2795,
+			"acceleration": 15.7,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "604sl",
+			"manufacturer": "peugeot",
+			"mpg": "16.2",
+			"cylinders": 6,
+			"displacement": 163,
+			"horsepower": "133",
+			"weight": 3410,
+			"acceleration": 15.8,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "scirocco",
+			"manufacturer": "vw",
+			"mpg": "31.5",
+			"cylinders": 4,
+			"displacement": 89,
+			"horsepower": "71",
+			"weight": 1990,
+			"acceleration": 14.9,
+			"modelYear": 78,
+			"origin": "European"
+		},
+		{
+			"car": "accord lx",
+			"manufacturer": "honda",
+			"mpg": "29.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "68",
+			"weight": 2135,
+			"acceleration": 16.6,
+			"modelYear": 78,
+			"origin": "Japanese"
+		},
+		{
+			"car": "lemans v6",
+			"manufacturer": "pontiac",
+			"mpg": "21.5",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "115",
+			"weight": 3245,
+			"acceleration": 15.4,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "zephyr 6",
+			"manufacturer": "mercury",
+			"mpg": "19.8",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "85",
+			"weight": 2990,
+			"acceleration": 18.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "fairmont 4",
+			"manufacturer": "ford",
+			"mpg": "22.3",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "88",
+			"weight": 2890,
+			"acceleration": 17.3,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "concord dl 6",
+			"manufacturer": "amc",
+			"mpg": "20.2",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "90",
+			"weight": 3265,
+			"acceleration": 18.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "aspen 6",
+			"manufacturer": "dodge",
+			"mpg": "20.6",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "110",
+			"weight": 3360,
+			"acceleration": 16.6,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "caprice classic",
+			"manufacturer": "chevrolet",
+			"mpg": "17",
+			"cylinders": 8,
+			"displacement": 305,
+			"horsepower": "130",
+			"weight": 3840,
+			"acceleration": 15.4,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "ltd landau",
+			"manufacturer": "ford",
+			"mpg": "17.6",
+			"cylinders": 8,
+			"displacement": 302,
+			"horsepower": "129",
+			"weight": 3725,
+			"acceleration": 13.4,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "grand marquis",
+			"manufacturer": "mercury",
+			"mpg": "16.5",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "138",
+			"weight": 3955,
+			"acceleration": 13.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "st. regis",
+			"manufacturer": "dodge",
+			"mpg": "18.2",
+			"cylinders": 8,
+			"displacement": 318,
+			"horsepower": "135",
+			"weight": 3830,
+			"acceleration": 15.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "estate wagon (sw)",
+			"manufacturer": "buick",
+			"mpg": "16.9",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "155",
+			"weight": 4360,
+			"acceleration": 14.9,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "country squire (sw)",
+			"manufacturer": "ford",
+			"mpg": "15.5",
+			"cylinders": 8,
+			"displacement": 351,
+			"horsepower": "142",
+			"weight": 4054,
+			"acceleration": 14.3,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "malibu classic (sw)",
+			"manufacturer": "chevrolet",
+			"mpg": "19.2",
+			"cylinders": 8,
+			"displacement": 267,
+			"horsepower": "125",
+			"weight": 3605,
+			"acceleration": 15,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "lebaron town @ country (sw)",
+			"manufacturer": "chrysler",
+			"mpg": "18.5",
+			"cylinders": 8,
+			"displacement": 360,
+			"horsepower": "150",
+			"weight": 3940,
+			"acceleration": 13,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit custom",
+			"manufacturer": "vw",
+			"mpg": "31.9",
+			"cylinders": 4,
+			"displacement": 89,
+			"horsepower": "71",
+			"weight": 1925,
+			"acceleration": 14,
+			"modelYear": 79,
+			"origin": "European"
+		},
+		{
+			"car": "glc deluxe",
+			"manufacturer": "mazda",
+			"mpg": "34.1",
+			"cylinders": 4,
+			"displacement": 86,
+			"horsepower": "65",
+			"weight": 1975,
+			"acceleration": 15.2,
+			"modelYear": 79,
+			"origin": "Japanese"
+		},
+		{
+			"car": "colt hatchback custom",
+			"manufacturer": "dodge",
+			"mpg": "35.7",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "80",
+			"weight": 1915,
+			"acceleration": 14.4,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "spirit dl",
+			"manufacturer": "amc",
+			"mpg": "27.4",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "80",
+			"weight": 2670,
+			"acceleration": 15,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "300d",
+			"manufacturer": "mercedes",
+			"mpg": "25.4",
+			"cylinders": 5,
+			"displacement": 183,
+			"horsepower": "77",
+			"weight": 3530,
+			"acceleration": 20.1,
+			"modelYear": 79,
+			"origin": "European"
+		},
+		{
+			"car": "eldorado",
+			"manufacturer": "cadillac",
+			"mpg": "23",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "125",
+			"weight": 3900,
+			"acceleration": 17.4,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "504",
+			"manufacturer": "peugeot",
+			"mpg": "27.2",
+			"cylinders": 4,
+			"displacement": 141,
+			"horsepower": "71",
+			"weight": 3190,
+			"acceleration": 24.8,
+			"modelYear": 79,
+			"origin": "European"
+		},
+		{
+			"car": "cutlass salon brougham",
+			"manufacturer": "oldsmobile",
+			"mpg": "23.9",
+			"cylinders": 8,
+			"displacement": 260,
+			"horsepower": "90",
+			"weight": 3420,
+			"acceleration": 22.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "horizon",
+			"manufacturer": "plymouth",
+			"mpg": "34.2",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "70",
+			"weight": 2200,
+			"acceleration": 13.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "horizon tc3",
+			"manufacturer": "plymouth",
+			"mpg": "34.5",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "70",
+			"weight": 2150,
+			"acceleration": 14.9,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "210",
+			"manufacturer": "datsun",
+			"mpg": "31.8",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "65",
+			"weight": 2020,
+			"acceleration": 19.2,
+			"modelYear": 79,
+			"origin": "Japanese"
+		},
+		{
+			"car": "strada custom",
+			"manufacturer": "fiat",
+			"mpg": "37.3",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "69",
+			"weight": 2130,
+			"acceleration": 14.7,
+			"modelYear": 79,
+			"origin": "European"
+		},
+		{
+			"car": "skylark limited",
+			"manufacturer": "buick",
+			"mpg": "28.4",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 2670,
+			"acceleration": 16,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "citation",
+			"manufacturer": "chevrolet",
+			"mpg": "28.8",
+			"cylinders": 6,
+			"displacement": 173,
+			"horsepower": "115",
+			"weight": 2595,
+			"acceleration": 11.3,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "omega brougham",
+			"manufacturer": "oldsmobile",
+			"mpg": "26.8",
+			"cylinders": 6,
+			"displacement": 173,
+			"horsepower": "115",
+			"weight": 2700,
+			"acceleration": 12.9,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "phoenix",
+			"manufacturer": "pontiac",
+			"mpg": "33.5",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 2556,
+			"acceleration": 13.2,
+			"modelYear": 79,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit",
+			"manufacturer": "vw",
+			"mpg": "41.5",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "76",
+			"weight": 2144,
+			"acceleration": 14.7,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "corolla tercel",
+			"manufacturer": "toyota",
+			"mpg": "38.1",
+			"cylinders": 4,
+			"displacement": 89,
+			"horsepower": "60",
+			"weight": 1968,
+			"acceleration": 18.8,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "chevette",
+			"manufacturer": "chevrolet",
+			"mpg": "32.1",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "70",
+			"weight": 2120,
+			"acceleration": 15.5,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "310",
+			"manufacturer": "datsun",
+			"mpg": "37.2",
+			"cylinders": 4,
+			"displacement": 86,
+			"horsepower": "65",
+			"weight": 2019,
+			"acceleration": 16.4,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "citation",
+			"manufacturer": "chevrolet",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 2678,
+			"acceleration": 16.5,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "fairmont",
+			"manufacturer": "ford",
+			"mpg": "26.4",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "88",
+			"weight": 2870,
+			"acceleration": 18.1,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "concord",
+			"manufacturer": "amc",
+			"mpg": "24.3",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 3003,
+			"acceleration": 20.1,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "aspen",
+			"manufacturer": "dodge",
+			"mpg": "19.1",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "90",
+			"weight": 3381,
+			"acceleration": 18.7,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "4000",
+			"manufacturer": "audi",
+			"mpg": "34.3",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "78",
+			"weight": 2188,
+			"acceleration": 15.8,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "corona liftback",
+			"manufacturer": "toyota",
+			"mpg": "29.8",
+			"cylinders": 4,
+			"displacement": 134,
+			"horsepower": "90",
+			"weight": 2711,
+			"acceleration": 15.5,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "626",
+			"manufacturer": "mazda",
+			"mpg": "31.3",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "75",
+			"weight": 2542,
+			"acceleration": 17.5,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "510 hatchback",
+			"manufacturer": "datsun",
+			"mpg": "37",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "92",
+			"weight": 2434,
+			"acceleration": 15,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "corolla",
+			"manufacturer": "toyota",
+			"mpg": "32.2",
+			"cylinders": 4,
+			"displacement": 108,
+			"horsepower": "75",
+			"weight": 2265,
+			"acceleration": 15.2,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "glc",
+			"manufacturer": "mazda",
+			"mpg": "46.6",
+			"cylinders": 4,
+			"displacement": 86,
+			"horsepower": "65",
+			"weight": 2110,
+			"acceleration": 17.9,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "colt",
+			"manufacturer": "dodge",
+			"mpg": "27.9",
+			"cylinders": 4,
+			"displacement": 156,
+			"horsepower": "105",
+			"weight": 2800,
+			"acceleration": 14.4,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "210",
+			"manufacturer": "datsun",
+			"mpg": "40.8",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "65",
+			"weight": 2110,
+			"acceleration": 19.2,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "rabbit c (diesel)",
+			"manufacturer": "vw",
+			"mpg": "44.3",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "48",
+			"weight": 2085,
+			"acceleration": 21.7,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "dasher (diesel)",
+			"manufacturer": "vw",
+			"mpg": "43.4",
+			"cylinders": 4,
+			"displacement": 90,
+			"horsepower": "48",
+			"weight": 2335,
+			"acceleration": 23.7,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "5000s (diesel)",
+			"manufacturer": "audi",
+			"mpg": "36.4",
+			"cylinders": 5,
+			"displacement": 121,
+			"horsepower": "67",
+			"weight": 2950,
+			"acceleration": 19.9,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "240d",
+			"manufacturer": "mercedes",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 146,
+			"horsepower": "67",
+			"weight": 3250,
+			"acceleration": 21.8,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "civic 1500 gl",
+			"manufacturer": "honda",
+			"mpg": "44.6",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "67",
+			"weight": 1850,
+			"acceleration": 13.8,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "lecar deluxe",
+			"manufacturer": "renault",
+			"mpg": "40.9",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "NA",
+			"weight": 1835,
+			"acceleration": 17.3,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "dl",
+			"manufacturer": "subaru",
+			"mpg": "33.8",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "67",
+			"weight": 2145,
+			"acceleration": 18,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "rabbit",
+			"manufacturer": "vw",
+			"mpg": "29.8",
+			"cylinders": 4,
+			"displacement": 89,
+			"horsepower": "62",
+			"weight": 1845,
+			"acceleration": 15.3,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "280-zx",
+			"manufacturer": "datsun",
+			"mpg": "32.7",
+			"cylinders": 6,
+			"displacement": 168,
+			"horsepower": "132",
+			"weight": 2910,
+			"acceleration": 11.4,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "rx-7 gs",
+			"manufacturer": "mazda",
+			"mpg": "23.7",
+			"cylinders": 3,
+			"displacement": 70,
+			"horsepower": "100",
+			"weight": 2420,
+			"acceleration": 12.5,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "tr7 coupe",
+			"manufacturer": "triumph",
+			"mpg": "35",
+			"cylinders": 4,
+			"displacement": 122,
+			"horsepower": "88",
+			"weight": 2500,
+			"acceleration": 15.1,
+			"modelYear": 80,
+			"origin": "European"
+		},
+		{
+			"car": "mustang cobra",
+			"manufacturer": "ford",
+			"mpg": "23.6",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "NA",
+			"weight": 2905,
+			"acceleration": 14.3,
+			"modelYear": 80,
+			"origin": "American"
+		},
+		{
+			"car": "accord",
+			"manufacturer": "honda",
+			"mpg": "32.4",
+			"cylinders": 4,
+			"displacement": 107,
+			"horsepower": "72",
+			"weight": 2290,
+			"acceleration": 17,
+			"modelYear": 80,
+			"origin": "Japanese"
+		},
+		{
+			"car": "reliant",
+			"manufacturer": "plymouth",
+			"mpg": "27.2",
+			"cylinders": 4,
+			"displacement": 135,
+			"horsepower": "84",
+			"weight": 2490,
+			"acceleration": 15.7,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "skylark",
+			"manufacturer": "buick",
+			"mpg": "26.6",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "84",
+			"weight": 2635,
+			"acceleration": 16.4,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "aries wagon (sw)",
+			"manufacturer": "dodge",
+			"mpg": "25.8",
+			"cylinders": 4,
+			"displacement": 156,
+			"horsepower": "92",
+			"weight": 2620,
+			"acceleration": 14.4,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "citation",
+			"manufacturer": "chevrolet",
+			"mpg": "23.5",
+			"cylinders": 6,
+			"displacement": 173,
+			"horsepower": "110",
+			"weight": 2725,
+			"acceleration": 12.6,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "reliant",
+			"manufacturer": "plymouth",
+			"mpg": "30",
+			"cylinders": 4,
+			"displacement": 135,
+			"horsepower": "84",
+			"weight": 2385,
+			"acceleration": 12.9,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "starlet",
+			"manufacturer": "toyota",
+			"mpg": "39.1",
+			"cylinders": 4,
+			"displacement": 79,
+			"horsepower": "58",
+			"weight": 1755,
+			"acceleration": 16.9,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "champ",
+			"manufacturer": "plymouth",
+			"mpg": "39",
+			"cylinders": 4,
+			"displacement": 86,
+			"horsepower": "64",
+			"weight": 1875,
+			"acceleration": 16.4,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "civic 1300",
+			"manufacturer": "honda",
+			"mpg": "35.1",
+			"cylinders": 4,
+			"displacement": 81,
+			"horsepower": "60",
+			"weight": 1760,
+			"acceleration": 16.1,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "2",
+			"manufacturer": "subaru",
+			"mpg": "32.3",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "67",
+			"weight": 2065,
+			"acceleration": 17.8,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "210 mpg",
+			"manufacturer": "datsun",
+			"mpg": "37",
+			"cylinders": 4,
+			"displacement": 85,
+			"horsepower": "65",
+			"weight": 1975,
+			"acceleration": 19.4,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "tercel",
+			"manufacturer": "toyota",
+			"mpg": "37.7",
+			"cylinders": 4,
+			"displacement": 89,
+			"horsepower": "62",
+			"weight": 2050,
+			"acceleration": 17.3,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "glc 4",
+			"manufacturer": "mazda",
+			"mpg": "34.1",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "68",
+			"weight": 1985,
+			"acceleration": 16,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "horizon 4",
+			"manufacturer": "plymouth",
+			"mpg": "34.7",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "63",
+			"weight": 2215,
+			"acceleration": 14.9,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "escort 4w",
+			"manufacturer": "ford",
+			"mpg": "34.4",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "65",
+			"weight": 2045,
+			"acceleration": 16.2,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "escort 2h",
+			"manufacturer": "ford",
+			"mpg": "29.9",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "65",
+			"weight": 2380,
+			"acceleration": 20.7,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "jetta",
+			"manufacturer": "vw",
+			"mpg": "33",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "74",
+			"weight": 2190,
+			"acceleration": 14.2,
+			"modelYear": 81,
+			"origin": "European"
+		},
+		{
+			"car": "18i",
+			"manufacturer": "renault",
+			"mpg": "34.5",
+			"cylinders": 4,
+			"displacement": 100,
+			"horsepower": "NA",
+			"weight": 2320,
+			"acceleration": 15.8,
+			"modelYear": 81,
+			"origin": "European"
+		},
+		{
+			"car": "prelude",
+			"manufacturer": "honda",
+			"mpg": "33.7",
+			"cylinders": 4,
+			"displacement": 107,
+			"horsepower": "75",
+			"weight": 2210,
+			"acceleration": 14.4,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "corolla",
+			"manufacturer": "toyota",
+			"mpg": "32.4",
+			"cylinders": 4,
+			"displacement": 108,
+			"horsepower": "75",
+			"weight": 2350,
+			"acceleration": 16.8,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "200sx",
+			"manufacturer": "datsun",
+			"mpg": "32.9",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "100",
+			"weight": 2615,
+			"acceleration": 14.8,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "626",
+			"manufacturer": "mazda",
+			"mpg": "31.6",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "74",
+			"weight": 2635,
+			"acceleration": 18.3,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "505s turbo diesel",
+			"manufacturer": "peugeot",
+			"mpg": "28.1",
+			"cylinders": 4,
+			"displacement": 141,
+			"horsepower": "80",
+			"weight": 3230,
+			"acceleration": 20.4,
+			"modelYear": 81,
+			"origin": "European"
+		},
+		{
+			"car": "900s",
+			"manufacturer": "saab",
+			"mpg": "NA",
+			"cylinders": 4,
+			"displacement": 121,
+			"horsepower": "110",
+			"weight": 2800,
+			"acceleration": 15.4,
+			"modelYear": 81,
+			"origin": "European"
+		},
+		{
+			"car": "diesel",
+			"manufacturer": "volvo",
+			"mpg": "30.7",
+			"cylinders": 6,
+			"displacement": 145,
+			"horsepower": "76",
+			"weight": 3160,
+			"acceleration": 19.6,
+			"modelYear": 81,
+			"origin": "European"
+		},
+		{
+			"car": "cressida",
+			"manufacturer": "toyota",
+			"mpg": "25.4",
+			"cylinders": 6,
+			"displacement": 168,
+			"horsepower": "116",
+			"weight": 2900,
+			"acceleration": 12.6,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "810 maxima",
+			"manufacturer": "datsun",
+			"mpg": "24.2",
+			"cylinders": 6,
+			"displacement": 146,
+			"horsepower": "120",
+			"weight": 2930,
+			"acceleration": 13.8,
+			"modelYear": 81,
+			"origin": "Japanese"
+		},
+		{
+			"car": "century",
+			"manufacturer": "buick",
+			"mpg": "22.4",
+			"cylinders": 6,
+			"displacement": 231,
+			"horsepower": "110",
+			"weight": 3415,
+			"acceleration": 15.8,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "cutlass ls",
+			"manufacturer": "oldsmobile",
+			"mpg": "26.6",
+			"cylinders": 8,
+			"displacement": 350,
+			"horsepower": "105",
+			"weight": 3725,
+			"acceleration": 19,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "granada gl",
+			"manufacturer": "ford",
+			"mpg": "20.2",
+			"cylinders": 6,
+			"displacement": 200,
+			"horsepower": "88",
+			"weight": 3060,
+			"acceleration": 17.1,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "lebaron salon",
+			"manufacturer": "chrysler",
+			"mpg": "17.6",
+			"cylinders": 6,
+			"displacement": 225,
+			"horsepower": "85",
+			"weight": 3465,
+			"acceleration": 16.6,
+			"modelYear": 81,
+			"origin": "American"
+		},
+		{
+			"car": "cavalier",
+			"manufacturer": "chevrolet",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 112,
+			"horsepower": "88",
+			"weight": 2605,
+			"acceleration": 19.6,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "cavalier wagon",
+			"manufacturer": "chevrolet",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 112,
+			"horsepower": "88",
+			"weight": 2640,
+			"acceleration": 18.6,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "cavalier 2-door",
+			"manufacturer": "chevrolet",
+			"mpg": "34",
+			"cylinders": 4,
+			"displacement": 112,
+			"horsepower": "88",
+			"weight": 2395,
+			"acceleration": 18,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "j2000 se hatchback",
+			"manufacturer": "pontiac",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 112,
+			"horsepower": "85",
+			"weight": 2575,
+			"acceleration": 16.2,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "aries se",
+			"manufacturer": "dodge",
+			"mpg": "29",
+			"cylinders": 4,
+			"displacement": 135,
+			"horsepower": "84",
+			"weight": 2525,
+			"acceleration": 16,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "phoenix",
+			"manufacturer": "pontiac",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 2735,
+			"acceleration": 18,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "fairmont futura",
+			"manufacturer": "ford",
+			"mpg": "24",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "92",
+			"weight": 2865,
+			"acceleration": 16.4,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "concord dl",
+			"manufacturer": "amc",
+			"mpg": "23",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "NA",
+			"weight": 3035,
+			"acceleration": 20.5,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "rabbit l",
+			"manufacturer": "vw",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "74",
+			"weight": 1980,
+			"acceleration": 15.3,
+			"modelYear": 82,
+			"origin": "European"
+		},
+		{
+			"car": "glc custom l",
+			"manufacturer": "mazda",
+			"mpg": "37",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "68",
+			"weight": 2025,
+			"acceleration": 18.2,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "glc custom",
+			"manufacturer": "mazda",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "68",
+			"weight": 1970,
+			"acceleration": 17.6,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "horizon miser",
+			"manufacturer": "plymouth",
+			"mpg": "38",
+			"cylinders": 4,
+			"displacement": 105,
+			"horsepower": "63",
+			"weight": 2125,
+			"acceleration": 14.7,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "lynx l",
+			"manufacturer": "mercury",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 98,
+			"horsepower": "70",
+			"weight": 2125,
+			"acceleration": 17.3,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "stanza xe",
+			"manufacturer": "nissan",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "88",
+			"weight": 2160,
+			"acceleration": 14.5,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "accord",
+			"manufacturer": "honda",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 107,
+			"horsepower": "75",
+			"weight": 2205,
+			"acceleration": 14.5,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "corolla",
+			"manufacturer": "toyota",
+			"mpg": "34",
+			"cylinders": 4,
+			"displacement": 108,
+			"horsepower": "70",
+			"weight": 2245,
+			"acceleration": 16.9,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "civic",
+			"manufacturer": "honda",
+			"mpg": "38",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "67",
+			"weight": 1965,
+			"acceleration": 15,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "civic (auto)",
+			"manufacturer": "honda",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "67",
+			"weight": 1965,
+			"acceleration": 15.7,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "310 gx",
+			"manufacturer": "datsun",
+			"mpg": "38",
+			"cylinders": 4,
+			"displacement": 91,
+			"horsepower": "67",
+			"weight": 1995,
+			"acceleration": 16.2,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "century limited",
+			"manufacturer": "buick",
+			"mpg": "25",
+			"cylinders": 6,
+			"displacement": 181,
+			"horsepower": "110",
+			"weight": 2945,
+			"acceleration": 16.4,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "cutlass ciera (diesel)",
+			"manufacturer": "oldsmobile",
+			"mpg": "38",
+			"cylinders": 6,
+			"displacement": 262,
+			"horsepower": "85",
+			"weight": 3015,
+			"acceleration": 17,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "lebaron medallion",
+			"manufacturer": "chrysler",
+			"mpg": "26",
+			"cylinders": 4,
+			"displacement": 156,
+			"horsepower": "92",
+			"weight": 2585,
+			"acceleration": 14.5,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "granada l",
+			"manufacturer": "ford",
+			"mpg": "22",
+			"cylinders": 6,
+			"displacement": 232,
+			"horsepower": "112",
+			"weight": 2835,
+			"acceleration": 14.7,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "celica gt",
+			"manufacturer": "toyota",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 144,
+			"horsepower": "96",
+			"weight": 2665,
+			"acceleration": 13.9,
+			"modelYear": 82,
+			"origin": "Japanese"
+		},
+		{
+			"car": "charger 2.2",
+			"manufacturer": "dodge",
+			"mpg": "36",
+			"cylinders": 4,
+			"displacement": 135,
+			"horsepower": "84",
+			"weight": 2370,
+			"acceleration": 13,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "camaro",
+			"manufacturer": "chevrolet",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 151,
+			"horsepower": "90",
+			"weight": 2950,
+			"acceleration": 17.3,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "mustang gl",
+			"manufacturer": "ford",
+			"mpg": "27",
+			"cylinders": 4,
+			"displacement": 140,
+			"horsepower": "86",
+			"weight": 2790,
+			"acceleration": 15.6,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "pickup",
+			"manufacturer": "vw",
+			"mpg": "44",
+			"cylinders": 4,
+			"displacement": 97,
+			"horsepower": "52",
+			"weight": 2130,
+			"acceleration": 24.6,
+			"modelYear": 82,
+			"origin": "European"
+		},
+		{
+			"car": "rampage",
+			"manufacturer": "dodge",
+			"mpg": "32",
+			"cylinders": 4,
+			"displacement": 135,
+			"horsepower": "84",
+			"weight": 2295,
+			"acceleration": 11.6,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "ranger",
+			"manufacturer": "ford",
+			"mpg": "28",
+			"cylinders": 4,
+			"displacement": 120,
+			"horsepower": "79",
+			"weight": 2625,
+			"acceleration": 18.6,
+			"modelYear": 82,
+			"origin": "American"
+		},
+		{
+			"car": "s-10",
+			"manufacturer": "chevrolet",
+			"mpg": "31",
+			"cylinders": 4,
+			"displacement": 119,
+			"horsepower": "82",
+			"weight": 2720,
+			"acceleration": 19.4,
+			"modelYear": 82,
+			"origin": "American"
+		}
+	];
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var radar_chart_model_1 = __webpack_require__(165);
+	var RadarChartCollection = (function (_super) {
+	    __extends(RadarChartCollection, _super);
+	    function RadarChartCollection() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.model = radar_chart_model_1.RadarChartModel;
+	        return _this;
+	    }
+	    RadarChartCollection.prototype.getAverage = function () {
+	        var axesAmount = 0, averagePerAxis = [];
+	        if (this.length > 0) {
+	            axesAmount = this.first().get('data').length;
+	        }
+	        this.each(function (item) {
+	            for (var i = 0; i < axesAmount; i++) {
+	                if (averagePerAxis[i]) {
+	                    averagePerAxis[i] += item.get('data')[i];
+	                }
+	                else {
+	                    averagePerAxis[i] = item.get('data')[i];
+	                }
+	            }
+	        });
+	        for (var i = 0; i < axesAmount; i++) {
+	            averagePerAxis[i] = averagePerAxis[i] / this.length;
+	        }
+	        return averagePerAxis;
+	    };
+	    return RadarChartCollection;
+	}(visualisation_collection_1.VisualisationCollection));
+	RadarChartCollection = __decorate([
+	    core_1.Injectable()
+	], RadarChartCollection);
+	exports.RadarChartCollection = RadarChartCollection;
+
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(122);
+	var RadarChartModel = (function (_super) {
+	    __extends(RadarChartModel, _super);
+	    function RadarChartModel() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.idAttribute = 'label';
+	        return _this;
+	    }
+	    RadarChartModel.prototype.defaults = function () {
+	        return {
+	            color: '',
+	            data: []
+	        };
+	    };
+	    return RadarChartModel;
+	}(visualisation_model_1.VisualisationModel));
+	RadarChartModel = __decorate([
+	    core_1.Injectable()
+	], RadarChartModel);
+	exports.RadarChartModel = RadarChartModel;
+
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(167);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(85)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .legend .dot {\n  width: 10px;\n  height: 10px;\n  display: inline-block;\n  background: black;\n  border-radius: 50%; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports) {
+
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Multi Data Dimension Experiment</h1>\n  </header>\n\n  <section>\n    <radar-chart [values]=\"radarChartCollection\" [labels]=\"radarChartLabels\"></radar-chart>\n    <div class=\"legend\">\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('European')\"></span>\n        European\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('American')\"></span>\n        American\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('Japanese')\"></span>\n        Japanese\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\"></span>\n        Average\n      </span>\n    </div>\n    <br>\n    <range-slider\n      [min]=\"70\"\n      [max]=\"82\"\n      [value]=\"viewModel.yearFilter\"\n      [step]=\"1\"\n      (valueChange)=\"filterByYear($event)\"></range-slider>\n  </section>\n\n  <section>\n\n    <table>\n      <tr>\n        <th></th>\n        <th>Name</th>\n        <th>Manufacturer</th>\n        <th>Origin</th>\n        <th>Model Year</th>\n      </tr>\n      <tr *ngFor=\"let model of multiDataExperimentItems.models\">\n        <td>\n          <input type=\"checkbox\" (click)=\"model.selectable.toggleSelect()\" [disabled]=\"model.selectable.isDisabled()\">\n        </td>\n        <td>{{model.get('car')}}</td>\n        <td>{{model.get('manufacturer')}}</td>\n        <td>{{model.get('origin')}}</td>\n        <td>{{model.get('modelYear')}}</td>\n      </tr>\n    </table>\n\n  </section>\n\n</section>\n";
+
+/***/ }),
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8907,7 +14588,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 157 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8921,12 +14602,13 @@ webpackJsonp([0],[
 	var core_1 = __webpack_require__(3);
 	var platform_browser_1 = __webpack_require__(21);
 	var forms_1 = __webpack_require__(62);
-	var range_slider_component_1 = __webpack_require__(158);
-	var wizard_component_1 = __webpack_require__(113);
-	var wizard_entry_component_1 = __webpack_require__(162);
-	var deviation_chart_component_1 = __webpack_require__(166);
-	var random_element_placing_component_1 = __webpack_require__(133);
-	var perception_chart_component_1 = __webpack_require__(170);
+	var range_slider_component_1 = __webpack_require__(171);
+	var wizard_component_1 = __webpack_require__(117);
+	var wizard_entry_component_1 = __webpack_require__(175);
+	var deviation_chart_component_1 = __webpack_require__(179);
+	var random_element_placing_component_1 = __webpack_require__(137);
+	var perception_chart_component_1 = __webpack_require__(183);
+	var radar_chart_component_1 = __webpack_require__(187);
 	var SharedModule = (function () {
 	    function SharedModule() {
 	    }
@@ -8941,6 +14623,7 @@ webpackJsonp([0],[
 	        declarations: [
 	            deviation_chart_component_1.DeviationChartComponent,
 	            perception_chart_component_1.PerceptionChartComponent,
+	            radar_chart_component_1.RadarChartComponent,
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
 	            wizard_entry_component_1.WizardEntryComponent,
@@ -8949,6 +14632,7 @@ webpackJsonp([0],[
 	        exports: [
 	            deviation_chart_component_1.DeviationChartComponent,
 	            perception_chart_component_1.PerceptionChartComponent,
+	            radar_chart_component_1.RadarChartComponent,
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
 	            wizard_entry_component_1.WizardEntryComponent,
@@ -8960,7 +14644,7 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 158 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9154,8 +14838,8 @@ webpackJsonp([0],[
 	RangeSliderComponent = __decorate([
 	    core_1.Component({
 	        selector: 'range-slider',
-	        styles: [__webpack_require__(159)],
-	        template: __webpack_require__(161)
+	        styles: [__webpack_require__(172)],
+	        template: __webpack_require__(174)
 	    }),
 	    __metadata("design:paramtypes", [core_1.ElementRef])
 	], RangeSliderComponent);
@@ -9163,13 +14847,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 159 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(160);
+	var styles = __webpack_require__(173);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -9180,10 +14864,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 160 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -9194,13 +14878,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 161 */
+/* 174 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"range-slider-component\" [class.is-loading]=\"showLoadingSpinner\" [class.is-dragging]=\"dragInProgress\">\n  <div *ngIf=\"!hideSliderValue && min !== null\"\n       class=\"min-value\">\n    <span *ngIf=\"showCurrentValue\">\n      {{getDisplayValue(value)}}\n    </span>\n    <span *ngIf=\"!showCurrentValue\">\n      {{getDisplayValue(min)}}\n    </span>\n  </div>\n\n  <div #progressBar class=\"progress-bar\">\n    <div #progressLine class=\"progress-line\"></div>\n    <div #handle class=\"visible-dragger\" [class.display-value]=\"!hideSliderValue\">\n      <span>{{dragDisplayValue}}</span>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    <input type=\"range\" [min]=\"min\" [max]=\"max\" [(ngModel)]=\"tmpValue\" [step]=\"step\">\n  </div>\n\n  <div *ngIf=\"!hideSliderValue && max !== null\"\n       class=\"max-value\">\n    {{getDisplayValue(max)}}\n  </div>\n</div>\n";
 
 /***/ }),
-/* 162 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9215,7 +14899,7 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var wizard_component_1 = __webpack_require__(113);
+	var wizard_component_1 = __webpack_require__(117);
 	var WizardEntryComponent = (function () {
 	    function WizardEntryComponent(wizardComponent, el) {
 	        this.wizardComponent = wizardComponent;
@@ -9238,8 +14922,8 @@ webpackJsonp([0],[
 	WizardEntryComponent = __decorate([
 	    core_1.Component({
 	        selector: 'wizard-entry',
-	        styles: [__webpack_require__(163)],
-	        template: __webpack_require__(165)
+	        styles: [__webpack_require__(176)],
+	        template: __webpack_require__(178)
 	    }),
 	    __metadata("design:paramtypes", [wizard_component_1.WizardComponent, core_1.ElementRef])
 	], WizardEntryComponent);
@@ -9247,13 +14931,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 163 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(164);
+	var styles = __webpack_require__(177);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -9264,10 +14948,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 164 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -9278,13 +14962,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 165 */
+/* 178 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"slide\" *ngIf=\"opened\">\n  <ng-content></ng-content>\n</div>\n";
 
 /***/ }),
-/* 166 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9366,21 +15050,21 @@ webpackJsonp([0],[
 	DeviationChartComponent = __decorate([
 	    core_1.Component({
 	        selector: 'deviation-chart',
-	        styles: [__webpack_require__(167)],
-	        template: __webpack_require__(169)
+	        styles: [__webpack_require__(180)],
+	        template: __webpack_require__(182)
 	    })
 	], DeviationChartComponent);
 	exports.DeviationChartComponent = DeviationChartComponent;
 
 
 /***/ }),
-/* 167 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(168);
+	var styles = __webpack_require__(181);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -9391,10 +15075,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 168 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -9405,13 +15089,13 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 169 */
+/* 182 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"deviation-chart\">\n  <div class=\"x-axis\">\n    <div *ngFor=\"let num of bars\"\n         class=\"x res-{{num}}\">\n      <div class=\"x-label\">{{num}}%</div>\n    </div>\n\n    <div *ngFor=\"let result of results\"\n         class=\"result\"\n         [style.width]=\"result.key+'%'\"\n         [style.height]=\"getPercentageVal(result.key)*10+'%'\">\n    </div>\n\n    <div class=\"result average-marker\" [style.width]=\"this.average+'%'\">\n      <span class=\"indicator-label\">\n        <span class=\"fa fa-users\"></span>\n      </span>\n    </div>\n\n    <div *ngIf=\"hasHighlight()\" class=\"result highlight\" [style.width]=\"this.highlight+'%'\">\n      <span class=\"indicator-label\">\n        <span class=\"fa fa-user\"></span>\n      </span>\n    </div>\n\n    <div class=\"background\"></div>\n    <b class=\"axis-label y\">{{yLabel}}</b>\n  </div>\n\n  <div class=\"y-axis\">\n    <div *ngFor=\"let num of bars\"\n         class=\"y res-{{num}}\">\n      <div *ngIf=\"(num/10)%2 === 0\" class=\"y-label\">{{100-num}}%</div>\n    </div>\n\n    <b class=\"axis-label x\">{{xLabel}}</b>\n  </div>\n</div>\n\n<div class=\"legend\">\n    <span class=\"label label-info label-light\">\n      <span class=\"fa fa-users\"></span>\n    </span> = Average Deviation ({{this.average}}%/{{values.length}} participants)\n\n    <span *ngIf=\"hasHighlight()\">\n      <span class=\"label label-success label-light\">\n        <span class=\"fa fa-user\"></span>\n      </span> = Your guess\n    </span>\n</div>\n";
 
 /***/ }),
-/* 170 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9474,21 +15158,21 @@ webpackJsonp([0],[
 	PerceptionChartComponent = __decorate([
 	    core_1.Component({
 	        selector: 'perception-chart',
-	        styles: [__webpack_require__(171)],
-	        template: __webpack_require__(173)
+	        styles: [__webpack_require__(184)],
+	        template: __webpack_require__(186)
 	    })
 	], PerceptionChartComponent);
 	exports.PerceptionChartComponent = PerceptionChartComponent;
 
 
 /***/ }),
-/* 171 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// css-to-string-loader: transforms styles from css-loader to a string output
 
 	// Get the styles
-	var styles = __webpack_require__(172);
+	var styles = __webpack_require__(185);
 
 	if (typeof styles === 'string') {
 	  // Return an existing string
@@ -9499,10 +15183,10 @@ webpackJsonp([0],[
 	}
 
 /***/ }),
-/* 172 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(81)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -9513,10 +15197,187 @@ webpackJsonp([0],[
 
 
 /***/ }),
-/* 173 */
+/* 186 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"perception-chart\">\n  <div class=\"x-axis\">\n    <div *ngFor=\"let num of xBars\"\n         class=\"x res-{{num}}\">\n      <div class=\"x-label\">{{num}}</div>\n    </div>\n\n    <div *ngFor=\"let result of results\"\n         class=\"result\"\n         [style.width]=\"result.key+'%'\"\n         [style.bottom]=\"getPercentageValue(result.value)+'%'\">\n    </div>\n\n    <div class=\"background\"></div>\n    <b class=\"axis-label y\">{{yLabel}}</b>\n  </div>\n\n  <div class=\"y-axis\">\n    <div *ngFor=\"let num of yBars\"\n         class=\"y res-{{num}}\">\n      <div *ngIf=\"(num/10)%2 === 0\" class=\"y-label\">{{1000-num*10}}ms</div>\n    </div>\n\n    <b class=\"axis-label x\">{{xLabel}}</b>\n  </div>\n</div>\n";
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var radar_chart_collection_1 = __webpack_require__(164);
+	var underscore_1 = __webpack_require__(67);
+	var RadarChartComponent = (function () {
+	    function RadarChartComponent() {
+	    }
+	    RadarChartComponent.prototype.multiplyMatrix = function (matrix1, matrix2) {
+	        var x = matrix1[0] * matrix2[0][0] + matrix1[1] * matrix2[0][1];
+	        var y = matrix1[0] * matrix2[1][0] + matrix1[1] * matrix2[1][1];
+	        return [x, y];
+	    };
+	    RadarChartComponent.prototype.toRadians = function (angle) {
+	        return angle * (Math.PI / 180);
+	    };
+	    RadarChartComponent.prototype.rotate2dMatrix = function (matrix, degree, point, clockwise) {
+	        if (point === void 0) { point = [0, 0]; }
+	        if (clockwise === void 0) { clockwise = true; }
+	        var rotationMatrix;
+	        var rad = this.toRadians(degree);
+	        if (clockwise) {
+	            rotationMatrix = [
+	                [Math.cos(rad), Math.sin(rad)],
+	                [Math.sin(rad) * -1, Math.cos(rad)]
+	            ];
+	        }
+	        else {
+	            rotationMatrix = [
+	                [Math.cos(rad), Math.sin(rad) * -1],
+	                [Math.sin(rad), Math.cos(rad)]
+	            ];
+	        }
+	        var rotateAroundPointMatrix = [matrix[0] - point[0], matrix[1] - point[1]];
+	        var rotatedMatrix = this.multiplyMatrix(rotateAroundPointMatrix, rotationMatrix);
+	        return [rotatedMatrix[0] + point[0], rotatedMatrix[1] + point[1]];
+	    };
+	    RadarChartComponent.prototype.drawAxes = function (ctx) {
+	        var axes = 6;
+	        var axeWidth = 180;
+	        var labelMargin = 10;
+	        for (var i = 0; i < axes; i++) {
+	            var from = [this.canvasCenter[0], this.canvasCenter[1]];
+	            var to = this.rotate2dMatrix([this.canvasCenter[0], this.canvasCenter[1] - axeWidth], (360 / axes) * i, from, false);
+	            ctx.strokeStyle = '#aaa';
+	            ctx.lineWidth = 1;
+	            ctx.beginPath();
+	            ctx.moveTo(from[0], from[1]);
+	            ctx.lineTo(Math.round(to[0]), Math.round(to[1]));
+	            ctx.stroke();
+	            var labelPos = this.rotate2dMatrix([this.canvasCenter[0], this.canvasCenter[1] - (axeWidth + labelMargin)], (360 / axes) * i, from, false);
+	            ctx.textAlign = "center";
+	            ctx.fillStyle = 'black';
+	            ctx.fillText(this.labels[i], labelPos[0], labelPos[1]);
+	        }
+	    };
+	    RadarChartComponent.prototype.drawData = function (ctx, data, color) {
+	        if (color === void 0) { color = 'black'; }
+	        var axes = 6;
+	        var axeWidth = 180;
+	        ctx.lineWidth = 2;
+	        ctx.strokeStyle = color;
+	        ctx.fillStyle = 'transparent';
+	        ctx.beginPath();
+	        for (var i = 0; i < axes; i++) {
+	            var normalizedData = (axeWidth / 100) * data[i];
+	            var from = [this.canvasCenter[0], this.canvasCenter[1]];
+	            var to = this.rotate2dMatrix([this.canvasCenter[0], this.canvasCenter[1] - normalizedData], (360 / axes) * i, from, false);
+	            if (i === 0) {
+	                ctx.moveTo(to[0], to[1]);
+	            }
+	            else {
+	                ctx.lineTo(to[0], to[1]);
+	            }
+	        }
+	        ctx.closePath();
+	        ctx.stroke();
+	        ctx.fill();
+	    };
+	    RadarChartComponent.prototype.draw = function () {
+	        var _this = this;
+	        this.canvasContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+	        this.drawAxes(this.canvasContext);
+	        this.values.each(function (value) {
+	            _this.drawData(_this.canvasContext, value.get('data'), value.get('color'));
+	        });
+	        if (this.values.length > 1) {
+	            this.drawData(this.canvasContext, this.values.getAverage(), 'black');
+	        }
+	    };
+	    RadarChartComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        var canvas = this.radarChartCanvas.nativeElement;
+	        this.canvasWidth = canvas.offsetWidth;
+	        this.canvasHeight = canvas.offsetHeight;
+	        this.canvasCenter = [this.canvasWidth / 2, this.canvasHeight / 2];
+	        this.canvasContext = canvas.getContext('2d');
+	        this.draw();
+	        var throttledDraw = underscore_1.debounce(function () {
+	            _this.draw();
+	        }, 100);
+	        this.values.on('update', throttledDraw, this);
+	    };
+	    return RadarChartComponent;
+	}());
+	__decorate([
+	    core_1.ViewChild('radarChart'),
+	    __metadata("design:type", core_1.ElementRef)
+	], RadarChartComponent.prototype, "radarChartCanvas", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", radar_chart_collection_1.RadarChartCollection)
+	], RadarChartComponent.prototype, "values", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Array)
+	], RadarChartComponent.prototype, "labels", void 0);
+	RadarChartComponent = __decorate([
+	    core_1.Component({
+	        selector: 'radar-chart',
+	        styles: [__webpack_require__(188)],
+	        template: __webpack_require__(190)
+	    })
+	], RadarChartComponent);
+	exports.RadarChartComponent = RadarChartComponent;
+
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(189);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(85)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"radar-chart\">\n  <canvas #radarChart style=\"width: 100%; height: 100%\" width=\"660px\" height=\"400\"></canvas>\n</div>\n";
 
 /***/ })
 ]);
