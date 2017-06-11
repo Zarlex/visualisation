@@ -5,6 +5,7 @@ import {CircleExperimentResultComponent} from './components/results/circle-exper
 import {CircleExperimentResultsComponent} from './components/results/circle-experiment-results/circle-experiment-results.component';
 import {PerceptionExperimentComponent} from './components/perception-experiment/perception-experiment.component';
 import {PerceptionExperimentResultsComponent} from './components/results/perception-experiment-results/perception-experiment-results.component';
+import {MultiDataDimensionExperimentComponent} from './components/multi-data-dimension-experiment/multi-data-dimension-experiment.component';
 
 const routes: Routes = [
   {path: 'experiments/circle', component: CircleExperimentComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'experiments/results/circle/:id', component: CircleExperimentResultComponent},
   {path: 'experiments/results/circle/:id/all', component: CircleExperimentResultsComponent},
   {path: 'experiments/results/perception', component: PerceptionExperimentResultsComponent},
+  {path: 'experiments/multi-data-dimension', component: MultiDataDimensionExperimentComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,0 +1,59 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Multi Data Dimension Experiment</h1>
+  </header>
+
+  <section>
+    <radar-chart [values]="radarChartCollection" [labels]="radarChartLabels"></radar-chart>
+    <div class="legend">
+      <span class="label label-default label-light">
+        <span class="dot" [style.background]="getColorForOrigin('European')"></span>
+        European
+      </span>
+      <span class="label label-default label-light">
+        <span class="dot" [style.background]="getColorForOrigin('American')"></span>
+        American
+      </span>
+      <span class="label label-default label-light">
+        <span class="dot" [style.background]="getColorForOrigin('Japanese')"></span>
+        Japanese
+      </span>
+      <span class="label label-default label-light">
+        <span class="dot"></span>
+        Average
+      </span>
+    </div>
+    <br>
+    <range-slider
+      [min]="70"
+      [max]="82"
+      [value]="viewModel.yearFilter"
+      [step]="1"
+      (valueChange)="filterByYear($event)"></range-slider>
+  </section>
+
+  <section>
+
+    <table>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Manufacturer</th>
+        <th>Origin</th>
+        <th>Model Year</th>
+      </tr>
+      <tr *ngFor="let model of multiDataExperimentItems.models">
+        <td>
+          <input type="checkbox" (click)="model.selectable.toggleSelect()" [disabled]="model.selectable.isDisabled()">
+        </td>
+        <td>{{model.get('car')}}</td>
+        <td>{{model.get('manufacturer')}}</td>
+        <td>{{model.get('origin')}}</td>
+        <td>{{model.get('modelYear')}}</td>
+      </tr>
+    </table>
+
+  </section>
+
+</section>
