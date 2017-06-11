@@ -34,9 +34,14 @@ module.exports = {
       {
         test   : /\.css$/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-      }, {
+      },
+      {
         test   : /\.scss$/,
         loaders: ['css-to-string-loader','css-loader','sass-loader']
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
