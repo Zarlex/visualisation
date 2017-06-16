@@ -4,8 +4,6 @@ import {MultiDataExperimentItems} from '../collections/multi-data-experiment-ite
 
 @Injectable()
 export class MultiDataExperimentItemModel extends VisualisationModel {
-  private _percentageCache = {};
-
   parse(attrs: any) {
     for (var key in attrs) {
       if (attrs.hasOwnProperty(key) && attrs[key] === 'NA') {
