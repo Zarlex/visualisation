@@ -215,8 +215,10 @@ export class Selectable {
   };
 
   public unSelectAll() {
-    this.getSelected().each(function (model: SelectableModel) {
-      this.unSelect(model);
+    this.getSelected().each((model: SelectableModel) => {
+      if((model instanceof SelectableModel)){
+        this.unSelect(model);
+      }
     }, this);
   };
 
