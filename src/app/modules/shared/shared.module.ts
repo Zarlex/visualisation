@@ -8,6 +8,8 @@ import {DeviationChartComponent} from './components/deviation-chart/deviation-ch
 import {RandomElementPlacingComponent} from './components/random-element-placing/random-element-placing.component';
 import {PerceptionChartComponent} from './components/perception-chart/perception-chart.component';
 import {RadarChartComponent} from './components/radar-chart/radar-chart.component';
+import {TabsComponent} from './components/tabs/tabs.component';
+import {TabComponent} from './components/tabs/tab/tab.component';
 
 @NgModule({
   imports: [
@@ -21,6 +23,8 @@ import {RadarChartComponent} from './components/radar-chart/radar-chart.componen
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
+    TabsComponent,
+    TabComponent,
     RandomElementPlacingComponent
   ],
   exports: [
@@ -30,6 +34,8 @@ import {RadarChartComponent} from './components/radar-chart/radar-chart.componen
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
+    TabsComponent,
+    TabComponent,
     RandomElementPlacingComponent
   ]
 })
