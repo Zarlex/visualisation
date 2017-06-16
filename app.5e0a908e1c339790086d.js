@@ -6804,6 +6804,22 @@ webpackJsonp([0],[
 	        options.search = prepare_search_params_1.prepareSearchParams(options.search, queryParams);
 	        return _super.prototype.sync.call(this, method, model, options);
 	    };
+	    BaseCollection.prototype.isAscSorted = function (attr) {
+	        if (!attr || this.comparator === attr) {
+	            return this.sortOrder === 'ASC';
+	        }
+	        else {
+	            return false;
+	        }
+	    };
+	    BaseCollection.prototype.isDescSorted = function (attr) {
+	        if (!attr || this.comparator === attr) {
+	            return this.sortOrder === 'DESC';
+	        }
+	        else {
+	            return false;
+	        }
+	    };
 	    BaseCollection.prototype.sortAscending = function () {
 	        this.sort();
 	        this.sortOrder = 'ASC';
@@ -6815,6 +6831,20 @@ webpackJsonp([0],[
 	        this.models = this.models.reverse();
 	        this.trigger('sort', this);
 	        this.sortOrder = 'DESC';
+	    };
+	    BaseCollection.prototype.toggleSort = function (attr) {
+	        if (this.comparator != attr) {
+	            this.comparator = attr;
+	            this.sortAscending();
+	        }
+	        else {
+	            if (this.isAscSorted()) {
+	                this.sortDescending();
+	            }
+	            else {
+	                this.sortAscending();
+	            }
+	        }
 	    };
 	    return BaseCollection;
 	}(selectable_collection_1.SelectableCollection));
@@ -7086,8 +7116,11 @@ webpackJsonp([0],[
 	    };
 	    ;
 	    Selectable.prototype.unSelectAll = function () {
+	        var _this = this;
 	        this.getSelected().each(function (model) {
-	            this.unSelect(model);
+	            if ((model instanceof selectable_model_1.SelectableModel)) {
+	                _this.unSelect(model);
+	            }
 	        }, this);
 	    };
 	    ;
@@ -7532,6 +7565,7 @@ webpackJsonp([0],[
 	var target_finder_areas_component_1 = __webpack_require__(147);
 	var perception_experiment_results_component_1 = __webpack_require__(155);
 	var multi_data_dimension_experiment_component_1 = __webpack_require__(160);
+	var data_per_manufacturer_component_1 = __webpack_require__(199);
 	var ExperimentModule = (function () {
 	    function ExperimentModule() {
 	    }
@@ -7554,6 +7588,7 @@ webpackJsonp([0],[
 	            circle_experiment_result_component_1.CircleExperimentResultComponent,
 	            circle_experiment_results_component_1.CircleExperimentResultsComponent,
 	            perception_experiment_results_component_1.PerceptionExperimentResultsComponent,
+	            data_per_manufacturer_component_1.DataPerManufacturerComponent,
 	            multi_data_dimension_experiment_component_1.MultiDataDimensionExperimentComponent,
 	            random_size_directive_1.RandomSizeDirective
 	        ]
@@ -9307,21 +9342,28 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
 	var multi_data_experiment_items_collection_1 = __webpack_require__(161);
-	var radar_chart_collection_1 = __webpack_require__(164);
-	var radar_chart_model_1 = __webpack_require__(165);
+	var radar_chart_collection_1 = __webpack_require__(163);
+	var radar_chart_model_1 = __webpack_require__(164);
+	var dataItems = __webpack_require__(165);
 	var MultiDataDimensionExperimentComponent = (function () {
 	    function MultiDataDimensionExperimentComponent(multiDataExperimentItems, radarChartCollection) {
 	        this.multiDataExperimentItems = multiDataExperimentItems;
 	        this.radarChartCollection = radarChartCollection;
-	        this.viewModel = {
-	            yearFilter: 70
-	        };
 	        this.radarChartLabels = ['MPG', 'Cylinders', 'Displacement', 'Horsepower', 'Weight', 'Acceleration'];
 	    }
 	    MultiDataDimensionExperimentComponent.prototype.setRadarChartCollection = function (collection, yearFilter) {
 	        var _this = this;
 	        this.radarChartCollection.reset();
-	        collection.where({ modelYear: yearFilter }).forEach(function (item) {
+	        var items;
+	        if (yearFilter) {
+	            items = collection.where({
+	                modelYear: yearFilter,
+	            });
+	        }
+	        else {
+	            items = collection.toArray();
+	        }
+	        items.forEach(function (item) {
 	            var radarChartModel = new radar_chart_model_1.RadarChartModel({
 	                color: item.getColor(),
 	                data: [
@@ -9337,6 +9379,8 @@ webpackJsonp([0],[
 	        });
 	    };
 	    MultiDataDimensionExperimentComponent.prototype.filterByYear = function (val) {
+	        this.yearFilter = val;
+	        this.multiDataExperimentItems.selectable.unSelectAll();
 	        this.setRadarChartCollection(this.multiDataExperimentItems, val);
 	    };
 	    MultiDataDimensionExperimentComponent.prototype.getColorForOrigin = function (origin) {
@@ -9345,17 +9389,33 @@ webpackJsonp([0],[
 	            return originRes.getColor();
 	        }
 	    };
+	    MultiDataDimensionExperimentComponent.prototype.toggleFilterByYear = function () {
+	        if (this.yearFilter) {
+	            this.yearFilter = null;
+	        }
+	        else {
+	            this.yearFilter = this.minYear;
+	        }
+	    };
 	    MultiDataDimensionExperimentComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.setRadarChartCollection(this.multiDataExperimentItems, this.viewModel.yearFilter);
+	        dataItems.forEach(function (item) {
+	            _this.multiDataExperimentItems.add(new _this.multiDataExperimentItems.model(item, { parse: true }));
+	        });
+	        this.manufacturers = this.multiDataExperimentItems.getManufacturers();
+	        this.minYear = this.multiDataExperimentItems.getMin('modelYear');
+	        this.maxYear = this.multiDataExperimentItems.getMax('modelYear');
+	        //this.yearFilter = this.minYear;
+	        this.setRadarChartCollection(this.multiDataExperimentItems, this.yearFilter);
 	        this.multiDataExperimentItems.selectable.on('change:add', function () {
 	            if (_this.multiDataExperimentItems.selectable.getSelected().length > 0) {
 	                var selected = new multi_data_experiment_items_collection_1.MultiDataExperimentItems();
+	                selected.maxCache = _this.multiDataExperimentItems.maxCache;
 	                selected.reset(_this.multiDataExperimentItems.selectable.getSelected().toJSON());
-	                _this.setRadarChartCollection(selected, _this.viewModel.yearFilter);
+	                _this.setRadarChartCollection(selected, _this.yearFilter);
 	            }
 	            else {
-	                _this.setRadarChartCollection(_this.multiDataExperimentItems, _this.viewModel.yearFilter);
+	                _this.setRadarChartCollection(_this.multiDataExperimentItems, _this.yearFilter);
 	            }
 	        });
 	    };
@@ -9401,29 +9461,37 @@ webpackJsonp([0],[
 	var core_1 = __webpack_require__(3);
 	var visualisation_collection_1 = __webpack_require__(132);
 	var multi_data_experiment_item_model_1 = __webpack_require__(162);
-	var dataItems = __webpack_require__(163);
 	var MultiDataExperimentItems = (function (_super) {
 	    __extends(MultiDataExperimentItems, _super);
 	    function MultiDataExperimentItems() {
 	        var _this = _super.call(this) || this;
-	        _this._maxCache = {};
+	        _this.maxCache = {};
+	        _this.minCache = {};
 	        _this.model = multi_data_experiment_item_model_1.MultiDataExperimentItemModel;
-	        console.log('INIT');
 	        return _this;
 	    }
-	    MultiDataExperimentItems.prototype.initialize = function () {
-	        var _this = this;
-	        dataItems.forEach(function (item) {
-	            _this.add(new multi_data_experiment_item_model_1.MultiDataExperimentItemModel(item, { parse: true }));
-	        });
-	    };
-	    MultiDataExperimentItems.prototype.getMax = function (attr) {
-	        if (!this._maxCache[attr]) {
-	            this._maxCache[attr] = this.max(function (model) {
+	    MultiDataExperimentItems.prototype.getMin = function (attr) {
+	        if (!this.minCache[attr]) {
+	            this.minCache[attr] = this.min(function (model) {
 	                return model.get(attr);
 	            }).get(attr);
 	        }
-	        return this._maxCache[attr];
+	        return this.minCache[attr];
+	    };
+	    MultiDataExperimentItems.prototype.getMax = function (attr) {
+	        if (!this.maxCache[attr]) {
+	            this.maxCache[attr] = this.max(function (model) {
+	                return model.get(attr);
+	            }).get(attr);
+	        }
+	        return this.maxCache[attr];
+	    };
+	    MultiDataExperimentItems.prototype.getManufacturers = function () {
+	        var manufacturers = new visualisation_collection_1.VisualisationCollection();
+	        this.each(function (item) {
+	            manufacturers.add({ id: item.get('manufacturer') });
+	        });
+	        return manufacturers;
 	    };
 	    return MultiDataExperimentItems;
 	}(visualisation_collection_1.VisualisationCollection));
@@ -9461,9 +9529,7 @@ webpackJsonp([0],[
 	var MultiDataExperimentItemModel = (function (_super) {
 	    __extends(MultiDataExperimentItemModel, _super);
 	    function MultiDataExperimentItemModel() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this._percentageCache = {};
-	        return _this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    MultiDataExperimentItemModel.prototype.parse = function (attrs) {
 	        for (var key in attrs) {
@@ -9511,6 +9577,111 @@ webpackJsonp([0],[
 
 /***/ }),
 /* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var radar_chart_model_1 = __webpack_require__(164);
+	var RadarChartCollection = (function (_super) {
+	    __extends(RadarChartCollection, _super);
+	    function RadarChartCollection() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.model = radar_chart_model_1.RadarChartModel;
+	        return _this;
+	    }
+	    RadarChartCollection.prototype.getAverage = function () {
+	        var axesAmount = 0, averagePerAxis = [];
+	        if (this.length > 0) {
+	            axesAmount = this.first().get('data').length;
+	        }
+	        this.each(function (item) {
+	            for (var i = 0; i < axesAmount; i++) {
+	                if (averagePerAxis[i]) {
+	                    averagePerAxis[i] += item.get('data')[i];
+	                }
+	                else {
+	                    averagePerAxis[i] = item.get('data')[i];
+	                }
+	            }
+	        });
+	        for (var i = 0; i < axesAmount; i++) {
+	            averagePerAxis[i] = averagePerAxis[i] / this.length;
+	        }
+	        return averagePerAxis;
+	    };
+	    return RadarChartCollection;
+	}(visualisation_collection_1.VisualisationCollection));
+	RadarChartCollection = __decorate([
+	    core_1.Injectable()
+	], RadarChartCollection);
+	exports.RadarChartCollection = RadarChartCollection;
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var visualisation_model_1 = __webpack_require__(122);
+	var RadarChartModel = (function (_super) {
+	    __extends(RadarChartModel, _super);
+	    function RadarChartModel() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.idAttribute = 'label';
+	        return _this;
+	    }
+	    RadarChartModel.prototype.defaults = function () {
+	        return {
+	            color: '',
+	            data: []
+	        };
+	    };
+	    return RadarChartModel;
+	}(visualisation_model_1.VisualisationModel));
+	RadarChartModel = __decorate([
+	    core_1.Injectable()
+	], RadarChartModel);
+	exports.RadarChartModel = RadarChartModel;
+
+
+/***/ }),
+/* 165 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -14389,111 +14560,6 @@ webpackJsonp([0],[
 	];
 
 /***/ }),
-/* 164 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || (function () {
-	    var extendStatics = Object.setPrototypeOf ||
-	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var core_1 = __webpack_require__(3);
-	var visualisation_collection_1 = __webpack_require__(132);
-	var radar_chart_model_1 = __webpack_require__(165);
-	var RadarChartCollection = (function (_super) {
-	    __extends(RadarChartCollection, _super);
-	    function RadarChartCollection() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.model = radar_chart_model_1.RadarChartModel;
-	        return _this;
-	    }
-	    RadarChartCollection.prototype.getAverage = function () {
-	        var axesAmount = 0, averagePerAxis = [];
-	        if (this.length > 0) {
-	            axesAmount = this.first().get('data').length;
-	        }
-	        this.each(function (item) {
-	            for (var i = 0; i < axesAmount; i++) {
-	                if (averagePerAxis[i]) {
-	                    averagePerAxis[i] += item.get('data')[i];
-	                }
-	                else {
-	                    averagePerAxis[i] = item.get('data')[i];
-	                }
-	            }
-	        });
-	        for (var i = 0; i < axesAmount; i++) {
-	            averagePerAxis[i] = averagePerAxis[i] / this.length;
-	        }
-	        return averagePerAxis;
-	    };
-	    return RadarChartCollection;
-	}(visualisation_collection_1.VisualisationCollection));
-	RadarChartCollection = __decorate([
-	    core_1.Injectable()
-	], RadarChartCollection);
-	exports.RadarChartCollection = RadarChartCollection;
-
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || (function () {
-	    var extendStatics = Object.setPrototypeOf ||
-	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var core_1 = __webpack_require__(3);
-	var visualisation_model_1 = __webpack_require__(122);
-	var RadarChartModel = (function (_super) {
-	    __extends(RadarChartModel, _super);
-	    function RadarChartModel() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.idAttribute = 'label';
-	        return _this;
-	    }
-	    RadarChartModel.prototype.defaults = function () {
-	        return {
-	            color: '',
-	            data: []
-	        };
-	    };
-	    return RadarChartModel;
-	}(visualisation_model_1.VisualisationModel));
-	RadarChartModel = __decorate([
-	    core_1.Injectable()
-	], RadarChartModel);
-	exports.RadarChartModel = RadarChartModel;
-
-
-/***/ }),
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14519,7 +14585,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ":host .legend .dot {\n  width: 10px;\n  height: 10px;\n  display: inline-block;\n  background: black;\n  border-radius: 50%; }\n", ""]);
+	exports.push([module.id, ":host radar-chart {\n  width: 660px;\n  height: 400px; }\n\n:host .legend {\n  margin-top: 20px; }\n  :host .legend .entry {\n    display: inline-block; }\n\n:host .country-color-dot {\n  width: 10px;\n  height: 10px;\n  display: inline-block;\n  background: black;\n  border-radius: 50%; }\n\n:host .year-filter {\n  display: flex;\n  align-items: center; }\n  :host .year-filter label {\n    margin-right: 10px;\n    border-right: 1px solid #ccc;\n    padding-right: 10px; }\n  :host .year-filter range-slider {\n    flex-grow: 1; }\n\n:host table th {\n  cursor: pointer;\n  padding: 5px;\n  border-bottom: 1px solid #555; }\n\n:host table td {\n  padding: 10px 0;\n  border-bottom: 1px solid #efefef; }\n  :host table td span.maxVal {\n    font-weight: bold;\n    color: green; }\n  :host table td span.minVal {\n    font-weight: bold;\n    color: red; }\n\n:host table tr:hover td {\n  background: #efefef; }\n", ""]);
 
 	// exports
 
@@ -14528,7 +14594,7 @@ webpackJsonp([0],[
 /* 168 */
 /***/ (function(module, exports) {
 
-	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Multi Data Dimension Experiment</h1>\n  </header>\n\n  <section>\n    <radar-chart [values]=\"radarChartCollection\" [labels]=\"radarChartLabels\"></radar-chart>\n    <div class=\"legend\">\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('European')\"></span>\n        European\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('American')\"></span>\n        American\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\" [style.background]=\"getColorForOrigin('Japanese')\"></span>\n        Japanese\n      </span>\n      <span class=\"label label-default label-light\">\n        <span class=\"dot\"></span>\n        Average\n      </span>\n    </div>\n    <br>\n    <range-slider\n      [min]=\"70\"\n      [max]=\"82\"\n      [value]=\"viewModel.yearFilter\"\n      [step]=\"1\"\n      (valueChange)=\"filterByYear($event)\"></range-slider>\n  </section>\n\n  <section>\n\n    <table>\n      <tr>\n        <th></th>\n        <th>Name</th>\n        <th>Manufacturer</th>\n        <th>Origin</th>\n        <th>Model Year</th>\n      </tr>\n      <tr *ngFor=\"let model of multiDataExperimentItems.models\">\n        <td>\n          <input type=\"checkbox\" (click)=\"model.selectable.toggleSelect()\" [disabled]=\"model.selectable.isDisabled()\">\n        </td>\n        <td>{{model.get('car')}}</td>\n        <td>{{model.get('manufacturer')}}</td>\n        <td>{{model.get('origin')}}</td>\n        <td>{{model.get('modelYear')}}</td>\n      </tr>\n    </table>\n\n  </section>\n\n</section>\n";
+	module.exports = "<section class=\"column\">\n  <header>\n    <a routerLink=\"/dashboard\" class=\"btn btn-default\">Back</a>\n    <h1><i class=\"fa fa-flask\"></i> Multi Data Dimension Experiment</h1>\n  </header>\n\n  <section>\n    <tabs>\n      <tab title=\"All\">\n        <radar-chart [values]=\"radarChartCollection\" [labels]=\"radarChartLabels\"></radar-chart>\n      </tab>\n      <tab title=\"Compare Manufacturers\">\n\n        <data-per-manufacturer\n          [manufacturers]=\"manufacturers\"\n          [multiDataDimensionItems]=\"multiDataExperimentItems\"\n          [filterByYear]=\"yearFilter\">\n        </data-per-manufacturer>\n\n      </tab>\n    </tabs>\n  </section>\n\n  <section>\n    <div class=\"legend\">\n      <div class=\"entry\">\n        <span class=\"country-color-dot\" [style.background]=\"getColorForOrigin('European')\"></span>\n        European\n      </div>\n      <div class=\"entry\">\n        <span class=\"country-color-dot\" [style.background]=\"getColorForOrigin('American')\"></span>\n        American\n      </div>\n      <div class=\"entry\">\n        <span class=\"country-color-dot\" [style.background]=\"getColorForOrigin('Japanese')\"></span>\n        Japanese\n      </div>\n      <div class=\"entry\">\n        <span class=\"country-color-dot\"></span>\n        Average\n      </div>\n    </div>\n    <hr>\n    <div class=\"year-filter\">\n      <label>\n        <input type=\"checkbox\" [checked]=\"yearFilter != null\" (click)=\"toggleFilterByYear()\">\n        Filter by year\n      </label>\n      <range-slider\n        [min]=\"minYear\"\n        [max]=\"maxYear\"\n        [value]=\"yearFilter\"\n        [step]=\"1\"\n        (valueChange)=\"filterByYear($event)\"></range-slider>\n    </div>\n  </section>\n\n  <hr>\n\n  <section>\n    <div class=\"legend\">\n      <div class=\"entry\">\n        <span class=\"country-color-dot\" [style.background]=\"'red'\"></span>\n        Low Values\n      </div>\n      <div class=\"entry\">\n        <span class=\"country-color-dot\" [style.background]=\"'green'\"></span>\n        High Values\n      </div>\n    </div>\n    <table>\n      <tr>\n        <th width=\"1%\"></th>\n        <th width=\"4%\" (click)=\"multiDataExperimentItems.toggleSort('origin')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('origin')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('origin')\" class=\"fa fa-sort-desc\"></span>\n          <span class=\"fa fa-globe\"></span>\n        </th>\n        <th width=\"9%\" (click)=\"multiDataExperimentItems.toggleSort('car')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('car')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('car')\" class=\"fa fa-sort-desc\"></span>\n          Name\n        </th>\n        <th width=\"9%\" (click)=\"multiDataExperimentItems.toggleSort('manufacturer')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('manufacturer')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('manufacturer')\" class=\"fa fa-sort-desc\"></span>\n          Manufacturer\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('mpg')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('mpg')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('mpg')\" class=\"fa fa-sort-desc\"></span>\n          MPG\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('cylinders')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('cylinders')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('cylinders')\" class=\"fa fa-sort-desc\"></span>\n          cylinders\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('displacement')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('displacement')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('displacement')\" class=\"fa fa-sort-desc\"></span>\n          displacement\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('horsepower')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('horsepower')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('horsepower')\" class=\"fa fa-sort-desc\"></span>\n          horsepower\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('weight')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('weight')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('weight')\" class=\"fa fa-sort-desc\"></span>\n          weight\n        </th>\n        <th width=\"10%\" (click)=\"multiDataExperimentItems.toggleSort('acceleration')\">\n          <span *ngIf=\"multiDataExperimentItems.isAscSorted('acceleration')\" class=\"fa fa-sort-asc\"></span>\n          <span *ngIf=\"multiDataExperimentItems.isDescSorted('acceleration')\" class=\"fa fa-sort-desc\"></span>\n          acceleration\n        </th>\n      </tr>\n      <tr *ngFor=\"let model of multiDataExperimentItems.models\"\n          [hidden]=\"yearFilter && model.get('modelYear') !== yearFilter\"\n          (click)=\"model.selectable.toggleSelect()\">\n        <td>\n          <input type=\"checkbox\"\n                 [disabled]=\"model.selectable.isDisabled()\"\n                 [checked]=\"model.selectable.isSelected()\">\n        </td>\n        <td style=\"text-align: center\">\n          <span class=\"country-color-dot\"\n                [style.background]=\"getColorForOrigin(model.get('origin'))\"></span>\n        </td>\n        <td>{{model.get('car')}}</td>\n        <td>{{model.get('manufacturer')}}</td>\n        <td>\n          <span [class.maxVal]=\"model.getPercentage('mpg')>70\"\n                [class.mediumVal]=\"model.getPercentage('mpg')>=30 && model.getPercentage('mpg')<=70\"\n                [class.minVal]=\"model.getPercentage('mpg')<30\">\n            {{model.get('mpg')}}\n          </span>\n        </td>\n        <td>\n          <span [class.maxVal]=\"model.getPercentage('cylinders')>70\"\n                [class.mediumVal]=\"model.getPercentage('cylinders')>=30 && model.getPercentage('cylinders')<=70\"\n                [class.minVal]=\"model.getPercentage('cylinders')<30\">\n            {{model.get('cylinders')}}\n          </span>\n        </td>\n        <td>\n           <span [class.maxVal]=\"model.getPercentage('displacement')>70\"\n                 [class.mediumVal]=\"model.getPercentage('displacement')>=30 && model.getPercentage('displacement')<=70\"\n                 [class.minVal]=\"model.getPercentage('displacement')<30\">\n            {{model.get('displacement')}}\n          </span>\n        </td>\n        <td>\n           <span [class.maxVal]=\"model.getPercentage('horsepower')>70\"\n                 [class.mediumVal]=\"model.getPercentage('horsepower')>=30 && model.getPercentage('horsepower')<=70\"\n                 [class.minVal]=\"model.getPercentage('horsepower')<30\">\n            {{model.get('horsepower')}}\n          </span>\n        </td>\n        <td>\n           <span [class.maxVal]=\"model.getPercentage('weight')>70\"\n                 [class.mediumVal]=\"model.getPercentage('weight')>=30 && model.getPercentage('weight')<=70\"\n                 [class.minVal]=\"model.getPercentage('weight')<30\">\n            {{model.get('weight')}}\n          </span>\n        </td>\n        <td>\n           <span [class.maxVal]=\"model.getPercentage('acceleration')>70\"\n                 [class.mediumVal]=\"model.getPercentage('acceleration')>=30 && model.getPercentage('acceleration')<=70\"\n                 [class.minVal]=\"model.getPercentage('acceleration')<30\">\n            {{model.get('acceleration')}}\n          </span>\n        </td>\n      </tr>\n    </table>\n\n  </section>\n\n</section>\n";
 
 /***/ }),
 /* 169 */
@@ -14609,6 +14675,8 @@ webpackJsonp([0],[
 	var random_element_placing_component_1 = __webpack_require__(137);
 	var perception_chart_component_1 = __webpack_require__(183);
 	var radar_chart_component_1 = __webpack_require__(187);
+	var tabs_component_1 = __webpack_require__(191);
+	var tab_component_1 = __webpack_require__(195);
 	var SharedModule = (function () {
 	    function SharedModule() {
 	    }
@@ -14627,6 +14695,8 @@ webpackJsonp([0],[
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
 	            wizard_entry_component_1.WizardEntryComponent,
+	            tabs_component_1.TabsComponent,
+	            tab_component_1.TabComponent,
 	            random_element_placing_component_1.RandomElementPlacingComponent
 	        ],
 	        exports: [
@@ -14636,6 +14706,8 @@ webpackJsonp([0],[
 	            range_slider_component_1.RangeSliderComponent,
 	            wizard_component_1.WizardComponent,
 	            wizard_entry_component_1.WizardEntryComponent,
+	            tabs_component_1.TabsComponent,
+	            tab_component_1.TabComponent,
 	            random_element_placing_component_1.RandomElementPlacingComponent
 	        ]
 	    })
@@ -14695,6 +14767,7 @@ webpackJsonp([0],[
 	            if (!this.dragInProgress) {
 	                this.val = val;
 	                this.tmpValue = val;
+	                this.setDragPosFromVal();
 	            }
 	        },
 	        enumerable: true,
@@ -14757,7 +14830,10 @@ webpackJsonp([0],[
 	        }
 	    };
 	    RangeSliderComponent.prototype.setDragPosFromVal = function () {
-	        var pos = (((this.tmpVal - this.min) / (this.max - this.min)) * 100);
+	        var pos = 0;
+	        if (this.tmpVal) {
+	            pos = (((this.tmpVal - this.min) / (this.max - this.min)) * 100);
+	        }
 	        this.handle.nativeElement.style.left = pos + '%';
 	        this.handle.nativeElement.style.transform = 'translateX(-' + ((this.draggerWidth / 100) * pos) + 'px)';
 	        this.progressBarLine.nativeElement.style.width = pos + '%';
@@ -14872,7 +14948,7 @@ webpackJsonp([0],[
 
 
 	// module
-	exports.push([module.id, ".range-slider-component {\n  position: relative;\n  margin: 10px 0;\n  display: flex;\n  align-items: center; }\n  .range-slider-component .min-value {\n    margin-right: 5px; }\n  .range-slider-component .progress-bar {\n    width: 100%;\n    background: #ccc;\n    position: relative;\n    height: 5px;\n    border-radius: 5px;\n    flex-grow: 1;\n    box-shadow: none; }\n    .range-slider-component .progress-bar .progress-line {\n      width: 0;\n      background: #1F8A70;\n      position: absolute;\n      left: 0;\n      top: 0;\n      height: 100%;\n      border-radius: 5px; }\n    .range-slider-component .progress-bar .visible-dragger {\n      padding: 5px;\n      border-radius: 4px;\n      background: white;\n      position: absolute;\n      top: -14px;\n      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.46);\n      transition: border-radius 0.5s ease;\n      cursor: pointer;\n      cursor: -webkit-grab;\n      pointer-events: none;\n      z-index: 99999;\n      display: flex;\n      align-items: center;\n      justify-content: center; }\n    .range-slider-component .progress-bar input[type=\"range\"] {\n      position: absolute;\n      height: 100%;\n      width: 100%;\n      top: 0;\n      left: 0;\n      opacity: 0; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-webkit-slider-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: -webkit-grab; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-moz-range-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: -moz-grab; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-ms-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: pointer; }\n  .range-slider-component .max-value {\n    margin-left: 5px; }\n  .range-slider-component:hover .progress-bar .visible-dragger, .range-slider-component.is-loading .progress-bar .visible-dragger, .range-slider-component.is-dragging .progress-bar .visible-dragger {\n    opacity: 1; }\n  .range-slider-component.is-loading .progress-bar .visible-dragger .loading-spinner {\n    display: block; }\n  .range-slider-component.is-dragging .progress-bar .visible-dragger .loading-spinner {\n    display: none; }\n\n.loading-spinner {\n  border: 0 solid #f70;\n  border-radius: 50%;\n  position: relative;\n  animation: loader-figure 1.15s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;\n  transform: translate(3px, 3px);\n  display: none; }\n\n@keyframes loader-figure {\n  0% {\n    width: 0;\n    height: 0;\n    left: 4px;\n    top: 4px;\n    background-color: #f70; }\n  29% {\n    background-color: #f70; }\n  30% {\n    top: 0;\n    left: 0;\n    width: 8px;\n    height: 8px;\n    background-color: transparent;\n    border-width: 4px;\n    opacity: 1; }\n  100% {\n    top: 0;\n    left: 0;\n    width: 8px;\n    height: 8px;\n    border-width: 0;\n    opacity: 0;\n    background-color: transparent; } }\n", ""]);
+	exports.push([module.id, ".range-slider-component {\n  position: relative;\n  margin: 10px 0;\n  display: flex;\n  align-items: center; }\n  .range-slider-component .min-value {\n    margin-right: 5px; }\n  .range-slider-component .progress-bar {\n    width: 100%;\n    background: #ccc;\n    position: relative;\n    height: 5px;\n    border-radius: 5px;\n    flex-grow: 1;\n    box-shadow: none; }\n    .range-slider-component .progress-bar .progress-line {\n      width: 0;\n      background: #1F8A70;\n      position: absolute;\n      left: 0;\n      top: 0;\n      height: 100%;\n      border-radius: 5px; }\n    .range-slider-component .progress-bar .visible-dragger {\n      padding: 5px;\n      border-radius: 4px;\n      background: white;\n      position: absolute;\n      top: -14px;\n      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.46);\n      transition: border-radius 0.5s ease;\n      cursor: pointer;\n      cursor: -webkit-grab;\n      pointer-events: none;\n      z-index: 99999;\n      display: flex;\n      align-items: center;\n      justify-content: center; }\n      .range-slider-component .progress-bar .visible-dragger[hidden] {\n        display: none !important; }\n    .range-slider-component .progress-bar input[type=\"range\"] {\n      position: absolute;\n      height: 100%;\n      width: 100%;\n      top: 0;\n      left: 0;\n      opacity: 0; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-webkit-slider-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: -webkit-grab; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-moz-range-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: -moz-grab; }\n      .range-slider-component .progress-bar input[type=\"range\"]::-ms-thumb {\n        pointer-events: all;\n        position: relative;\n        z-index: 9999999;\n        outline: 0;\n        cursor: pointer; }\n  .range-slider-component .max-value {\n    margin-left: 5px; }\n  .range-slider-component:hover .progress-bar .visible-dragger, .range-slider-component.is-loading .progress-bar .visible-dragger, .range-slider-component.is-dragging .progress-bar .visible-dragger {\n    opacity: 1; }\n  .range-slider-component.is-loading .progress-bar .visible-dragger .loading-spinner {\n    display: block; }\n  .range-slider-component.is-dragging .progress-bar .visible-dragger .loading-spinner {\n    display: none; }\n\n.loading-spinner {\n  border: 0 solid #f70;\n  border-radius: 50%;\n  position: relative;\n  animation: loader-figure 1.15s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;\n  transform: translate(3px, 3px);\n  display: none; }\n\n@keyframes loader-figure {\n  0% {\n    width: 0;\n    height: 0;\n    left: 4px;\n    top: 4px;\n    background-color: #f70; }\n  29% {\n    background-color: #f70; }\n  30% {\n    top: 0;\n    left: 0;\n    width: 8px;\n    height: 8px;\n    background-color: transparent;\n    border-width: 4px;\n    opacity: 1; }\n  100% {\n    top: 0;\n    left: 0;\n    width: 8px;\n    height: 8px;\n    border-width: 0;\n    opacity: 0;\n    background-color: transparent; } }\n", ""]);
 
 	// exports
 
@@ -14881,7 +14957,7 @@ webpackJsonp([0],[
 /* 174 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"range-slider-component\" [class.is-loading]=\"showLoadingSpinner\" [class.is-dragging]=\"dragInProgress\">\n  <div *ngIf=\"!hideSliderValue && min !== null\"\n       class=\"min-value\">\n    <span *ngIf=\"showCurrentValue\">\n      {{getDisplayValue(value)}}\n    </span>\n    <span *ngIf=\"!showCurrentValue\">\n      {{getDisplayValue(min)}}\n    </span>\n  </div>\n\n  <div #progressBar class=\"progress-bar\">\n    <div #progressLine class=\"progress-line\"></div>\n    <div #handle class=\"visible-dragger\" [class.display-value]=\"!hideSliderValue\">\n      <span>{{dragDisplayValue}}</span>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    <input type=\"range\" [min]=\"min\" [max]=\"max\" [(ngModel)]=\"tmpValue\" [step]=\"step\">\n  </div>\n\n  <div *ngIf=\"!hideSliderValue && max !== null\"\n       class=\"max-value\">\n    {{getDisplayValue(max)}}\n  </div>\n</div>\n";
+	module.exports = "<div class=\"range-slider-component\" [class.is-loading]=\"showLoadingSpinner\" [class.is-dragging]=\"dragInProgress\">\n  <div *ngIf=\"!hideSliderValue && min !== null\"\n       class=\"min-value\">\n    <span *ngIf=\"showCurrentValue\">\n      {{getDisplayValue(value)}}\n    </span>\n    <span *ngIf=\"!showCurrentValue\">\n      {{getDisplayValue(min)}}\n    </span>\n  </div>\n\n  <div #progressBar class=\"progress-bar\">\n    <div #progressLine class=\"progress-line\"></div>\n    <div #handle class=\"visible-dragger\" [class.display-value]=\"!hideSliderValue\" [hidden]=\"!value\">\n      <span>{{dragDisplayValue}}</span>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    <input type=\"range\" [min]=\"min\" [max]=\"max\" [(ngModel)]=\"tmpValue\" [step]=\"step\">\n  </div>\n\n  <div *ngIf=\"!hideSliderValue && max !== null\"\n       class=\"max-value\">\n    {{getDisplayValue(max)}}\n  </div>\n</div>\n";
 
 /***/ }),
 /* 175 */
@@ -15218,10 +15294,13 @@ webpackJsonp([0],[
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	var core_1 = __webpack_require__(3);
-	var radar_chart_collection_1 = __webpack_require__(164);
+	var radar_chart_collection_1 = __webpack_require__(163);
 	var underscore_1 = __webpack_require__(67);
 	var RadarChartComponent = (function () {
-	    function RadarChartComponent() {
+	    function RadarChartComponent(el) {
+	        this.el = el;
+	        this.width = 660;
+	        this.height = 400;
 	    }
 	    RadarChartComponent.prototype.multiplyMatrix = function (matrix1, matrix2) {
 	        var x = matrix1[0] * matrix2[0][0] + matrix1[1] * matrix2[0][1];
@@ -15254,7 +15333,7 @@ webpackJsonp([0],[
 	    };
 	    RadarChartComponent.prototype.drawAxes = function (ctx) {
 	        var axes = 6;
-	        var axeWidth = 180;
+	        var axeWidth = this.axisWidth;
 	        var labelMargin = 10;
 	        for (var i = 0; i < axes; i++) {
 	            var from = [this.canvasCenter[0], this.canvasCenter[1]];
@@ -15266,15 +15345,17 @@ webpackJsonp([0],[
 	            ctx.lineTo(Math.round(to[0]), Math.round(to[1]));
 	            ctx.stroke();
 	            var labelPos = this.rotate2dMatrix([this.canvasCenter[0], this.canvasCenter[1] - (axeWidth + labelMargin)], (360 / axes) * i, from, false);
-	            ctx.textAlign = "center";
-	            ctx.fillStyle = 'black';
-	            ctx.fillText(this.labels[i], labelPos[0], labelPos[1]);
+	            if (this.labels && this.labels[i]) {
+	                ctx.textAlign = "center";
+	                ctx.fillStyle = 'black';
+	                ctx.fillText(this.labels[i], labelPos[0], labelPos[1]);
+	            }
 	        }
 	    };
 	    RadarChartComponent.prototype.drawData = function (ctx, data, color) {
 	        if (color === void 0) { color = 'black'; }
 	        var axes = 6;
-	        var axeWidth = 180;
+	        var axeWidth = this.axisWidth;
 	        ctx.lineWidth = 2;
 	        ctx.strokeStyle = color;
 	        ctx.fillStyle = 'transparent';
@@ -15305,18 +15386,19 @@ webpackJsonp([0],[
 	            this.drawData(this.canvasContext, this.values.getAverage(), 'black');
 	        }
 	    };
-	    RadarChartComponent.prototype.ngOnInit = function () {
+	    RadarChartComponent.prototype.ngAfterViewInit = function () {
 	        var _this = this;
 	        var canvas = this.radarChartCanvas.nativeElement;
-	        this.canvasWidth = canvas.offsetWidth;
-	        this.canvasHeight = canvas.offsetHeight;
-	        this.canvasCenter = [this.canvasWidth / 2, this.canvasHeight / 2];
-	        this.canvasContext = canvas.getContext('2d');
-	        this.draw();
 	        var throttledDraw = underscore_1.debounce(function () {
 	            _this.draw();
 	        }, 100);
-	        this.values.on('update', throttledDraw, this);
+	        this.values.on('update reset', throttledDraw, this);
+	        this.canvasWidth = this.width;
+	        this.canvasHeight = this.height;
+	        this.axisWidth = (Math.min(this.canvasWidth, this.canvasHeight) / 2) - 20;
+	        this.canvasCenter = [this.canvasWidth / 2, this.canvasHeight / 2];
+	        this.canvasContext = canvas.getContext('2d');
+	        this.draw();
 	    };
 	    return RadarChartComponent;
 	}());
@@ -15332,12 +15414,21 @@ webpackJsonp([0],[
 	    core_1.Input(),
 	    __metadata("design:type", Array)
 	], RadarChartComponent.prototype, "labels", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RadarChartComponent.prototype, "width", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], RadarChartComponent.prototype, "height", void 0);
 	RadarChartComponent = __decorate([
 	    core_1.Component({
 	        selector: 'radar-chart',
 	        styles: [__webpack_require__(188)],
 	        template: __webpack_require__(190)
-	    })
+	    }),
+	    __metadata("design:paramtypes", [core_1.ElementRef])
 	], RadarChartComponent);
 	exports.RadarChartComponent = RadarChartComponent;
 
@@ -15377,7 +15468,338 @@ webpackJsonp([0],[
 /* 190 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"radar-chart\">\n  <canvas #radarChart style=\"width: 100%; height: 100%\" width=\"660px\" height=\"400\"></canvas>\n</div>\n";
+	module.exports = "<div class=\"radar-chart\">\n  <canvas #radarChart style=\"width: 100%; height: 100%\" [width]=\"width\" [height]=\"height\"></canvas>\n</div>\n";
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var TabsComponent = (function () {
+	    function TabsComponent() {
+	        this.tabs = [];
+	        this.opened = new core_1.EventEmitter();
+	    }
+	    TabsComponent.prototype.ngOnInit = function () {
+	    };
+	    TabsComponent.prototype.addEntry = function (tab) {
+	        if (this.tabs.length === 0) {
+	            this.openTab(tab);
+	        }
+	        this.tabs.push(tab);
+	    };
+	    TabsComponent.prototype.openTab = function (tab) {
+	        this.tabs.forEach(function (tab) {
+	            tab.close();
+	        });
+	        tab.open();
+	    };
+	    return TabsComponent;
+	}());
+	__decorate([
+	    core_1.Output(),
+	    __metadata("design:type", Object)
+	], TabsComponent.prototype, "opened", void 0);
+	TabsComponent = __decorate([
+	    core_1.Component({
+	        moduleId: module.id.toString(),
+	        selector: 'tabs',
+	        styles: [__webpack_require__(192)],
+	        template: __webpack_require__(194)
+	    }),
+	    __metadata("design:paramtypes", [])
+	], TabsComponent);
+	exports.TabsComponent = TabsComponent;
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(193);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(85)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .tabs-bar {\n  display: flex;\n  align-items: stretch;\n  border-bottom: 1px solid #ccc;\n  margin-bottom: 15px; }\n  :host .tabs-bar .tab {\n    flex-grow: 1;\n    padding: 5px;\n    text-align: center;\n    cursor: pointer; }\n    :host .tabs-bar .tab:not(:last-child) {\n      border-right: 1px solid #ccc; }\n    :host .tabs-bar .tab.opened {\n      border: 1px solid #ccc;\n      border-bottom: none; }\n      :host .tabs-bar .tab.opened:not(:first-child) {\n        border-left: none; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"tabs\">\n  <div class=\"tabs-bar\">\n    <div *ngFor=\"let tab of tabs\"\n         class=\"tab\"\n         [class.opened]=\"tab.isOpened()\"\n         (click)=\"openTab(tab)\">\n      {{tab.title}}\n    </div>\n  </div>\n  <ng-content></ng-content>\n</div>\n";
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var tabs_component_1 = __webpack_require__(191);
+	var TabComponent = (function () {
+	    function TabComponent(tabsComponent, el) {
+	        this.tabsComponent = tabsComponent;
+	        this.el = el;
+	        this.opened = false;
+	    }
+	    TabComponent.prototype.ngOnInit = function () {
+	        this.tabsComponent.addEntry(this);
+	    };
+	    TabComponent.prototype.isOpened = function () {
+	        return this.opened;
+	    };
+	    TabComponent.prototype.open = function () {
+	        this.opened = true;
+	    };
+	    TabComponent.prototype.close = function () {
+	        this.opened = false;
+	    };
+	    return TabComponent;
+	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", String)
+	], TabComponent.prototype, "title", void 0);
+	TabComponent = __decorate([
+	    core_1.Component({
+	        selector: 'tab',
+	        styles: [__webpack_require__(196)],
+	        template: __webpack_require__(198)
+	    }),
+	    __metadata("design:paramtypes", [tabs_component_1.TabsComponent, core_1.ElementRef])
+	], TabComponent);
+	exports.TabComponent = TabComponent;
+
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(197);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 197 */
+177,
+/* 198 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"tab\" *ngIf=\"opened\">\n  <ng-content></ng-content>\n</div>\n";
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var core_1 = __webpack_require__(3);
+	var radar_chart_collection_1 = __webpack_require__(163);
+	var visualisation_collection_1 = __webpack_require__(132);
+	var multi_data_experiment_items_collection_1 = __webpack_require__(161);
+	var radar_chart_model_1 = __webpack_require__(164);
+	var DataPerManufacturerComponent = (function () {
+	    function DataPerManufacturerComponent(radarChartCollection, el) {
+	        this.radarChartCollection = radarChartCollection;
+	        this.el = el;
+	        this.elIsVisible = false;
+	    }
+	    DataPerManufacturerComponent.prototype.setRadarChartCollectionPerManufacturer = function () {
+	        var _this = this;
+	        this.getManufacturers().each(function (manufacturer) {
+	            var radarChartData = _this.getRadarChartCollection(_this.filterByYear, manufacturer.get('id'));
+	            if (manufacturer.get('radarChartData')) {
+	                manufacturer.get('radarChartData').reset(radarChartData.toJSON());
+	            }
+	            else {
+	                manufacturer.set('radarChartData', radarChartData);
+	            }
+	        });
+	    };
+	    DataPerManufacturerComponent.prototype.getRadarChartCollection = function (yearFilter, manufacturer) {
+	        var collection = this.multiDataDimensionItems;
+	        var radarChartCollection = new radar_chart_collection_1.RadarChartCollection();
+	        var items;
+	        if (yearFilter) {
+	            items = collection.where({
+	                modelYear: yearFilter,
+	                manufacturer: manufacturer
+	            });
+	        }
+	        else {
+	            items = collection.where({
+	                manufacturer: manufacturer
+	            });
+	        }
+	        items.forEach(function (item) {
+	            var radarChartModel = new radar_chart_model_1.RadarChartModel({
+	                color: item.getColor(),
+	                data: [
+	                    item.getPercentage('mpg'),
+	                    item.getPercentage('cylinders'),
+	                    item.getPercentage('displacement'),
+	                    item.getPercentage('horsepower'),
+	                    item.getPercentage('weight'),
+	                    item.getPercentage('acceleration')
+	                ]
+	            });
+	            radarChartCollection.add(radarChartModel);
+	        });
+	        return radarChartCollection;
+	    };
+	    DataPerManufacturerComponent.prototype.getPanelWidth = function () {
+	        var manuSize = this.getManufacturers().length;
+	        if (manuSize < 3) {
+	            return 'col-md-6';
+	        }
+	        else {
+	            return 'col-md-4';
+	        }
+	    };
+	    DataPerManufacturerComponent.prototype.getManufacturers = function () {
+	        if (this.manufacturers.selectable.getSelected().length > 0) {
+	            return this.manufacturers.selectable.getSelected();
+	        }
+	        else {
+	            return this.manufacturers;
+	        }
+	    };
+	    DataPerManufacturerComponent.prototype.ngOnInit = function () {
+	        this.setRadarChartCollectionPerManufacturer();
+	    };
+	    DataPerManufacturerComponent.prototype.ngOnChanges = function (changes) {
+	        if (changes.filterByYear) {
+	            this.setRadarChartCollectionPerManufacturer();
+	        }
+	    };
+	    DataPerManufacturerComponent.prototype.ngAfterViewChecked = function () {
+	        // let wasVisible = this.elIsVisible;
+	        // this.elIsVisible = !!this.el.nativeElement.offsetParent;
+	        // if (!wasVisible && this.elIsVisible) {
+	        //   this.ngOnInit();
+	        // }
+	    };
+	    return DataPerManufacturerComponent;
+	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", visualisation_collection_1.VisualisationCollection)
+	], DataPerManufacturerComponent.prototype, "manufacturers", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", multi_data_experiment_items_collection_1.MultiDataExperimentItems)
+	], DataPerManufacturerComponent.prototype, "multiDataDimensionItems", void 0);
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Number)
+	], DataPerManufacturerComponent.prototype, "filterByYear", void 0);
+	DataPerManufacturerComponent = __decorate([
+	    core_1.Component({
+	        selector: 'data-per-manufacturer',
+	        styles: [__webpack_require__(200)],
+	        template: __webpack_require__(202),
+	        providers: [radar_chart_collection_1.RadarChartCollection]
+	    }),
+	    __metadata("design:paramtypes", [radar_chart_collection_1.RadarChartCollection, core_1.ElementRef])
+	], DataPerManufacturerComponent);
+	exports.DataPerManufacturerComponent = DataPerManufacturerComponent;
+
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// css-to-string-loader: transforms styles from css-loader to a string output
+
+	// Get the styles
+	var styles = __webpack_require__(201);
+
+	if (typeof styles === 'string') {
+	  // Return an existing string
+	  module.exports = styles;
+	} else {
+	  // Call the custom toString method from css-loader module
+	  module.exports = styles.toString();
+	}
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(85)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ":host .manufacturer-selector .label {\n  display: inline-block;\n  cursor: pointer; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"data-per-manufacturer\">\n\n  <div class=\"manufacturer-selector row\">\n    <div class=\"col-md-12\">\n      Select the manufacturers that you want to compare\n      <br>\n    </div>\n    <div class=\"col-md-12\">\n      <div *ngFor=\"let manufacturer of manufacturers.models\"\n           class=\"label {{manufacturer.selectable.isSelected() ? 'label-primary' : 'label-default label-light'}}\"\n           (click)=\"manufacturer.selectable.toggleSelect()\">\n        {{manufacturer.get('id')}}\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div *ngFor=\"let manufacturer of getManufacturers().models\"\n         class=\"col {{getPanelWidth()}}\">\n      <radar-chart [values]=\"manufacturer.get('radarChartData')\" [width]=\"400\" [height]=\"400\"></radar-chart>\n      {{manufacturer.get('id')}}\n    </div>\n  </div>\n</div>\n";
 
 /***/ })
 ]);
