@@ -160,9 +160,9 @@
           </span>
         </td>
         <td>
-           <span [class.maxVal]="model.getPercentage('weight')>70"
-                 [class.mediumVal]="model.getPercentage('weight')>=30 && model.getPercentage('weight')<=70"
-                 [class.minVal]="model.getPercentage('weight')<30">
+           <span [class.maxVal]="model.getPercentage('weight')>80"
+                 [class.mediumVal]="model.getPercentage('weight')>=40 && model.getPercentage('weight')<=80"
+                 [class.minVal]="model.getPercentage('weight')<40">
             {{model.get('weight')}}
           </span>
         </td>
