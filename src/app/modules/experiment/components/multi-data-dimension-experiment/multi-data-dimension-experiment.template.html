@@ -5,52 +5,129 @@
   </header>
 
   <section>
-    <radar-chart [values]="radarChartCollection" [labels]="radarChartLabels"></radar-chart>
-    <div class="legend">
-      <span class="label label-default label-light">
-        <span class="dot" [style.background]="getColorForOrigin('European')"></span>
-        European
-      </span>
-      <span class="label label-default label-light">
-        <span class="dot" [style.background]="getColorForOrigin('American')"></span>
-        American
-      </span>
-      <span class="label label-default label-light">
-        <span class="dot" [style.background]="getColorForOrigin('Japanese')"></span>
-        Japanese
-      </span>
-      <span class="label label-default label-light">
-        <span class="dot"></span>
-        Average
-      </span>
-    </div>
-    <br>
-    <range-slider
-      [min]="70"
-      [max]="82"
-      [value]="viewModel.yearFilter"
-      [step]="1"
-      (valueChange)="filterByYear($event)"></range-slider>
+    <tabs>
+      <tab title="All">
+        <radar-chart [values]="radarChartCollection" [labels]="radarChartLabels"></radar-chart>
+      </tab>
+      <tab title="Compare Manufacturers">
+
+        <data-per-manufacturer
+          [manufacturers]="manufacturers"
+          [multiDataDimensionItems]="multiDataExperimentItems"
+          [filterByYear]="yearFilter">
+        </data-per-manufacturer>
+
+      </tab>
+    </tabs>
   </section>
+
+  <section>
+    <div class="legend">
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('European')"></span>
+        European
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('American')"></span>
+        American
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('Japanese')"></span>
+        Japanese
+      </div>
+      <div class="entry">
+        <span class="country-color-dot"></span>
+        Average
+      </div>
+    </div>
+    <hr>
+    <div class="year-filter">
+      <label>
+        <input type="checkbox" [checked]="yearFilter != null" (click)="toggleFilterByYear()">
+        Filter by year
+      </label>
+      <range-slider
+        [min]="minYear"
+        [max]="maxYear"
+        [value]="yearFilter"
+        [step]="1"
+        (valueChange)="filterByYear($event)"></range-slider>
+    </div>
+  </section>
+
+  <hr>
 
   <section>
 
     <table>
       <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Manufacturer</th>
-        <th>Origin</th>
-        <th>Model Year</th>
+        <th width="1%"></th>
+        <th width="4%" (click)="multiDataExperimentItems.toggleSort('origin')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('origin')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('origin')" class="fa fa-sort-desc"></span>
+          <span class="fa fa-globe"></span>
+        </th>
+        <th width="9%" (click)="multiDataExperimentItems.toggleSort('car')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('car')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('car')" class="fa fa-sort-desc"></span>
+          Name
+        </th>
+        <th width="9%" (click)="multiDataExperimentItems.toggleSort('manufacturer')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('manufacturer')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('manufacturer')" class="fa fa-sort-desc"></span>
+          Manufacturer
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('mpg')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('mpg')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('mpg')" class="fa fa-sort-desc"></span>
+          MPG
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('cylinders')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('cylinders')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('cylinders')" class="fa fa-sort-desc"></span>
+          cylinders
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('displacement')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('displacement')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('displacement')" class="fa fa-sort-desc"></span>
+          displacement
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('horsepower')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('horsepower')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('horsepower')" class="fa fa-sort-desc"></span>
+          horsepower
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('weight')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('weight')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('weight')" class="fa fa-sort-desc"></span>
+          weight
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('acceleration')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('acceleration')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('acceleration')" class="fa fa-sort-desc"></span>
+          acceleration
+        </th>
       </tr>
-      <tr *ngFor="let model of multiDataExperimentItems.models">
+      <tr *ngFor="let model of multiDataExperimentItems.models"
+          [hidden]="yearFilter && model.get('modelYear') !== yearFilter"
+          (click)="model.selectable.toggleSelect()">
         <td>
-          <input type="checkbox" (click)="model.selectable.toggleSelect()" [disabled]="model.selectable.isDisabled()">
+          <input type="checkbox"
+                 [disabled]="model.selectable.isDisabled()"
+                 [checked]="model.selectable.isSelected()">
+        </td>
+        <td style="text-align: center">
+          <span class="country-color-dot"
+                [style.background]="getColorForOrigin(model.get('origin'))"></span>
         </td>
         <td>{{model.get('car')}}</td>
         <td>{{model.get('manufacturer')}}</td>
-        <td>{{model.get('origin')}}</td>
-        <td>{{model.get('modelYear')}}</td>
+        <td>{{model.get('mpg')}}</td>
+        <td>{{model.get('cylinders')}}</td>
+        <td>{{model.get('displacement')}}</td>
+        <td>{{model.get('horsepower')}}</td>
+        <td>{{model.get('weight')}}</td>
+        <td>{{model.get('acceleration')}}</td>
       </tr>
     </table>
 
