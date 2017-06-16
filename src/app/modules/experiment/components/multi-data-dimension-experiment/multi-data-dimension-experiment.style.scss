@@ -45,6 +45,16 @@
     td{
       padding: 10px 0;
       border-bottom: 1px solid #efefef;
+
+      span.maxVal{
+        font-weight: bold;
+        color: green;
+      }
+
+      span.minVal{
+        font-weight: bold;
+        color: red;
+      }
     }
 
     tr:hover{

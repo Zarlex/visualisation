@@ -58,7 +58,16 @@
   <hr>
 
   <section>
-
+    <div class="legend">
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="'red'"></span>
+        Low Values
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="'green'"></span>
+        High Values
+      </div>
+    </div>
     <table>
       <tr>
         <th width="1%"></th>
@@ -122,12 +131,48 @@
         </td>
         <td>{{model.get('car')}}</td>
         <td>{{model.get('manufacturer')}}</td>
-        <td>{{model.get('mpg')}}</td>
-        <td>{{model.get('cylinders')}}</td>
-        <td>{{model.get('displacement')}}</td>
-        <td>{{model.get('horsepower')}}</td>
-        <td>{{model.get('weight')}}</td>
-        <td>{{model.get('acceleration')}}</td>
+        <td>
+          <span [class.maxVal]="model.getPercentage('mpg')>70"
+                [class.mediumVal]="model.getPercentage('mpg')>=30 && model.getPercentage('mpg')<=70"
+                [class.minVal]="model.getPercentage('mpg')<30">
+            {{model.get('mpg')}}
+          </span>
+        </td>
+        <td>
+          <span [class.maxVal]="model.getPercentage('cylinders')>70"
+                [class.mediumVal]="model.getPercentage('cylinders')>=30 && model.getPercentage('cylinders')<=70"
+                [class.minVal]="model.getPercentage('cylinders')<30">
+            {{model.get('cylinders')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('displacement')>70"
+                 [class.mediumVal]="model.getPercentage('displacement')>=30 && model.getPercentage('displacement')<=70"
+                 [class.minVal]="model.getPercentage('displacement')<30">
+            {{model.get('displacement')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('horsepower')>70"
+                 [class.mediumVal]="model.getPercentage('horsepower')>=30 && model.getPercentage('horsepower')<=70"
+                 [class.minVal]="model.getPercentage('horsepower')<30">
+            {{model.get('horsepower')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('weight')>70"
+                 [class.mediumVal]="model.getPercentage('weight')>=30 && model.getPercentage('weight')<=70"
+                 [class.minVal]="model.getPercentage('weight')<30">
+            {{model.get('weight')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('acceleration')>70"
+                 [class.mediumVal]="model.getPercentage('acceleration')>=30 && model.getPercentage('acceleration')<=70"
+                 [class.minVal]="model.getPercentage('acceleration')<30">
+            {{model.get('acceleration')}}
+          </span>
+        </td>
       </tr>
     </table>
 
