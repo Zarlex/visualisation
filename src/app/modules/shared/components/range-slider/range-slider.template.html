@@ -11,7 +11,7 @@
 
   <div #progressBar class="progress-bar">
     <div #progressLine class="progress-line"></div>
-    <div #handle class="visible-dragger" [class.display-value]="!hideSliderValue">
+    <div #handle class="visible-dragger" [class.display-value]="!hideSliderValue" [hidden]="!value">
       <span>{{dragDisplayValue}}</span>
       <div class="loading-spinner"></div>
     </div>

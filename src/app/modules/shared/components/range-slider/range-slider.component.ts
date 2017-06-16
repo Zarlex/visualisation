@@ -50,6 +50,7 @@ export class RangeSliderComponent {
     if (!this.dragInProgress) {
       this.val = val;
       this.tmpValue = val;
+      this.setDragPosFromVal();
     }
   }
 
@@ -109,7 +110,10 @@ export class RangeSliderComponent {
   }
 
   private setDragPosFromVal() {
-    let pos = (((this.tmpVal - this.min) / (this.max - this.min)) * 100);
+    let pos = 0;
+    if(this.tmpVal){
+      pos = (((this.tmpVal - this.min) / (this.max - this.min)) * 100);
+    }
     this.handle.nativeElement.style.left = pos + '%';
     this.handle.nativeElement.style.transform = 'translateX(-' + ((this.draggerWidth / 100) * pos) + 'px)';
     this.progressBarLine.nativeElement.style.width = pos + '%';
