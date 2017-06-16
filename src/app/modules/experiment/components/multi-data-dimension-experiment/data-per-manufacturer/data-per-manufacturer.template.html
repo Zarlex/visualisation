@@ -1,0 +1,24 @@
+<div class="data-per-manufacturer">
+
+  <div class="manufacturer-selector row">
+    <div class="col-md-12">
+      Select the manufacturers that you want to compare
+      <br>
+    </div>
+    <div class="col-md-12">
+      <div *ngFor="let manufacturer of manufacturers.models"
+           class="label {{manufacturer.selectable.isSelected() ? 'label-primary' : 'label-default label-light'}}"
+           (click)="manufacturer.selectable.toggleSelect()">
+        {{manufacturer.get('id')}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let manufacturer of getManufacturers().models"
+         class="col {{getPanelWidth()}}">
+      <radar-chart [values]="manufacturer.get('radarChartData')" [width]="400" [height]="400"></radar-chart>
+      {{manufacturer.get('id')}}
+    </div>
+  </div>
+</div>

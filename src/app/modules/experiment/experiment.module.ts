@@ -13,6 +13,7 @@ import {HideAfterTimeComponent} from './components/perception-experiment/hide-af
 import {TargetFinderAreasComponent} from './components/perception-experiment/target-finder-areas/target-finder-areas.component';
 import {PerceptionExperimentResultsComponent} from './components/results/perception-experiment-results/perception-experiment-results.component';
 import {MultiDataDimensionExperimentComponent} from './components/multi-data-dimension-experiment/multi-data-dimension-experiment.component';
+import {DataPerManufacturerComponent} from './components/multi-data-dimension-experiment/data-per-manufacturer/data-per-manufacturer.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import {MultiDataDimensionExperimentComponent} from './components/multi-data-dim
     CircleExperimentResultComponent,
     CircleExperimentResultsComponent,
     PerceptionExperimentResultsComponent,
+    DataPerManufacturerComponent,
     MultiDataDimensionExperimentComponent,
     RandomSizeDirective
   ]
