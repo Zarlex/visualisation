@@ -1,13 +1,56 @@
 @import '../../../../variables';
 
-:host{
-  .legend{
-    .dot{
-      width: 10px;
-      height: 10px;
+:host {
+  radar-chart {
+    width: 660px;
+    height: 400px;
+  }
+  .legend {
+    margin-top: 20px;
+    .entry {
       display: inline-block;
-      background: black;
-      border-radius: 50%;
+    }
+  }
+
+  .country-color-dot {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: black;
+    border-radius: 50%;
+  }
+
+  .year-filter{
+    display: flex;
+    align-items: center;
+
+    label{
+      margin-right: 10px;
+      border-right: 1px solid #ccc;
+      padding-right: 10px;
+    }
+
+    range-slider{
+      flex-grow: 1;
+    }
+  }
+
+  table{
+    th{
+      cursor: pointer;
+      padding: 5px;
+      border-bottom: 1px solid #555;
+    }
+
+    td{
+      padding: 10px 0;
+      border-bottom: 1px solid #efefef;
+    }
+
+    tr:hover{
+      td{
+        background: #efefef;
+      }
     }
   }
 }
