@@ -1,0 +1,11 @@
+<div class="tabs">
+  <div class="tabs-bar">
+    <div *ngFor="let tab of tabs"
+         class="tab"
+         [class.opened]="tab.isOpened()"
+         (click)="openTab(tab)">
+      {{tab.title}}
+    </div>
+  </div>
+  <ng-content></ng-content>
+</div>

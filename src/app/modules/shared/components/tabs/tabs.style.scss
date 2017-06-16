@@ -1,0 +1,28 @@
+:host{
+  .tabs-bar{
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+
+    .tab{
+      flex-grow: 1;
+      padding: 5px;
+      text-align: center;
+      cursor: pointer;
+
+      &:not(:last-child){
+        border-right: 1px solid #ccc;
+      }
+
+      &.opened{
+        border: 1px solid #ccc;
+        border-bottom: none;
+
+        &:not(:first-child){
+          border-left: none;
+        }
+      }
+    }
+  }
+}
