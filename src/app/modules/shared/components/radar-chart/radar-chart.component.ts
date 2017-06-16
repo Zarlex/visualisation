@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {RadarChartCollection} from '../../collections/radar-chart.collection';
 import {debounce} from 'underscore';
 
@@ -8,12 +8,13 @@ import {debounce} from 'underscore';
   template: require('./radar-chart.template.html')
 })
 
-export class RadarChartComponent implements OnInit {
+export class RadarChartComponent implements AfterViewInit {
   @ViewChild('radarChart') radarChartCanvas: ElementRef;
 
   private canvasContext: CanvasRenderingContext2D;
   private canvasWidth: number;
   private canvasHeight: number;
+  private axisWidth: number;
   private canvasCenter: Array<number>;
 
   @Input()
@@ -21,6 +22,15 @@ export class RadarChartComponent implements OnInit {
 
   @Input()
   public labels: Array<string>;
+
+  @Input()
+  public width: number = 660;
+
+  @Input()
+  public height: number = 400;
+
+  constructor(private el: ElementRef) {
+  }
 
   private multiplyMatrix(matrix1: Array<number>, matrix2: Array<Array<number>>): Array<number> {
     let x: number = matrix1[0] * matrix2[0][0] + matrix1[1] * matrix2[0][1];
@@ -53,7 +63,7 @@ export class RadarChartComponent implements OnInit {
 
   private drawAxes(ctx: CanvasRenderingContext2D) {
     let axes = 6;
-    let axeWidth = 180;
+    let axeWidth = this.axisWidth;
     let labelMargin = 10;
     for (let i = 0; i < axes; i++) {
       let from = [this.canvasCenter[0], this.canvasCenter[1]];
@@ -65,15 +75,17 @@ export class RadarChartComponent implements OnInit {
       ctx.lineTo(Math.round(to[0]), Math.round(to[1]));
       ctx.stroke();
       let labelPos = this.rotate2dMatrix([this.canvasCenter[0], this.canvasCenter[1] - (axeWidth + labelMargin)], (360 / axes) * i, from, false);
-      ctx.textAlign = "center";
-      ctx.fillStyle = 'black';
-      ctx.fillText(this.labels[i], labelPos[0], labelPos[1]);
+      if (this.labels && this.labels[i]) {
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'black';
+        ctx.fillText(this.labels[i], labelPos[0], labelPos[1]);
+      }
     }
   }
 
   private drawData(ctx: CanvasRenderingContext2D, data: Array<number>, color: string = 'black') {
     let axes = 6;
-    let axeWidth = 180;
+    let axeWidth = this.axisWidth;
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
@@ -99,27 +111,27 @@ export class RadarChartComponent implements OnInit {
   private draw() {
     this.canvasContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.drawAxes(this.canvasContext);
-    this.values.each((value: any)=>{
+    this.values.each((value: any) => {
       this.drawData(this.canvasContext, value.get('data'), value.get('color'));
     });
-    if(this.values.length>1){
+    if (this.values.length > 1) {
       this.drawData(this.canvasContext, this.values.getAverage(), 'black');
     }
   }
 
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     let canvas: HTMLCanvasElement = this.radarChartCanvas.nativeElement;
-    this.canvasWidth = canvas.offsetWidth;
-    this.canvasHeight = canvas.offsetHeight;
+    let throttledDraw = debounce(() => {
+      this.draw();
+    }, 100);
+    this.values.on('update reset', throttledDraw, this);
+    this.canvasWidth = this.width;
+    this.canvasHeight = this.height;
+    this.axisWidth = ( Math.min(this.canvasWidth, this.canvasHeight) / 2 ) - 20;
     this.canvasCenter = [this.canvasWidth / 2, this.canvasHeight / 2];
     this.canvasContext = canvas.getContext('2d');
     this.draw();
-
-    let throttledDraw = debounce(()=>{
-      this.draw();
-    }, 100);
-    this.values.on('update', throttledDraw, this);
   }
 
   //
