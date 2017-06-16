@@ -37,6 +37,22 @@ export class BaseCollection<TModel extends BaseModel> extends SelectableCollecti
     return super.sync(method, model, options);
   }
 
+  isAscSorted(attr?: string){
+    if(!attr || this.comparator === attr){
+      return this.sortOrder === 'ASC';
+    } else {
+      return false;
+    }
+  }
+
+  isDescSorted(attr?: string){
+    if(!attr || this.comparator === attr){
+      return this.sortOrder === 'DESC';
+    } else {
+      return false;
+    }
+  }
+
   sortAscending() {
     this.sort();
     this.sortOrder = 'ASC';
@@ -49,6 +65,19 @@ export class BaseCollection<TModel extends BaseModel> extends SelectableCollecti
     this.models = this.models.reverse();
     this.trigger('sort', this);
     this.sortOrder = 'DESC';
+  }
+
+  toggleSort(attr: string){
+    if(this.comparator != attr){
+      this.comparator = attr;
+      this.sortAscending();
+    } else {
+      if(this.isAscSorted()){
+        this.sortDescending()
+      } else {
+        this.sortAscending();
+      }
+    }
   }
 
 }
