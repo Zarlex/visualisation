@@ -82,7 +82,7 @@ export class MultiDataDimensionExperimentComponent implements OnInit {
     //this.yearFilter = this.minYear;
 
     this.setRadarChartCollection(this.multiDataExperimentItems, this.yearFilter);
-    this.multiDataExperimentItems.selectable.on('change:add', () => {
+    this.multiDataExperimentItems.selectable.on('change:add change:remove', () => {
       if (this.multiDataExperimentItems.selectable.getSelected().length > 0) {
         let selected: MultiDataExperimentItems = new MultiDataExperimentItems();
         selected.maxCache = this.multiDataExperimentItems.maxCache;
