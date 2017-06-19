@@ -5,6 +5,7 @@ import {MultiDataExperimentItems} from '../../../collections/multi-data-experime
 import {MultiDataExperimentItemModel} from '../../../models/multi-data-experiment-item.model';
 import {RadarChartModel} from '../../../../shared/models/radar-chart.model';
 import {VisualisationModel} from '../../../../main/models/visualisation.model';
+import {has} from 'underscore';
 
 @Component({
   selector: 'data-per-manufacturer',
@@ -15,6 +16,7 @@ import {VisualisationModel} from '../../../../main/models/visualisation.model';
 
 export class DataPerManufacturerComponent implements OnInit, OnChanges {
   private elIsVisible: boolean = false;
+  public radarChartLabels: Array<String> = ['MPG', 'Cylinders', 'Displacement', 'Horsepower', 'Weight', 'Acceleration'];
 
   constructor(public radarChartCollection: RadarChartCollection, private el: ElementRef) {
   }
@@ -31,7 +33,7 @@ export class DataPerManufacturerComponent implements OnInit, OnChanges {
   private setRadarChartCollectionPerManufacturer() {
     this.getManufacturers().each((manufacturer: VisualisationModel) => {
       let radarChartData = this.getRadarChartCollection(this.filterByYear, manufacturer.get('id'));
-      if(manufacturer.get('radarChartData')){
+      if (manufacturer.get('radarChartData')) {
         manufacturer.get('radarChartData').reset(radarChartData.toJSON());
       } else {
         manufacturer.set('radarChartData', radarChartData);
@@ -43,7 +45,7 @@ export class DataPerManufacturerComponent implements OnInit, OnChanges {
     let collection = this.multiDataDimensionItems;
     let radarChartCollection: RadarChartCollection = new RadarChartCollection();
     let items: Array<MultiDataExperimentItemModel>;
-    if(yearFilter){
+    if (yearFilter) {
       items = <Array<MultiDataExperimentItemModel>>collection.where({
         modelYear: yearFilter,
         manufacturer: manufacturer
@@ -88,11 +90,11 @@ export class DataPerManufacturerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-      this.setRadarChartCollectionPerManufacturer();
+    this.setRadarChartCollectionPerManufacturer();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.filterByYear){
+    if (has(changes, 'filterByYear')) {
       this.setRadarChartCollectionPerManufacturer();
     }
   }
