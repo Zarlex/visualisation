@@ -6,9 +6,15 @@
     height: 400px;
   }
   .legend {
-    margin-top: 20px;
+    margin: 20px 0;
     .entry {
       display: inline-block;
+
+      &:not(:last-child){
+        border-right: 1px solid #ccc;
+        padding-right: 7px;
+        margin-right: 5px;
+      }
     }
   }
 
@@ -53,7 +59,7 @@
 
       span.minVal{
         font-weight: bold;
-        color: turquoise;
+        color: darkcyan;
       }
     }
 

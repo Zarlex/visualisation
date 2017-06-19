@@ -17,8 +17,14 @@
   <div class="row">
     <div *ngFor="let manufacturer of getManufacturers().models"
          class="col {{getPanelWidth()}}">
-      <radar-chart [values]="manufacturer.get('radarChartData')" [width]="400" [height]="400"></radar-chart>
-      {{manufacturer.get('id')}}
+      <div class="entry-panel">
+        <div class="chart">
+          <radar-chart [values]="manufacturer.get('radarChartData')" [labels]="radarChartLabels" [width]="400" [height]="400"></radar-chart>
+        </div>
+        <div class="manufacturer">
+          {{manufacturer.get('id')}}
+        </div>
+      </div>
     </div>
   </div>
 </div>

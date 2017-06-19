@@ -22,25 +22,6 @@
   </section>
 
   <section>
-    <div class="legend">
-      <div class="entry">
-        <span class="country-color-dot" [style.background]="getColorForOrigin('European')"></span>
-        European
-      </div>
-      <div class="entry">
-        <span class="country-color-dot" [style.background]="getColorForOrigin('American')"></span>
-        American
-      </div>
-      <div class="entry">
-        <span class="country-color-dot" [style.background]="getColorForOrigin('Japanese')"></span>
-        Japanese
-      </div>
-      <div class="entry">
-        <span class="country-color-dot"></span>
-        Average
-      </div>
-    </div>
-    <hr>
     <div class="year-filter">
       <label>
         <input type="checkbox" [checked]="yearFilter != null" (click)="toggleFilterByYear()">
@@ -60,14 +41,29 @@
   <section>
     <div class="legend">
       <div class="entry">
-        <span class="country-color-dot" [style.background]="'coral'"></span>
-        Low Values
+        <span class="country-color-dot" [style.background]="getColorForOrigin('European')"></span>
+        European
       </div>
       <div class="entry">
-        <span class="country-color-dot" [style.background]="'turquoise'"></span>
+        <span class="country-color-dot" [style.background]="getColorForOrigin('American')"></span>
+        American
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('Japanese')"></span>
+        Japanese
+      </div>
+      <div class="entry">
+        <span class="country-color-dot"></span>
+        Average
+      </div>
+      <div class="entry" [style.color]="'darkcyan'">
+        Low Values
+      </div>
+      <div class="entry" [style.color]="'coral'">
         High Values
       </div>
     </div>
+
     <table>
       <tr>
         <th width="1%"></th>

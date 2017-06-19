@@ -1,9 +1,33 @@
+@import '../../../../../variables';
 
 :host{
   .manufacturer-selector{
+    margin-bottom: 15px;
+
     .label{
       display: inline-block;
       cursor: pointer;
+      text-transform: capitalize;
+    }
+  }
+
+  .entry-panel{
+    margin-bottom: 20px;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+
+    .chart{
+      padding: 5px;
+    }
+
+    .manufacturer{
+      padding: 5px 10px;
+      background: #efefef;
+      color: $brand-primary;
+      text-transform: capitalize;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
   }
 }
