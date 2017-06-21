@@ -11,7 +11,7 @@ export class MultiDataExperimentItemModel extends VisualisationModel {
       }
     }
     attrs.acceleration = parseFloat(attrs.acceleration);
-    attrs.cylinders = parseInt(attrs.acceleration, 10);
+    attrs.cylinders = parseInt(attrs.cylinders, 10);
     attrs.horsepower = parseInt(attrs.horsepower, 10);
     attrs.modelYear = parseInt(attrs.modelYear, 10);
     attrs.mpg = parseInt(attrs.mpg, 10);
