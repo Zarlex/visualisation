@@ -1,0 +1,10 @@
+<div *ngIf="isOpen()" class="modal">
+  <div class="modal-body">
+    <button class="close-btn btn btn-default btn-xs"
+            (click)="close()">
+      <span class="fa fa-times"></span>
+    </button>
+    <ng-content></ng-content>
+  </div>
+  <div class="backdrop"></div>
+</div>
