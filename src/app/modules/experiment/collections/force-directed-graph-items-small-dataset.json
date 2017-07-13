@@ -1,0 +1,252 @@
+[
+  {
+    "Word1": "son",
+    "Word2": "lord",
+    "Weight": 5.249374694486393e-8
+  },
+  {
+    "Word1": "israel",
+    "Word2": "god",
+    "Weight": 8.68402313423763e-8
+  },
+  {
+    "Word1": "lord",
+    "Word2": "saying",
+    "Weight": 8.689622331634223e-8
+  },
+  {
+    "Word1": "king",
+    "Word2": "god",
+    "Weight": 8.793299084019621e-8
+  },
+  {
+    "Word1": "lord",
+    "Word2": "son",
+    "Weight": 1.147760902121705e-7
+  },
+  {
+    "Word1": "men",
+    "Word2": "god",
+    "Weight": 1.333414404929153e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "away",
+    "Weight": 1.3722955485476997e-7
+  },
+  {
+    "Word1": "children",
+    "Word2": "lord",
+    "Weight": 1.3790778988700112e-7
+  },
+  {
+    "Word1": "israel",
+    "Word2": "man",
+    "Weight": 1.4199250989510303e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "man",
+    "Weight": 1.4377928154930803e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "lord",
+    "Weight": 1.481302115911693e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "king",
+    "Weight": 1.5463481519361283e-7
+  },
+  {
+    "Word1": "israel",
+    "Word2": "son",
+    "Weight": 1.623534759879209e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "son",
+    "Weight": 1.64396461136019e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "took",
+    "Weight": 1.6742005692281936e-7
+  },
+  {
+    "Word1": "behold",
+    "Word2": "god",
+    "Weight": 1.6863770415280465e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "lord",
+    "Weight": 1.7343237940899794e-7
+  },
+  {
+    "Word1": "saying",
+    "Word2": "lord",
+    "Weight": 1.7379244663268446e-7
+  },
+  {
+    "Word1": "good",
+    "Word2": "lord",
+    "Weight": 1.7439589262793684e-7
+  },
+  {
+    "Word1": "went",
+    "Word2": "lord",
+    "Weight": 1.7937863241730645e-7
+  },
+  {
+    "Word1": "house",
+    "Word2": "man",
+    "Weight": 1.8064758546437268e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "man",
+    "Weight": 1.8364174433947277e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "behold",
+    "Weight": 1.893892046638228e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "eat",
+    "Weight": 1.9170235525513667e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "mine",
+    "Weight": 1.9347464205256475e-7
+  },
+  {
+    "Word1": "hast",
+    "Word2": "god",
+    "Weight": 2.0898466888469063e-7
+  },
+  {
+    "Word1": "god",
+    "Word2": "hast",
+    "Weight": 2.0898466888469063e-7
+  },
+  {
+    "Word1": "heaven",
+    "Word2": "lord",
+    "Weight": 2.153774317188928e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "brethren",
+    "Weight": 2.2263305441864277e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "day",
+    "Weight": 2.256089128154661e-7
+  },
+  {
+    "Word1": "land",
+    "Word2": "king",
+    "Weight": 2.2889192959101133e-7
+  },
+  {
+    "Word1": "house",
+    "Word2": "people",
+    "Weight": 2.3055116483670523e-7
+  },
+  {
+    "Word1": "years",
+    "Word2": "lord",
+    "Weight": 2.3295926287961877e-7
+  },
+  {
+    "Word1": "god",
+    "Word2": "name",
+    "Weight": 2.3341711451630371e-7
+  },
+  {
+    "Word1": "lord",
+    "Word2": "hast",
+    "Weight": 2.3470101437778414e-7
+  },
+  {
+    "Word1": "david",
+    "Word2": "lord",
+    "Weight": 2.3602451633856112e-7
+  },
+  {
+    "Word1": "son",
+    "Word2": "land",
+    "Weight": 2.4334121109947397e-7
+  },
+  {
+    "Word1": "away",
+    "Word2": "god",
+    "Weight": 2.4438644339521196e-7
+  },
+  {
+    "Word1": "god",
+    "Word2": "away",
+    "Weight": 2.4438644339521196e-7
+  },
+  {
+    "Word1": "god",
+    "Word2": "children",
+    "Weight": 2.455942841368687e-7
+  },
+  {
+    "Word1": "men",
+    "Word2": "son",
+    "Weight": 2.4929051918240686e-7
+  },
+  {
+    "Word1": "given",
+    "Word2": "lord",
+    "Weight": 2.5213863994400506e-7
+  },
+  {
+    "Word1": "days",
+    "Word2": "god",
+    "Weight": 2.5761934989241816e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "hand",
+    "Weight": 2.6823760916600097e-7
+  },
+  {
+    "Word1": "israel",
+    "Word2": "saying",
+    "Weight": 2.687539893170289e-7
+  },
+  {
+    "Word1": "gave",
+    "Word2": "lord",
+    "Weight": 2.700323498755151e-7
+  },
+  {
+    "Word1": "saying",
+    "Word2": "king",
+    "Weight": 2.7213587199817126e-7
+  },
+  {
+    "Word1": "king",
+    "Word2": "saying",
+    "Weight": 2.7213587199817126e-7
+  },
+  {
+    "Word1": "man",
+    "Word2": "behold",
+    "Weight": 2.757396025489369e-7
+  },
+  {
+    "Word1": "life",
+    "Word2": "lord",
+    "Weight": 2.7903342820469893e-7
+  }
+]

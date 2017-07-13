@@ -1,0 +1,26 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i>Force Directed Graph with D3</h1>
+  </header>
+
+  <section>
+    Select a dataset to visualise it's data as a force directed graph. The Big Dataset contains 8000 entries so it takes
+    some time until it is rendered.
+    <hr>
+    <select #selectBox>
+      <option value="SMALL">Small Dataset</option>
+      <option value="BIG">Big Dataset</option>
+    </select>
+
+    <button class="btn btn-primary" (click)="setDataCollection(selectBox.value)">Visualise Dataset</button>
+
+    <modal #modal>
+      <directed-graph-d3 [values]="dataCollection"
+                         [searchTerm]="searchTerm"
+                         style="height: 80vh; display: block; overflow: hidden"></directed-graph-d3>
+      <label>Search for someone <input type="text" name="search" [(ngModel)]="searchTerm"></label>
+    </modal>
+  </section>
+
+</section>
