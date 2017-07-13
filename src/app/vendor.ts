@@ -17,3 +17,4 @@ import 'backbone';
 import 'underscore';
 import 'localforage';
 import 'moment';
+import 'd3';
