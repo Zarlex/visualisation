@@ -14,6 +14,8 @@ import {TargetFinderAreasComponent} from './components/perception-experiment/tar
 import {PerceptionExperimentResultsComponent} from './components/results/perception-experiment-results/perception-experiment-results.component';
 import {MultiDataDimensionExperimentComponent} from './components/multi-data-dimension-experiment/multi-data-dimension-experiment.component';
 import {DataPerManufacturerComponent} from './components/multi-data-dimension-experiment/data-per-manufacturer/data-per-manufacturer.component';
+import {MultiDataDimensionD3ExperimentComponent} from './components/multi-data-dimension-d3-experiment/multi-data-dimension-d3-experiment.component';
+import {ForceDirectedGraphD3ExperimentComponent} from './components/force-directed-graph/force-directed-graph-d3-experiment.component';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import {DataPerManufacturerComponent} from './components/multi-data-dimension-ex
     PerceptionExperimentResultsComponent,
     DataPerManufacturerComponent,
     MultiDataDimensionExperimentComponent,
+    MultiDataDimensionD3ExperimentComponent,
+    ForceDirectedGraphD3ExperimentComponent,
     RandomSizeDirective
   ]
 })
