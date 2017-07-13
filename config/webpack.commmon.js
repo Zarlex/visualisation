@@ -66,10 +66,17 @@ module.exports = {
         ]
       }
     ],
-    noParse: [new RegExp('./node_modules/localforage/dist/localforage.js')]
+    noParse: [
+      new RegExp('./node_modules/localforage/dist/localforage.js'),
+      new RegExp('./node_modules/d3.*')
+    ]
   },
 
   plugins: [
+    new webpack.ProvidePlugin({
+      d3: 'd3'
+    }),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills']
     }),
