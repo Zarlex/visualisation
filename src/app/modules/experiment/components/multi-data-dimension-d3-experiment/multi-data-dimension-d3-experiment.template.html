@@ -1,0 +1,164 @@
+<section class="column">
+  <header>
+    <a routerLink="/dashboard" class="btn btn-default">Back</a>
+    <h1><i class="fa fa-flask"></i> Multi Data Dimension with D3 Experiment</h1>
+  </header>
+
+  <section>
+    <scatter-plot-d3 [values]="scatterPlotD3Collection"></scatter-plot-d3>
+  </section>
+
+  <section>
+    <div class="year-filter">
+      <label>
+        <input type="checkbox" [checked]="yearFilter != null" (click)="toggleFilterByYear()">
+        Filter by year
+      </label>
+      <range-slider
+        [min]="minYear"
+        [max]="maxYear"
+        [value]="yearFilter"
+        [step]="1"
+        (valueChange)="filterByYear($event)"></range-slider>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <div class="legend">
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('European')"></span>
+        European
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('American')"></span>
+        American
+      </div>
+      <div class="entry">
+        <span class="country-color-dot" [style.background]="getColorForOrigin('Japanese')"></span>
+        Japanese
+      </div>
+      <div class="entry">
+        <span class="country-color-dot"></span>
+        Average
+      </div>
+      <div class="entry" [style.color]="'darkcyan'">
+        Low Values
+      </div>
+      <div class="entry" [style.color]="'coral'">
+        High Values
+      </div>
+    </div>
+
+    <table>
+      <tr>
+        <th width="1%"></th>
+        <th width="4%" (click)="multiDataExperimentItems.toggleSort('origin')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('origin')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('origin')" class="fa fa-sort-desc"></span>
+          <span class="fa fa-globe"></span>
+        </th>
+        <th width="9%" (click)="multiDataExperimentItems.toggleSort('car')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('car')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('car')" class="fa fa-sort-desc"></span>
+          Name
+        </th>
+        <th width="9%" (click)="multiDataExperimentItems.toggleSort('manufacturer')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('manufacturer')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('manufacturer')" class="fa fa-sort-desc"></span>
+          Manufacturer
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('mpg')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('mpg')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('mpg')" class="fa fa-sort-desc"></span>
+          MPG
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('cylinders')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('cylinders')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('cylinders')" class="fa fa-sort-desc"></span>
+          cylinders
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('displacement')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('displacement')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('displacement')" class="fa fa-sort-desc"></span>
+          displacement
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('horsepower')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('horsepower')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('horsepower')" class="fa fa-sort-desc"></span>
+          horsepower
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('weight')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('weight')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('weight')" class="fa fa-sort-desc"></span>
+          weight
+        </th>
+        <th width="10%" (click)="multiDataExperimentItems.toggleSort('acceleration')">
+          <span *ngIf="multiDataExperimentItems.isAscSorted('acceleration')" class="fa fa-sort-asc"></span>
+          <span *ngIf="multiDataExperimentItems.isDescSorted('acceleration')" class="fa fa-sort-desc"></span>
+          acceleration
+        </th>
+      </tr>
+      <tr *ngFor="let model of multiDataExperimentItems.models"
+          [hidden]="yearFilter && model.get('modelYear') !== yearFilter"
+          (click)="model.selectable.toggleSelect()">
+        <td>
+          <input type="checkbox"
+                 [disabled]="model.selectable.isDisabled()"
+                 [checked]="model.selectable.isSelected()">
+        </td>
+        <td style="text-align: center">
+          <span class="country-color-dot"
+                [style.background]="getColorForOrigin(model.get('origin'))"></span>
+        </td>
+        <td>{{model.get('car')}}</td>
+        <td>{{model.get('manufacturer')}}</td>
+        <td>
+          <span [class.maxVal]="model.getPercentage('mpg')>70"
+                [class.mediumVal]="model.getPercentage('mpg')>=30 && model.getPercentage('mpg')<=70"
+                [class.minVal]="model.getPercentage('mpg')<30">
+            {{model.get('mpg')}}
+          </span>
+        </td>
+        <td>
+          <span [class.maxVal]="model.getPercentage('cylinders')>70"
+                [class.mediumVal]="model.getPercentage('cylinders')>=30 && model.getPercentage('cylinders')<=70"
+                [class.minVal]="model.getPercentage('cylinders')<30">
+            {{model.get('cylinders')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('displacement')>70"
+                 [class.mediumVal]="model.getPercentage('displacement')>=30 && model.getPercentage('displacement')<=70"
+                 [class.minVal]="model.getPercentage('displacement')<30">
+            {{model.get('displacement')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('horsepower')>70"
+                 [class.mediumVal]="model.getPercentage('horsepower')>=30 && model.getPercentage('horsepower')<=70"
+                 [class.minVal]="model.getPercentage('horsepower')<30">
+            {{model.get('horsepower')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('weight')>80"
+                 [class.mediumVal]="model.getPercentage('weight')>=40 && model.getPercentage('weight')<=80"
+                 [class.minVal]="model.getPercentage('weight')<40">
+            {{model.get('weight')}}
+          </span>
+        </td>
+        <td>
+           <span [class.maxVal]="model.getPercentage('acceleration')>70"
+                 [class.mediumVal]="model.getPercentage('acceleration')>=30 && model.getPercentage('acceleration')<=70"
+                 [class.minVal]="model.getPercentage('acceleration')<30">
+            {{model.get('acceleration')}}
+          </span>
+        </td>
+      </tr>
+    </table>
+
+  </section>
+
+</section>
