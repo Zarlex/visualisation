@@ -10,6 +10,9 @@ import {PerceptionChartComponent} from './components/perception-chart/perception
 import {RadarChartComponent} from './components/radar-chart/radar-chart.component';
 import {TabsComponent} from './components/tabs/tabs.component';
 import {TabComponent} from './components/tabs/tab/tab.component';
+import {ScatterPlotD3Component} from './components/scatter-plot-d3/scatter-plot-d3.component';
+import {DirectedGraphD3Component} from './components/directed-graph-d3/directed-graph-d3.component';
+import {ModalComponent} from './components/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -20,22 +23,28 @@ import {TabComponent} from './components/tabs/tab/tab.component';
     DeviationChartComponent,
     PerceptionChartComponent,
     RadarChartComponent,
+    ScatterPlotD3Component,
+    DirectedGraphD3Component,
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
     TabsComponent,
     TabComponent,
+    ModalComponent,
     RandomElementPlacingComponent
   ],
   exports: [
     DeviationChartComponent,
     PerceptionChartComponent,
     RadarChartComponent,
+    ScatterPlotD3Component,
+    DirectedGraphD3Component,
     RangeSliderComponent,
     WizardComponent,
     WizardEntryComponent,
     TabsComponent,
     TabComponent,
+    ModalComponent,
     RandomElementPlacingComponent
   ]
 })
